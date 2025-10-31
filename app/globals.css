@@ -1,26 +1,30 @@
 @import "tailwindcss";
 
+/* Color picker debug section so vscde has the color picker */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --debug-primary-bg: #ffffff;
+  --debug-primary-text: #111827;
+
+  --debug-secondary-bg: #16345a;
+  --debug-secondary-text: #ffffff;
+
+  --debug-accent-1: #518dee;
+  --debug-accent-2: #22c55e;
+
+  --debug-danger: #ef4444;
+  --debug-border: #d1d5db;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  --color-primary-bg: var(--debug-primary-bg);
+  --color-primary-text: var(--debug-primary-text);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+  --color-secondary-bg: var(--debug-secondary-bg);
+  --color-secondary-text: var(--debug-secondary-text);
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  --color-accent-1: var(--debug-accent-1);
+  --color-accent-2: var(--debug-accent-2);
+
+  --color-danger: var(--debug-danger);
+  --color-border: var(--debug-border);
 }
