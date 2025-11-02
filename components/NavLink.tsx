@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 interface NavLinkProps {
   href: string;
   text: string;
@@ -8,8 +9,11 @@ interface NavLinkProps {
 
 const NavLink = ({ href, text }: NavLinkProps) => {
   const currentRoute = usePathname();
+  const [isActive, setIsActive] = useState<boolean>(currentRoute === href);
 
-  const isActive = currentRoute === href;
+  useEffect(() => {
+    setIsActive(currentRoute === href);
+  }, [currentRoute]);
 
   return (
     <a
