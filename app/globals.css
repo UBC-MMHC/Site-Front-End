@@ -8,6 +8,8 @@
   --debug-secondary-bg: #16345a;
   --debug-secondary-text: #ffffff;
 
+  --debug-grey-text: #e7e7e7;
+
   --debug-accent-1: #518dee;
   --debug-accent-2: #22c55e;
 
@@ -21,6 +23,8 @@
 
   --color-secondary-bg: var(--debug-secondary-bg);
   --color-secondary-text: var(--debug-secondary-text);
+
+  --color-grey-text: var(--debug-grey-text);
 
   --color-accent-1: var(--debug-accent-1);
   --color-accent-2: var(--debug-accent-2);
