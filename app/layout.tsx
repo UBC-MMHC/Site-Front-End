@@ -17,7 +17,7 @@ export default function RootLayout({
     <html>
       <body>
         <Navbar />
-        {children}
+        <div className="min-h-screen">{children}</div>
         <Footer />
       </body>
     </html>
