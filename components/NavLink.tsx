@@ -19,7 +19,7 @@ const NavLink = ({ href, text }: NavLinkProps) => {
     <a
       href={href}
       className={`px-4 py-2 rounded-full transition-colors text-lg font-medium ${
-        isActive ? "text-secondary-text" : "text-grey-text hover:text-accent-1"
+        isActive ? "text-primary-text" : "text-grey-text hover:text-accent-1"
       }`}>
       {text}
     </a>

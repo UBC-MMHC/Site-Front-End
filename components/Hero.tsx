@@ -12,7 +12,7 @@ interface HeroProps {
 export default function Hero({ imageSrc, videoSrc, overlay = true, children }: HeroProps) {
   return (
     <div className="relative w-full h-screen flex flex-col justify-center overflow-hidden">
-      <div className="absolute inset-0 -z-10">
+      <div className="absolute inset-0 z-10">
         {videoSrc ? (
           <video className="w-full h-full object-cover" src={videoSrc} autoPlay muted loop playsInline />
         ) : imageSrc ? (

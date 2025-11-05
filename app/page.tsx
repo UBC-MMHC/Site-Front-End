@@ -14,9 +14,9 @@ const HomePage = () => {
   };
 
   return (
-    <div className="w-screen">
+    <div className="w-screen bg-primary-bg text-primary-text">
       <Hero imageSrc="/Hero1.jpeg" children={MMHCTag()} />
-      <div className="flex flex-col gap-10 mx-auto justify-center text-center max-w-[80vw] p-8">
+      <div className="flex flex-col gap-10 mx-auto justify-center text-center max-w-[70vw] p-8">
         <div className="flex flex-col gap-5 items-baseline">
           <h1 className="text-4xl font-bold mb-4">About Us</h1>
           <p className="text-xl mb-10">

@@ -9,12 +9,12 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-secondary-bg text-white w-full mt-8">
+    <footer className="bg-secondary-bg text-white w-full pt-8">
       <div className="max-w-6xl mx-auto px-4 pt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Left column */}
         <div className="flex flex-col items-center p-8 text-center gap-2">
           <Image src="/MMHC_Circle_Logo.jpg" alt="UBC MMHC logo" width={120} height={120} className="rounded-full" />
-          <p className="text-m text-secondary-text">Community. Grit. Growth. </p>
+          <p className="text-m text-primary-text">Community. Grit. Growth. </p>
         </div>
 
         {/* Middle column */}
@@ -55,15 +55,15 @@ const Footer = () => {
         {/* Right column */}
         <div>
           <h3 className="text-lg font-semibold mb-2">Newsletter</h3>
-          <p className="text-md text-secondary-text">
+          <p className="text-md text-primary-text">
             Subscribe to our weekly newsletter to stay up-to-date with our latest events!
           </p>
         </div>
       </div>
 
       {/* Bottom bar */}
-      <div className="bg-secondary-bg text-center p-3 pt-0">
-        <p className="text-xs text-secondary-text">
+      <div className="text-center p-3 pt-0">
+        <p className="text-xs text-primary-text">
           &copy; {new Date().getFullYear()} UBC Men's Mental Health Club. All rights reserved.
         </p>
       </div>
