@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import EventsList from "../../components/events/EventsList";
+import EventList from "../../components/events/EventList";
 import { EventsSkeleton } from "../../components/events/skeletons";
 
 export default function EventsPage() {
@@ -13,7 +13,7 @@ export default function EventsPage() {
         {/* Slow chunk streams later; skeleton shows first */}
         <Suspense fallback={<EventsSkeleton />}>
           {/* EventsList waits on getCalendarEvents() server-side */}
-          <EventsList />
+          <EventList />
         </Suspense>
       </section>
     </main>

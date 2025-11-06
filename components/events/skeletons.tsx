@@ -1,3 +1,4 @@
+// TODO: Update this to mimic the new UI Components
 export function EventsSkeleton() {
   return (
     <ul className="space-y-4">
