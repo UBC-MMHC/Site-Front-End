@@ -151,8 +151,6 @@ export default async function EventsList() {
   const events = await getFutureCalendarEvents(); // server-side fetch (no client call)
   const upcomingEventViews = buildCalendarEventViews(events);
 
-  console.log(events);
-
   if (!events.length) {
     return (
       <div className="text-gray-500 text-sm border border-dashed border-gray-300 rounded-xl p-8 text-center">
