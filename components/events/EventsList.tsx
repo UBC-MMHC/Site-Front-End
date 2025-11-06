@@ -45,7 +45,7 @@ function DateSquare({
   weekday,
 }: Readonly<{ month: string; day: number; weekday: string }>) {
   return (
-    <div className="w-40 h-40 bg-muted/60 border flex flex-col items-center justify-center shrink-0">
+    <div className="w-42 h-42 bg-muted/60 border flex flex-col items-center justify-center shrink-0">
       <div className="text-lg tracking-wide text-muted-foreground">
         {weekday}
       </div>

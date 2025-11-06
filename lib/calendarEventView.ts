@@ -30,40 +30,43 @@ export type CalendarEventView = {
 export function buildCalendarEventViews(
   events: CalendarEvent[]
 ): CalendarEventView[] {
-  return events
-    .filter((evt) => evt.title != "Weekly Executive Meeting")
-    .map((evt) => {
-      const {
-        id,
-        title,
-        startDate,
-        endDate,
-        location,
-        description,
-        isRecurring,
-        recurrenceRule,
-      } = evt;
+  return (
+    events
+      // TODO:  build a filter function to remove events from the calendar
+      .filter((evt) => evt.title != "Weekly Executive Meeting")
+      .map((evt) => {
+        const {
+          id,
+          title,
+          startDate,
+          endDate,
+          location,
+          description,
+          isRecurring,
+          recurrenceRule,
+        } = evt;
 
-      return {
-        id,
-        unix: startDate.getTime(),
-        title,
-        startTime: startDate.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        endTime: endDate.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        location,
-        description,
-        month: startDate.getMonth() + 1, // 1-12
-        day: startDate.getDate(),
-        year: startDate.getFullYear(),
-        weekday: DAY_NAMES[startDate.getDay()],
-        isRecurring, // copied as requested
-        recurrenceString: rruleToText(recurrenceRule), // recurrenceRule -> recurrenceString
-      } as CalendarEventView;
-    });
+        return {
+          id,
+          unix: startDate.getTime(),
+          title,
+          startTime: startDate.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          endTime: endDate.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          location,
+          description,
+          month: startDate.getMonth() + 1, // 1-12
+          day: startDate.getDate(),
+          year: startDate.getFullYear(),
+          weekday: DAY_NAMES[startDate.getDay()],
+          isRecurring, // copied as requested
+          recurrenceString: rruleToText(recurrenceRule), // recurrenceRule -> recurrenceString
+        } as CalendarEventView;
+      })
+  );
 }
