@@ -25,6 +25,7 @@ export type CalendarEventView = {
   weekday: string;
   isRecurring: boolean;
   recurrenceString: string;
+  featured: boolean;
 };
 
 export function buildCalendarEventViews(
@@ -32,8 +33,20 @@ export function buildCalendarEventViews(
 ): CalendarEventView[] {
   return (
     events
-      // TODO:  build a filter function to remove events from the calendar
-      .filter((evt) => evt.title != "Weekly Executive Meeting")
+      // Filter out subsequent recurring occurrences with the same title (keep earliest upcoming)
+      .filter(
+        (() => {
+          const seenRecurringTitles = new Set<string>();
+          return (evt: CalendarEvent) => {
+            if (evt.title == "Weekly Executive Meeting") return false;
+            if (!evt.isRecurring) return true;
+            const key = evt.title.trim().toLowerCase();
+            if (seenRecurringTitles.has(key)) return false;
+            seenRecurringTitles.add(key);
+            return true;
+          };
+        })()
+      )
       .map((evt) => {
         const {
           id,
@@ -66,6 +79,7 @@ export function buildCalendarEventViews(
           weekday: DAY_NAMES[startDate.getDay()],
           isRecurring, // copied as requested
           recurrenceString: rruleToText(recurrenceRule), // recurrenceRule -> recurrenceString
+          featured: description.includes("FEATURED"),
         } as CalendarEventView;
       })
   );

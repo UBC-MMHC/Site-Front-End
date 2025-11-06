@@ -43,13 +43,27 @@ function DateSquare({
   month,
   day,
   weekday,
-}: Readonly<{ month: string; day: number; weekday: string }>) {
+  featured,
+}: Readonly<{
+  month: string;
+  day: number;
+  weekday: string;
+  featured?: boolean;
+}>) {
+  const containerClass = featured
+    ? "w-42 h-42 bg-gradient-to-br from-sky-600 via-blue-600 to-indigo-500 text-white border flex flex-col items-center justify-center shrink-0"
+    : "w-42 h-42 bg-muted/60 border flex flex-col items-center justify-center shrink-0";
+  const weekdayClass = featured
+    ? "text-lg tracking-wide opacity-90"
+    : "text-lg tracking-wide text-muted-foreground";
+  const dateClass = featured
+    ? "text-2xl font-semibold leading-none drop-shadow-sm"
+    : "text-2xl font-semibold leading-none";
+
   return (
-    <div className="w-42 h-42 bg-muted/60 border flex flex-col items-center justify-center shrink-0">
-      <div className="text-lg tracking-wide text-muted-foreground">
-        {weekday}
-      </div>
-      <div className="text-2xl font-semibold leading-none">{`${month} ${day}`}</div>
+    <div className={containerClass}>
+      <div className={weekdayClass}>{weekday}</div>
+      <div className={dateClass}>{`${month} ${day}`}</div>
     </div>
   );
 }
@@ -57,13 +71,20 @@ function DateSquare({
 function EventCard({ ev }: Readonly<{ ev: CalendarEventView }>) {
   const recurrence = ev.isRecurring ? ev.recurrenceString : "One-time";
   return (
-    <Card className="w-full overflow-hidden border shadow-sm py-0 rounded-none">
+    <Card
+      className={
+        ev.featured
+          ? "w-full overflow-hidden border shadow-sm py-0 rounded-none"
+          : "w-full overflow-hidden border shadow-sm py-0 rounded-none"
+      }
+    >
       <CardContent className="px-0">
         <div className="flex gap-4">
           <DateSquare
             month={MONTHS[ev.month]}
             day={ev.day}
             weekday={ev.weekday}
+            featured={ev.featured}
           />
 
           <div className="flex-1 min-w-0 p-4">
