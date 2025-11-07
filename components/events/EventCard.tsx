@@ -1,10 +1,17 @@
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Repeat, Clock, MapPin } from "lucide-react";
+import * as React from "react";
 import { CalendarEventView } from "@/lib/calendarEventView";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { MapPin, Repeat, Star } from "lucide-react";
 
-const MONTHS = [
-  "NULL",
+const MONTH_NAMES = [
   "Jan",
   "Feb",
   "Mar",
@@ -19,84 +26,86 @@ const MONTHS = [
   "Dec",
 ];
 
-function DateSquare({
-  month,
-  day,
-  weekday,
-  featured,
-}: Readonly<{
-  month: string;
-  day: number;
-  weekday: string;
-  featured?: boolean;
-}>) {
-  const containerClass = featured
-    ? "w-30 h-30 bg-gradient-to-br from-sky-600 via-blue-600 to-indigo-500 text-white flex flex-col items-center justify-center shrink-0"
-    : "w-30 h-30 bg-muted/60 flex flex-col items-center justify-center shrink-0";
-  const weekdayClass = featured
-    ? "text-lg tracking-wide opacity-90"
-    : "text-lg tracking-wide text-muted-foreground";
-  const dateClass = featured
-    ? "text-2xl font-semibold leading-none drop-shadow-sm"
-    : "text-2xl font-semibold leading-none";
+type EventCardProps = Readonly<{
+  ev: CalendarEventView;
+  /** URL string or any React node (e.g., <svg />) to render as media */
+  thumbnail?: string | React.ReactNode;
+}>;
+
+function EventCard({ ev, thumbnail }: EventCardProps) {
+  const dateString = `${ev.weekday}, ${MONTH_NAMES[ev.month - 1]} ${ev.day}, ${
+    ev.year
+  }`;
+  const timeString = `${ev.startTime} – ${ev.endTime}`;
+
+  const hasLocation = Boolean(ev.location && ev.location.trim().length > 0);
+  const showRecurrence = ev.isRecurring && ev.recurrenceString;
+
+  const isStringThumb = typeof thumbnail === "string" && thumbnail.length > 0;
+  const hasCustomNode = Boolean(thumbnail) && typeof thumbnail !== "string";
+  const mediaUrl = isStringThumb
+    ? (thumbnail as string)
+    : "/building_dither.svg";
 
   return (
-    <div className={containerClass}>
-      <div className={weekdayClass}>{weekday}</div>
-      <div className={dateClass}>{`${month} ${day}`}</div>
-    </div>
-  );
-}
-
-export default function EventCard({ ev }: Readonly<{ ev: CalendarEventView }>) {
-  const recurrence = ev.isRecurring ? ev.recurrenceString : "One-time";
-  return (
-    <Card
-      className={
-        "w-full overflow-hidden border shadow-sm py-0 rounded-none gap-0"
-      }
-    >
-      <div className="justify-center py-4 px-4 bg-muted/60 border-b-1">
-        <div className="flex justify-between text-xl pb-0">
-          <CardTitle>{ev.title}</CardTitle>
-          <span className="whitespace-nowrap flex items-center gap-1 text-sm">
-            {ev.isRecurring && <Repeat className="h-3.5 w-3.5" />} {recurrence}
-          </span>
+    <Card className="overflow-hidden gap-4 py-0">
+      <div className="w-full bg-muted">
+        <div className="relative aspect-[16/9] w-full overflow-hidden">
+          {hasCustomNode ? (
+            <div className="absolute inset-0 flex h-full w-full items-center justify-center p-4">
+              <div className="max-h-full max-w-full">{thumbnail}</div>
+            </div>
+          ) : (
+            <img
+              alt={ev.title}
+              src={mediaUrl}
+              className="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
+            />
+          )}
         </div>
       </div>
-      <CardContent className="px-0">
-        <div className="flex gap-4">
-          <DateSquare
-            month={MONTHS[ev.month]}
-            day={ev.day}
-            weekday={ev.weekday}
-            featured={ev.featured}
-          />
 
-          <div className="flex-1 min-w-0 p-2">
-            <div className="mt-2 flex flex-col items-start gap-x-4 gap-y-1 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Clock className="h-4 w-4" />
-                <span>
-                  {ev.startTime} - {ev.endTime}
-                </span>
-              </div>
-              {ev.location && (
-                <div className="flex items-center gap-1">
-                  <MapPin className="h-4 w-4" />
-                  <span className="truncate">{ev.location}</span>
-                </div>
-              )}
-            </div>
-
-            {ev.description && (
-              <p className="mt-3 text-sm text-foreground/80 line-clamp-3">
-                {ev.description}
-              </p>
-            )}
-          </div>
+      <CardHeader className="gap-1 px-5">
+        <CardTitle className="text-lg leading-tight">{ev.title}</CardTitle>
+        <CardDescription className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
+          <span className="font-medium text-foreground">{dateString}</span>
+          <span className="hidden text-muted-foreground sm:inline">•</span>
+          <span>{timeString}</span>
+        </CardDescription>
+        <div className="mt-1 flex flex-wrap gap-2">
+          {ev.featured ? (
+            <Badge>
+              <Star className="shrink-0" />
+              Featured
+            </Badge>
+          ) : null}
+          {showRecurrence ? (
+            <Badge variant="secondary">
+              <Repeat className="shrink-0" />
+              {ev.recurrenceString}
+            </Badge>
+          ) : null}
         </div>
+      </CardHeader>
+
+      <CardContent className="space-y-3 px-5">
+        {hasLocation ? (
+          <div className="flex items-start gap-2 text-sm text-muted-foreground">
+            <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
+            <span className="leading-5">{ev.location}</span>
+          </div>
+        ) : null}
+        {ev.description ? (
+          <p className="text-sm leading-6">{ev.description}</p>
+        ) : null}
       </CardContent>
+
+      <CardFooter className="justify-end px-5">
+        {/* Reserved for actions/links if needed later */}
+      </CardFooter>
     </Card>
   );
 }
+
+export default EventCard;

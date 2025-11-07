@@ -6,6 +6,20 @@ import {
 import { CalendarDays } from "lucide-react";
 import EventCard from "./EventCard";
 
+function getThumbnailForEvent(ev: CalendarEventView): string | undefined {
+  const title = ev.title?.toLowerCase() ?? "";
+  if (title.includes("discussion")) {
+    return "/plato_dither.svg";
+  } else if (title.includes("study session")) {
+    return "/tree_dither.svg";
+  } else if (title.includes("test")) {
+    return "/test_event.jpg";
+  } else if (title.includes("mmhc run")) {
+    return "/run_dither.svg";
+  }
+  return undefined;
+}
+
 function groupEventsByYear(
   events: CalendarEventView[]
 ): Record<string, CalendarEventView[]> {
@@ -51,9 +65,13 @@ export function EventByYear({
               {byYear[String(year)].length === 1 ? "" : "s"}
             </span>
           </header>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
             {byYear[String(year)].map((ev) => (
-              <EventCard key={ev.id} ev={ev} />
+              <EventCard
+                key={ev.id}
+                ev={ev}
+                thumbnail={getThumbnailForEvent(ev)}
+              />
             ))}
           </div>
         </section>
