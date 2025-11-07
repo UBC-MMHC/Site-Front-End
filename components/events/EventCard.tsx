@@ -11,6 +11,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Repeat, Star } from "lucide-react";
 
+// TODO: Refactor thumbnail to be property of CalendarEventView
+
 const MONTH_NAMES = [
   "Jan",
   "Feb",
