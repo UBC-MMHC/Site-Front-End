@@ -4,7 +4,7 @@ import { EventsSkeleton } from "../../components/events/skeletons";
 
 export default function EventsPage() {
   return (
-    <main className="max-w-4xl mx-auto my-16 px-6">
+    <main className="flex max-w-4xl mx-auto my-16 px-6">
       <section>
         <h2 className="text-5xl font-semibold text-gray-900 mb-4">
           Upcoming Events
