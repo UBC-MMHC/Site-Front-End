@@ -1,6 +1,7 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import {API_ROUTES_URL} from "@/app/constants";
 
 // TODO FIX ERROR HANDLING CURRENTLY ALWAYS FAILING VERIFICATION
 export default function Verify() {
@@ -17,27 +18,25 @@ export default function Verify() {
     useEffect(() => {
         const verifyToken = async () => {
             try {
-                const res = await fetch("http://localhost:8080/api/auth/verify-token", {
+                const res = await fetch(API_ROUTES_URL.verify, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, token }),
                     credentials: "include",
                 });
 
-                const text = await res.text();
+                const text = await res.json();
 
-                console.log(res);
                 if (res.ok) {
                     setMessage("Verified successfully!");
                     setSuccess(true);
-
-                    setTimeout(() => router.push("/"), 2000);
+                    router.push(text.redirectUrl);
                 } else {
-                    setMessage(text || "Verification failed");
+                    setMessage(text.message || "Verification failed");
                     setError(true);
                 }
-            } catch (err) {
-                setMessage("Server error. Please try again.");
+            }catch(err){
+                setMessage("Server error");
                 setError(true);
             }
         };

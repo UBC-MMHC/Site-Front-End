@@ -2,6 +2,7 @@
 import "../globals.css";
 import {useState} from "react";
 import { useRouter } from "next/navigation";
+import {API_ROUTES_URL} from "@/app/constants";
 
 export default function Login(){
     const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ export default function Login(){
         setSent(false);
 
         try {
-            const res = await fetch("http://localhost:8080/api/auth/login-email", {
+            const res = await fetch(API_ROUTES_URL.login_email, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({email}),
@@ -41,7 +42,7 @@ export default function Login(){
     };
 
     const handleGoogleLogin = () => {
-        window.location.href = "http://localhost:8080/api/auth/google";
+        window.location.href = API_ROUTES_URL.login_google;
     };
 
     if (sent) {
