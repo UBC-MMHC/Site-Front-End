@@ -1,7 +1,7 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {API_ROUTES_URL} from "@/app/constants";
+import {checkToken} from "@/components/login/auth";
 
 export default function Verify() {
     const searchParams = useSearchParams();
@@ -17,23 +17,11 @@ export default function Verify() {
     useEffect(() => {
         const verifyToken = async () => {
             try {
-                const res = await fetch(API_ROUTES_URL.verify, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, token }),
-                    credentials: "include",
-                });
-
-                const text = await res.json();
-
-                if (res.ok) {
-                    setMessage("Verified successfully!");
-                    setSuccess(true);
-                    router.push(text.redirectUrl);
-                } else {
-                    setMessage(text.message || "Verification failed");
-                    setError(true);
-                }
+                const text = await checkToken(email, token);
+                setMessage("Verified successfully!");
+                setSuccess(true);
+                router.push(text.redirectUrl);
+                setError(false);
             }catch(err){
                 setMessage("Server error");
                 setError(true);

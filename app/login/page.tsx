@@ -1,8 +1,7 @@
 "use client"
 import "../globals.css";
 import {useState} from "react";
-import { useRouter } from "next/navigation";
-import {API_ROUTES_URL} from "@/app/constants";
+import {loginWithEmail, loginWithGoogle} from "@/components/login/auth";
 
 export default function Login(){
     const [email, setEmail] = useState("");
@@ -17,31 +16,17 @@ export default function Login(){
         setSent(false);
 
         try {
-            const res = await fetch(API_ROUTES_URL.login_email, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({email}),
-            });
-
-            const text = await res.text();
-
-            if (res.ok) {
-                setMessage(text);
-                setError(false);
-                setSent(true);
-            } else {
-                setMessage(text);
-                setError(true);
-            }
+            const text = await loginWithEmail(email);
+            setMessage(text);
+            setError(false);
+            setSent(true);
         }catch(err){
             setMessage("Server error");
             setError(true);
         }
     };
 
-    const handleGoogleLogin = () => {
-        window.location.href = API_ROUTES_URL.login_google;
-    };
+    const handleGoogleLogin = () => {loginWithGoogle()};
 
     if (sent) {
         return (
