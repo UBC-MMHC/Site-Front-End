@@ -10,8 +10,6 @@ export default function Login(){
     const [error, setError] = useState(false);
     const [sent, setSent] = useState(false);
 
-    const router = useRouter();
-
     const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setMessage("");
@@ -57,9 +55,9 @@ export default function Login(){
     }
 
     return (
-        <div className="flex h-screen items-center justify-center bg-background text-foreground">
-            <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg">
-                <h1 className="text-3xl font-bold text-center mb-8">Sign in</h1>
+        <div className="flex h-screen items-center justify-center text-foreground">
+            <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg text-center">
+                <h1 className="text-3xl font text-center mb-8">Login</h1>
 
                 {/* Email */}
                 <form onSubmit={handleEmailLogin} className="space-y-4">

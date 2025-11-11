@@ -3,7 +3,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {API_ROUTES_URL} from "@/app/constants";
 
-// TODO FIX ERROR HANDLING CURRENTLY ALWAYS FAILING VERIFICATION
 export default function Verify() {
     const searchParams = useSearchParams();
     const router = useRouter();

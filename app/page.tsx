@@ -5,9 +5,10 @@ const HomePage = () => {
   const MMHCTag = () => {
     return (
       <div className="flex flex-col align-middle gap-15">
-        <p className="text-5xl font-bold text-white text-shadow-2xs">UBC Men's Mental Health Club</p>
+        <p className="text-5xl font-bold text-white text-shadow-2xs">UBC's</p>
+        <p className="text-5xl font-bold text-white text-shadow-2xs">Mens Mental Health Club</p>
         <p className="text-xl font-medium text-white text-shadow-2xs">
-          A community of men dedicated to peer support, open discussion, and self-improvement
+          A community of dedicated peer support, open discussion, and self-improvement
         </p>
       </div>
     );
@@ -36,7 +37,7 @@ const HomePage = () => {
 
               <p className="text-xl">
                 We strive to build a strong community through social events, discussion, etc and build a strong
-                brotherhood. blah blah blah
+                brotherhood.....
               </p>
             </div>
           </div>

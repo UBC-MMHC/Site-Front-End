@@ -2,6 +2,19 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Montserrat, Lato } from 'next/font/google';
+
+const montserrat = Montserrat({
+    subsets: ['latin'],
+    weight: ['400', '700'],
+    variable: '--font-montserrat',
+});
+
+const lato = Lato({
+    subsets: ['latin'],
+    weight: ['400', '700'],
+    variable: '--font-lato',
+});
 
 export const metadata: Metadata = {
   title: "UBC Men's Mental Health Club",
@@ -14,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html>
+    <html lang="en" className={`${montserrat.variable} ${lato.variable}`}>
       <body>
         <Navbar />
         <div className="min-h-screen">{children}</div>

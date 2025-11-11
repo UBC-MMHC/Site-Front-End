@@ -1,7 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-
 @custom-variant dark (&:is(.dark *));
+
+/*body {*/
+/*    font-family: 'Lato', sans-serif;*/
+/*}*/
+
+/*h1, h2, h3 {*/
+/*    font-family: 'Montserrat', sans-serif;*/
+/*}*/
 
 /* Color picker debug section so vscde has the color picker */
 :root {
