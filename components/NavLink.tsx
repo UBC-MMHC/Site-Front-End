@@ -1,19 +1,28 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 interface NavLinkProps {
   href: string;
-  children: React.ReactNode;
-  currentRoute: string;
-  setCurrentRoute: (route: string) => void;
+  text: string;
 }
 
-const NavLink = ({ href, children, currentRoute, setCurrentRoute }: NavLinkProps) => {
+const NavLink = ({ href, text }: NavLinkProps) => {
+  const currentRoute = usePathname();
+  const [isActive, setIsActive] = useState<boolean>(currentRoute === href);
+
+  useEffect(() => {
+    setIsActive(currentRoute === href);
+  }, [currentRoute]);
+
   return (
-    <button
-      onClick={() => setCurrentRoute(href)}
-      className={`px-4 py-2 rounded-full transition-colors text-sm font-medium ${
-        currentRoute === href ? "bg-white text-indigo-700 shadow-md" : "text-white hover:bg-indigo-600"
+    <a
+      href={href}
+      className={`px-4 py-2 rounded-full transition-colors text-lg font-medium ${
+        isActive ? "text-primary-text" : "text-grey-text hover:text-accent-1"
       }`}>
-      {children}
-    </button>
+      {text}
+    </a>
   );
 };
 
