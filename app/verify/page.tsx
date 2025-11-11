@@ -32,7 +32,7 @@ export default function Verify() {
     }, [token, email, router]);
 
     return (
-        <div className="flex h-screen items-center justify-center bg-background text-foreground">
+        <div className="flex min-h-screen flex-col items-center pt-24 bg-background text-foreground">
             <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg">
                 <h1 className="text-2xl font-bold text-center mb-6">
                     {success ? "Success!" : error ? "Verification Failed" : "Verifying..."}

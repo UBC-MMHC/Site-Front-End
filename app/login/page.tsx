@@ -30,7 +30,7 @@ export default function Login(){
 
     if (sent) {
         return (
-            <div className="flex h-screen items-center justify-center bg-background text-foreground">
+            <div className="flex min-h-screen flex-col items-center pt-24 bg-background text-foreground">
                 <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg text-center">
                     <h1 className="text-2xl font-bold mb-4">Check Your Email</h1>
                     <p>We sent a login link to <strong>{email}</strong>. you can close this tab.</p>
@@ -40,7 +40,7 @@ export default function Login(){
     }
 
     return (
-        <div className="flex h-screen items-center justify-center text-foreground">
+        <div className="flex min-h-screen flex-col items-center pt-24 bg-background text-foreground">
             <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg text-center">
                 <h1 className="text-3xl font text-center mb-8">Login</h1>
 
