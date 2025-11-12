@@ -1,7 +1,7 @@
 "use client"
 import "../globals.css";
 import {useState} from "react";
-import {loginWithEmail, loginWithGoogle} from "@/components/login/auth";
+import {loginWithEmail, loginWithGoogle} from "@/components/api/auth";
 
 export default function Login(){
     const [email, setEmail] = useState("");
@@ -17,12 +17,16 @@ export default function Login(){
 
         try {
             const text = await loginWithEmail(email);
-            setMessage(text);
+            setMessage(text ||  "Email sent successfully!");
             setError(false);
             setSent(true);
-        }catch(err){
-            setMessage("Server error");
+        }catch(err: unknown){
             setError(true);
+            if (err instanceof Error) {
+                setMessage(err.message);
+            } else {
+                setMessage("An unexpected error occurred.");
+            }
         }
     };
 
@@ -61,6 +65,11 @@ export default function Login(){
                     >
                         Continue with Email
                     </button>
+                    {message && (
+                        <p className={`text-sm mt-2 ${error ? "text-red-500" : "text-green-500"}`}>
+                            {message}
+                        </p>
+                    )}
                 </form>
 
 

@@ -1,4 +1,5 @@
 import { API_ROUTES_URL } from "@/app/constants";
+import {handleApiError} from "@/components/api/apiErrorHandling";
 
 export async function loginWithEmail(email: string) {
     const res = await fetch(API_ROUTES_URL.login_email, {
@@ -7,10 +8,10 @@ export async function loginWithEmail(email: string) {
         body: JSON.stringify({ email }),
     });
 
-    const text = await res.text();
-
-    if (!res.ok) throw new Error(text);
-    return text;
+    if (!res.ok) {
+        await handleApiError(res);
+    }
+    return res.text();
 }
 
 export function loginWithGoogle() {

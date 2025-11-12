@@ -1,7 +1,7 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {checkToken} from "@/components/login/auth";
+import {checkToken} from "@/components/api/auth";
 
 export default function Verify() {
     const searchParams = useSearchParams();
