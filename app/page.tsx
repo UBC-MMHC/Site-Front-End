@@ -46,76 +46,58 @@ const MMHCTag = () => {
 
 const HomePage = () => {
     return (
-        <div className="w-full overflow-x-hidden bg-primary-bg text-primary-text">
+        <div className="w-full overflow-x-hidden bg-secondary-bg text-primary-text">
             <Hero imageSrc="/hero/Hero1.jpeg" children={MMHCTag()}/>
-            <div className="flex flex-col gap-10 mx-auto justify-center text-center max-w-[70vw] p-8">
-
-                {/*About us Section*/}
-                <div className="">
-                    <h1 className="text-4xl font-bold mb-4">About Us</h1>
-                    <p className="text-xl mb-10">
-                        MMHC is a club with the purpose of providing dedicated peer support, a place for open
-                        discussion, and a goal
-                        of self-improvemnt. We base this mission on our three core-pillars
-                    </p>
-                </div>
-
-                {/*  3 Piller */}
-                <div className="flex flex-col items-baseline gap-0">
-                    <h2 className="text-3xl font-bold mb-4">Community</h2>
-                    <div className="flex flex-col md:flex-row gap-5">
-                        {/*<Image*/}
-                        {/*  src="/MMHC_Circle_Logo.jpg"*/}
-                        {/*  alt="UBC MMHC logo"*/}
-                        {/*  width={120}*/}
-                        {/*  height={120}*/}
-                        {/*  className="rounded-full"*/}
-                        {/*/>*/}
-
-                        <p className="text-xl">
-                            We strive to build a strong community through social events, discussion, etc and build a
-                            strong
-                            brotherhood.....
-                        </p>
+            <section className="w-full py-20 bg-secondary-bg">
+                <div className="max-w-6xl mx-auto px-6">
+                    <div className="flex flex-col text-primary-text text-center mb-7  ">
+                        <h2 className="text-4xl font-bold text-secondary-text text-center mb-5 tracking-wide uppercase">
+                            Our Mission
+                        </h2>
+                        <p className="text-2xl leading-relaxed text-gray-700 max-w-3xl mx-auto text-center">
+                        MMHC is determined to create a safe community for all men to
+                            feel welcomed by focusing on our core values: </p>
                     </div>
-                </div>
-                <div className="flex flex-col items-baseline gap-0">
-                    <h2 className="text-3xl font-bold mb-4">Grit</h2>
-                    <div className="flex flex-col md:flex-row gap-5">
-                        {/*<Image*/}
-                        {/*  src="/MMHC_Circle_Logo.jpg"*/}
-                        {/*  alt="UBC MMHC logo"*/}
-                        {/*  width={120}*/}
-                        {/*  height={120}*/}
-                        {/*  className="rounded-full"*/}
-                        {/*/>*/}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-primary-text">
+                        {/* Community */}
+                        <div className="relative bg-card-primary rounded-2xl shadow-md overflow-hidden group cursor-pointer min-h-[200px] flex flex-col items-center justify-center">
+                            <h3 className="text-2xl font-semibold text-primary-text z-10 relative transition-opacity duration-300 group-hover:opacity-0 uppercase tracking-wide">
+                                Community
+                            </h3>
+                            <p className=" opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute p-12">
+                                We strive to build a strong community through social events, discussion,
+                                and supporting one another to form a strong brotherhood.
+                            </p>
+                        </div>
 
-                        <p className="text-xl">
-                            The ability to stand strong is something we value, whether that means pushing yourself on a
-                            run, or
-                            facing your fears and doing a cold-plunge no matter the weather outside.
-                        </p>
-                    </div>
-                </div>
-                <div className="flex flex-col items-baseline gap-0">
-                    <h2 className="text-3xl font-bold mb-4">Growth</h2>
-                    <div className="flex flex-col md:flex-row gap-5">
-                        {/*<Image*/}
-                        {/*  src="/MMHC_Circle_Logo.jpg"*/}
-                        {/*  alt="UBC MMHC logo"*/}
-                        {/*  width={120}*/}
-                        {/*  height={120}*/}
-                        {/*  className="rounded-full"*/}
-                        {/*/>*/}
+                        {/* Grit */}
+                        <div className="relative bg-card-primary rounded-2xl shadow-md overflow-hidden group cursor-pointer min-h-[200px] flex flex-col items-center justify-center">
+                            <h3 className="text-2xl font-semibold text-primary-text z-10 relative transition-opacity duration-300 group-hover:opacity-0 uppercase tracking-wide">
+                                Grit
+                            </h3>
+                            <p className=" opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute p-12">
+                                The ability to stand strong is something we value, whether that means
+                                pushing yourself on a run, or facing your fears with a cold plunge.
+                            </p>
+                        </div>
 
-                        <p className="text-xl">
-                            The ability to stand strong is something we value, whether that means pushing yourself on a
-                            run, or
-                            facing your fears and doing a cold-plunge no matter the weather outside.
-                        </p>
+                        {/* Growth */}
+                        <div className="relative bg-card-primary rounded-2xl shadow-md overflow-hidden group cursor-pointer min-h-[200px] flex flex-col items-center justify-center">
+                            <h3 className="text-2xl font-semibold text-primary-text z-10 relative transition-opacity duration-300 group-hover:opacity-0 uppercase tracking-wide">
+                                Growth
+                            </h3>
+                            <p className=" opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute p-12">
+                                We focus on pushing ourselves mentally and physically to grow as
+                                individuals and support each other's development.
+                            </p>
+                        </div>
                     </div>
+
                 </div>
-            </div>
+            </section>
+
+            <section className="w-full py-20 bg-white"></section>
+
         </div>
     );
 };

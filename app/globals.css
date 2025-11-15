@@ -13,16 +13,20 @@
 /* Color picker debug section so vscde has the color picker */
 :root {
   --debug-primary-bg: #16345a;
-  --debug-primary-text: #ffffff;
+  --debug-primary-text: #F7FAFC;
 
-  --debug-secondary-bg: #0e2a4e;
-  --debug-secondary-text: #ffffff;
+  --debug-secondary-bg: #F7FAFC;
+  --debug-secondary-text: #16345a;
 
   --debug-grey-text: #e7e7e7;
 
   /* These colors are not currently used, feel free to change them */
-  --debug-accent-1: #518dee;
+  --debug-accent-1: #ffffff;
   --debug-accent-2: #22c55e;
+
+  --debug-card-primary: #16345a;
+
+  --debug-text-primary: #ffffff;
 
   --debug-danger: #ef4444;
   --debug-border: #d1d5db;
@@ -74,6 +78,10 @@
 
   --color-danger: var(--debug-danger);
   --color-border: var(--debug-border);
+  --color-text-primary: var(--debug-text-primary);
+
+    --color-card-primary: var(--debug-card-primary);
+
 }
 
 @theme inline {
