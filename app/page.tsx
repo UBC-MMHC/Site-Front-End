@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const MMHCTag = () => {
     return (
-        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-5 w-full max-w-6xl mx-auto px-4">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-5 w-full max-w-6xl mx-auto px-4 justify-center">
             <div className="relative w-60 h-70 md:w-70 md:h-80 rounded-full overflow-hidden">
                 <Image
                     src="/MMHC_cropped_logo.png"
@@ -46,7 +46,7 @@ const MMHCTag = () => {
 
 const HomePage = () => {
     return (
-        <div className="w-full overflow-x-hidden bg-secondary-bg text-primary-text">
+        <div className="w-full overflow-x-hidden bg-secondary-bg text-primary-text text-center">
             <Hero imageSrc="/hero/Hero1.jpeg" children={MMHCTag()}/>
             <section className="w-full py-20 bg-secondary-bg">
                 <div className="max-w-6xl mx-auto px-6">
@@ -55,12 +55,13 @@ const HomePage = () => {
                             Our Mission
                         </h2>
                         <p className="text-2xl leading-relaxed text-gray-700 max-w-3xl mx-auto text-center">
-                        MMHC is determined to create a safe community for all men to
-                            feel welcomed by focusing on our core values: </p>
+                            MMHC is determined to create a safe community for all men to
+                            grow and be part of a community by focusing on our core values: </p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-primary-text">
                         {/* Community */}
-                        <div className="relative bg-card-primary rounded-2xl shadow-md overflow-hidden group cursor-pointer min-h-[200px] flex flex-col items-center justify-center">
+                        <div
+                            className="relative bg-card-primary rounded-2xl shadow-md overflow-hidden group cursor-pointer min-h-[200px] flex flex-col items-center justify-center">
                             <h3 className="text-2xl font-semibold text-primary-text z-10 relative transition-opacity duration-300 group-hover:opacity-0 uppercase tracking-wide">
                                 Community
                             </h3>
@@ -71,7 +72,8 @@ const HomePage = () => {
                         </div>
 
                         {/* Grit */}
-                        <div className="relative bg-card-primary rounded-2xl shadow-md overflow-hidden group cursor-pointer min-h-[200px] flex flex-col items-center justify-center">
+                        <div
+                            className="relative bg-card-primary rounded-2xl shadow-md overflow-hidden group cursor-pointer min-h-[200px] flex flex-col items-center justify-center">
                             <h3 className="text-2xl font-semibold text-primary-text z-10 relative transition-opacity duration-300 group-hover:opacity-0 uppercase tracking-wide">
                                 Grit
                             </h3>
@@ -82,7 +84,8 @@ const HomePage = () => {
                         </div>
 
                         {/* Growth */}
-                        <div className="relative bg-card-primary rounded-2xl shadow-md overflow-hidden group cursor-pointer min-h-[200px] flex flex-col items-center justify-center">
+                        <div
+                            className="relative bg-card-primary rounded-2xl shadow-md overflow-hidden group cursor-pointer min-h-[200px] flex flex-col items-center justify-center">
                             <h3 className="text-2xl font-semibold text-primary-text z-10 relative transition-opacity duration-300 group-hover:opacity-0 uppercase tracking-wide">
                                 Growth
                             </h3>
