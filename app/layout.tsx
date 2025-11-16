@@ -10,11 +10,11 @@ const montserrat = Montserrat({
     variable: '--font-montserrat',
 });
 
-const lato = Lato({
-    subsets: ['latin'],
-    weight: ['400', '700'],
-    variable: '--font-lato',
-});
+// const lato = Lato({
+//     subsets: ['latin'],
+//     weight: ['400', '700'],
+//     variable: '--font-lato',
+// });
 
 export const metadata: Metadata = {
   title: "UBC Men's Mental Health Club",
@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${montserrat.variable} ${lato.variable}`}>
+    <html lang="en" className={`${montserrat.variable}`}>
       <body>
         <Navbar />
         <div className="min-h-screen">{children}</div>
