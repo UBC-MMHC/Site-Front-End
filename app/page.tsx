@@ -1,6 +1,5 @@
 import Hero from "@/components/Hero";
 import Image from "next/image";
-import Link from "next/link";
 import { MEMBERSHIP_SIGNUP_URL } from "@/app/constants";
 import EventList from "@/components/events/EventList";
 import LinkButton from "@/components/ui/LinkButton";
@@ -35,7 +34,7 @@ const HomePage = () => {
     <div className="w-full overflow-x-hidden bg-primary-bg text-primary-text text-center">
       <Hero imageSrc="/hero/Hero1.jpeg" children={MMHCTag()} />
       {/* Our Mission */}
-      <section className="w-full py-20 bg-primary-bg">
+      <section className="w-full pt-20 bg-primary-bg">
         <div className="max-w-6xl mx-auto px-6 text-left">
           <div className="flex items-start mb-7">
             <h2 className="flex flex-col text-primary-text font-bold text-4xl mr-8">
