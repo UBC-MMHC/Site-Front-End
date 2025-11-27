@@ -6,6 +6,7 @@ import {
   LINK_TREE as LINK_TREE_URL,
   MEMBERSHIP_SIGNUP_URL,
 } from "@/app/constants";
+import NewsletterSignup from "./newsletter/newsletterSignup";
 
 const Footer = () => {
   return (
@@ -58,6 +59,7 @@ const Footer = () => {
           <p className="text-md text-primary-text">
             Subscribe to our weekly newsletter to stay up-to-date with our latest events!
           </p>
+          <NewsletterSignup />
         </div>
       </div>
 
