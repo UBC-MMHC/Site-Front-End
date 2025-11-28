@@ -1,9 +1,9 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import {checkToken} from "@/components/api/auth";
 
-export default function Verify() {
+function VerifyContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -42,5 +42,20 @@ export default function Verify() {
                 </p>
             </div>
         </div>
+    );
+}
+
+export default function Verify() {
+    return (
+        <Suspense fallback={
+            <div className="flex min-h-screen flex-col items-center pt-24 bg-background text-foreground">
+                <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg">
+                    <h1 className="text-2xl font-bold text-center mb-6">Verifying...</h1>
+                    <p className="text-center text-accent">Loading...</p>
+                </div>
+            </div>
+        }>
+            <VerifyContent />
+        </Suspense>
     );
 }
