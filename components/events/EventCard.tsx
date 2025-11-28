@@ -47,23 +47,38 @@ type EventCardProps = Readonly<{
 }>;
 
 function EventCard({ ev, thumbnail }: EventCardProps) {
+  // Only format dates after mount to prevent hydration mismatch
+  // This ensures we use the client's timezone from the start
+  // Use useLayoutEffect to run synchronously before paint to minimize flash
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useLayoutEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Format dates and times using the user's browser timezone
   const startDate = new Date(ev.startUnix);
   const endDate = new Date(ev.endUnix);
 
-  const dateString = `${DAY_NAMES[startDate.getDay()]}, ${
-    MONTH_NAMES[startDate.getMonth()]
-  } ${startDate.getDate()}, ${startDate.getFullYear()}`;
+  const dateString = mounted
+    ? `${DAY_NAMES[startDate.getDay()]}, ${
+        MONTH_NAMES[startDate.getMonth()]
+      } ${startDate.getDate()}, ${startDate.getFullYear()}`
+    : "";
 
-  const startTime = startDate.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  const endTime = endDate.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  const timeString = `${startTime} – ${endTime}`;
+  const startTime = mounted
+    ? startDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : "";
+  const endTime = mounted
+    ? endDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : "";
+  const timeString = mounted ? `${startTime} – ${endTime}` : "";
 
   const hasLocation = Boolean(ev.location && ev.location.trim().length > 0);
   const showRecurrence = ev.isRecurring && ev.recurrenceString;
@@ -96,9 +111,13 @@ function EventCard({ ev, thumbnail }: EventCardProps) {
       <CardHeader className="gap-1 px-5">
         <CardTitle className="text-lg leading-tight">{ev.title}</CardTitle>
         <CardDescription className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-2">
-          <span className="font-medium text-foreground">{dateString}</span>
-          <span className="hidden text-muted-foreground sm:inline">•</span>
-          <span>{timeString}</span>
+          {mounted && (
+            <>
+              <span className="font-medium text-foreground">{dateString}</span>
+              <span className="hidden text-muted-foreground sm:inline">•</span>
+              <span>{timeString}</span>
+            </>
+          )}
         </CardDescription>
         <div className="mt-1 flex flex-wrap gap-2">
           {ev.featured ? (
