@@ -56,9 +56,7 @@ const Footer = () => {
         {/* Right column */}
         <div>
           <h3 className="text-lg font-semibold mb-2">Newsletter</h3>
-          <p className="text-md text-primary-text">
-            Subscribe to our weekly newsletter to stay up-to-date with our latest events!
-          </p>
+          <p className="text-md text-primary-text pb-2">Subscribe to our weekly newsletter</p>
           <NewsletterSignup />
         </div>
       </div>
