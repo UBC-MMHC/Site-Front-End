@@ -20,8 +20,7 @@ export default function Hero({ imageSrc, videoSrc, overlay = true, children }: H
         ) : (
           <div className="bg-gray-900 w-full h-full" />
         )}
-        {/* // TODO change overlay dim setting when adding imagae !! */}
-        {overlay && <div className="absolute inset-0 bg-black/10" />}
+        {overlay && <div className="absolute inset-0 bg-black/20" />}
       </div>
 
       {/* Content */}

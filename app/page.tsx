@@ -42,7 +42,7 @@ const HomePage = () => {
     <div className="w-full overflow-x-hidden bg-primary-bg text-primary-text text-center">
       <Hero imageSrc="/hero/MMHCHeroImage.png" children={MMHCTag()} />
       {/* Who we are */}
-      <section className="w-full py-20 bg-primary-bg">
+      <section className="w-full pt-20 bg-primary-bg">
         <div className="max-w-4xl mx-auto px-6 text-left">
           <h2 className="text-4xl font-bold text-primary-text text-center mb-5 tracking-wide">Who we are</h2>
 
@@ -56,6 +56,35 @@ const HomePage = () => {
             to eradicate the stigma around men’s mental health by supporting, educating, and providing peer support for
             students around campus.
           </p>
+        </div>
+      </section>
+
+      <section className="w-full py-20">
+        <h2 className="text-4xl font-bold text-primary-text text-center mb-5 tracking-wide">Our Pillars</h2>
+        <div className="w-4xl mx-auto flex flex-col sm:flex-row gap-8">
+          {/* Column 1 */}
+          <div className="flex-1 border-2 rounded-xl p-6">
+            <h3 className="text-2xl font-bold mb-6">Community</h3>
+            <p className="text-xl leading-relaxed text-primary-text text-left">
+              Connecting individuals interested in mens mental health and self-improvement through social events,
+              volunteering, and deep discussions.
+            </p>
+          </div>
+
+          <div className="flex-1 border-2 rounded-xl p-6">
+            <h3 className="text-2xl font-bold mb-6">Grit</h3>
+            <p className="text-xl leading-relaxed text-primary-text text-left">
+              Developing perseverance through regular physical challenges and workouts such as runs and cold plunges.{" "}
+            </p>
+          </div>
+
+          <div className="flex-1 border-2 rounded-xl p-6">
+            <h3 className="text-2xl font-bold mb-6">Growth</h3>
+            <p className="text-xl leading-relaxed text-primary-text text-left">
+              Encouraging self-development through action-based discussions, accountability systems, and grit
+              challenges.{" "}
+            </p>
+          </div>
         </div>
       </section>
 
