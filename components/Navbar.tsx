@@ -47,6 +47,7 @@ const Navbar = () => {
         <div className="space-x-3">
           <NavLink href="/" text="Home" />
           <NavLink href="/events" text="Events" />
+          <NavLink href="/about" text="About" />
           <NavLink href="/login" text="Sign In" />
         </div>
       </div>

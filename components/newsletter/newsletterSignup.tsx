@@ -35,7 +35,7 @@ const NewsletterSignup = () => {
     <div className="flex flex-col w-full max-w-[500px] overflow-hidden">
       <div className="flex flex-col sm:flex-row items-stretch w-full max-w-lg">
         <input
-          className="bg-secondary-bg text-grey-text grow px-4 py-3 border-2 rounded-md 
+          className="bg-primary-bg-dark text-grey-text grow px-4 py-3 border-2 rounded-md 
                  focus:outline-none w-full"
           type="text"
           value={emailInput}
@@ -46,7 +46,7 @@ const NewsletterSignup = () => {
         <button
           onClick={handleOnSignup}
           disabled={isWaiting || didSignup}
-          className="flex mt-2 sm:mt-0 sm:ml-2 px-6 py-3 bg-secondary-bg border-2 
+          className="flex mt-2 sm:mt-0 sm:ml-2 px-6 py-3 bg-primary-bg-dark border-2 
                  text-secondary font-semibold rounded-md shadow-md 
                  hover:bg-accent-1 transition duration-300 
                  w-full sm:w-auto min-w-[100px] whitespace-nowrap justify-center
