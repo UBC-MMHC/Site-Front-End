@@ -2,10 +2,10 @@
 import "../globals.css";
 import { useState } from "react";
 import { forgot_password } from "@/components/api/auth";
-import { useCsrfInit } from "@/hooks/csrfInit";
+// import { useCsrfInit } from "@/hooks/csrfInit";
 
 export default function ForgotPasswordPage() {
-  useCsrfInit();
+  // useCsrfInit();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
