@@ -25,7 +25,7 @@ export async function handleApiError(res: Response): Promise<never> {
             message = "Invalid request or bad input.";
             break;
         case 401:
-            message = "Unauthorized. Please log in again.";
+            message = "Incorrect email or password.";
             break;
         case 403:
             message = "Access denied.";

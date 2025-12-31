@@ -5,10 +5,11 @@
 /* Color picker debug section so vscde has the color picker */
 :root {
   --debug-primary-bg: #16345a;
+  --debug-primary-bg-dark: #132c4e;
   --debug-primary-text: #f7fafc;
 
-  --debug-secondary-bg: #132c4e;
-  --debug-secondary-text: #16345a;
+  --debug-secondary-bg: #ffffff;
+  --debug-secondary-text: #000000;
 
   --debug-grey-text: #e7e7e7;
 
@@ -57,6 +58,8 @@
 
 @theme {
   --color-primary-bg: var(--debug-primary-bg);
+  --color-primary-bg-dark: var(--debug-primary-bg-dark);
+
   --color-primary-text: var(--debug-primary-text);
 
   --color-secondary-bg: var(--debug-secondary-bg);

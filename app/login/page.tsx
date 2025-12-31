@@ -1,77 +1,103 @@
 "use client"
 import "../globals.css";
 import {useState} from "react";
-import {loginWithEmail, loginWithGoogle} from "@/components/api/auth";
+import {login, loginWithGoogle} from "@/components/api/auth";
+import {useCsrfInit} from "@/hooks/csrfInit";
+import { useRouter } from 'next/navigation';
 
-export default function Login(){
-    const [email, setEmail] = useState("");
-    const [message, setMessage] = useState("");
-    const [error, setError] = useState(false);
-    const [sent, setSent] = useState(false);
+export default function LoginPage(){
+    useCsrfInit();
 
-    const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    const router = useRouter();
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setMessage("");
-        setError(false);
-        setSent(false);
+
+        if (isLoading) return;
+
+        setIsLoading(true);
+        setError(null);
+
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
 
         try {
-            const text = await loginWithEmail(email);
-            setMessage(text ||  "Email sent successfully!");
-            setError(false);
-            setSent(true);
-        }catch(err: unknown){
-            setError(true);
+            await login(email, password);
+
+            router.push('/dashboard');
+
+        } catch (err: unknown) {
+            setIsLoading(false);
+
             if (err instanceof Error) {
-                setMessage(err.message);
+                setError(err.message);
             } else {
-                setMessage("An unexpected error occurred.");
+                setError("An unexpected error occurred.");
             }
         }
     };
-
-    const handleGoogleLogin = () => {loginWithGoogle()};
-
-    if (sent) {
-        return (
-            <div className="flex min-h-screen flex-col items-center pt-24 bg-background text-foreground">
-                <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg text-center">
-                    <h1 className="text-2xl font-bold mb-4">Check Your Email</h1>
-                    <p>We sent a login link to <strong>{email}</strong>. you can close this tab.</p>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="flex min-h-screen flex-col items-center pt-24 bg-background text-foreground">
             <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg text-center">
                 <h1 className="text-3xl font text-center mb-8">Login</h1>
 
-                {/* Email */}
-                <form onSubmit={handleEmailLogin} className="space-y-4">
+                {/* Email & Password */}
+                <form onSubmit={handleLogin} className="space-y-4">
                     <input
+                        name="email"
                         type="email"
                         placeholder="you@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
                         required
+                        disabled={isLoading}
+                        className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground focus:ring-2 focus:ring-ring outline-none"
+                    />
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="********"
+                        required
+                        disabled={isLoading}
                         className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground focus:ring-2 focus:ring-ring outline-none"
                     />
 
+                    <div className="flex justify-end mt-1">
+                        <button
+                            type="button"
+                            onClick={() => router.push('/forgot-password')}
+                            className="text-xs text-muted-foreground hover:text-primary transition hover:cursor-pointer"
+                            disabled={isLoading}
+                        >
+                            Forgot password?
+                        </button>
+                    </div>
+
                     <button
                         type="submit"
-                        className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md hover:opacity-90 transition"
+                        disabled={isLoading}
+                        className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md hover:opacity-90 transition disabled:opacity-50"
                     >
-                        Continue with Email
+                        {isLoading ? "Signing In..." : "Sign In"}
                     </button>
-                    {message && (
-                        <p className={`text-sm mt-2 ${error ? "text-red-500" : "text-green-500"}`}>
-                            {message}
+
+                    {error && (
+                        <p className="text-sm mt-2 text-red-500">
+                            {error}
                         </p>
                     )}
-                </form>
 
+                    <button
+                        type="submit"
+                        onClick={() => router.push('/register')}
+                        disabled={isLoading}
+                        className="w-full py-3 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground text-foreground font-medium rounded-md transition disabled:opacity-50"                    >
+                        {isLoading ? "Redirecting..." : "Sign Up"}
+                    </button>
+                </form>
 
                 {/* Divider */}
                 <div className="flex items-center my-8">
@@ -82,7 +108,8 @@ export default function Login(){
 
                 {/* Google */}
                 <button
-                    onClick={handleGoogleLogin}
+                    onClick={() => loginWithGoogle()}
+                    disabled={isLoading}
                     className="flex items-center justify-center w-full py-3 border border-border rounded-md hover:bg-accent transition"
                 >
                     <img

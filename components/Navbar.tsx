@@ -41,14 +41,14 @@ const Navbar = () => {
         <div className="text-xl font-bold text-white tracking-wider">
           <Link href="/" className="flex items-center space-x-2">
             <Image src="/MMHC_cropped_logo.png" alt="UBC MMHC logo" width={30} height={30} className="rounded-full" />
-            <span>UBCMMHC</span>
+            <span>UBC MMHC</span>
           </Link>
         </div>
         <div className="space-x-3">
           <NavLink href="/" text="Home" />
           <NavLink href="/events" text="Events" />
-          <NavLink href="/login" text="LogIn" />
-          {/* <NavLink href="/about" text="About" /> */}
+          <NavLink href="/about" text="About" />
+          <NavLink href="/login" text="Sign In" />
         </div>
       </div>
     </nav>

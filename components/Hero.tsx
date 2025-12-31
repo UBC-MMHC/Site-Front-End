@@ -16,12 +16,11 @@ export default function Hero({ imageSrc, videoSrc, overlay = true, children }: H
         {videoSrc ? (
           <video className="w-full h-full object-cover" src={videoSrc} autoPlay muted loop playsInline />
         ) : imageSrc ? (
-          <Image src={imageSrc} alt="Hero background" fill className="object-cover  brightness-50" priority />
+          <Image src={imageSrc} alt="Hero background" fill className="object-cover  brightness-80" priority />
         ) : (
           <div className="bg-gray-900 w-full h-full" />
         )}
-          // TODO change overlay dim setting when adding imagae !!
-        {overlay && <div className="absolute inset-0 bg-black/70" />}
+        {overlay && <div className="absolute inset-0 bg-black/20" />}
       </div>
 
       {/* Content */}
