@@ -1,14 +1,11 @@
 "use client"
 import "../globals.css";
 import {useRouter, useSearchParams} from 'next/navigation'
-import {useState} from "react";
+import {useState, Suspense} from "react";
 import {reset_password} from "@/components/api/auth";
 // import {useCsrfInit} from "@/hooks/csrfInit";
 
-export default function ResetPasswordPage(){
-
-    // useCsrfInit();
-
+function ResetPasswordForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -16,6 +13,7 @@ export default function ResetPasswordPage(){
     const [error, setError] = useState<string | null>(null);
 
     const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+        
         e.preventDefault();
         if (isLoading) return;
 
@@ -26,6 +24,7 @@ export default function ResetPasswordPage(){
 
         if (!token) {
             setError("Error: Token is missing from the URL.");
+            setIsLoading(false);
             return;
         }
 
@@ -34,14 +33,15 @@ export default function ResetPasswordPage(){
 
         try {
             await reset_password(token, password);
-
             router.push("/login");
-        }catch(err: unknown){
+        } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
             } else {
                 setError("An unexpected error occurred.");
             }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -78,6 +78,16 @@ export default function ResetPasswordPage(){
 
                 </form>
             </div>
+        </div>
+    );
+}
+
+export default function ResetPasswordPage() {
+    return (
+        <div className="flex min-h-screen flex-col items-center pt-24 bg-background text-foreground">
+            <Suspense fallback={<div className="text-center">Loading reset form...</div>}>
+                <ResetPasswordForm />
+            </Suspense>
         </div>
     );
 }
