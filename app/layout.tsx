@@ -3,11 +3,12 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Montserrat, Lato } from 'next/font/google';
+import ClientProviders from "@/components/ClientProviders";
 
 const montserrat = Montserrat({
-    subsets: ['latin'],
-    weight: ['400', '700'],
-    variable: '--font-montserrat',
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-montserrat',
 });
 
 // const lato = Lato({
@@ -29,10 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${montserrat.variable}`}>
       <body>
-        <Navbar />
-        <div className="min-h-screen">{children}</div>
-        <Footer />
+        <ClientProviders>
+          <Navbar />
+          <div className="min-h-screen page-transition">{children}</div>
+          <Footer />
+        </ClientProviders>
       </body>
     </html>
   );
 }
+

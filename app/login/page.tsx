@@ -1,14 +1,16 @@
 "use client"
 import "../globals.css";
-import {useState} from "react";
-import {login, loginWithGoogle} from "@/components/api/auth";
-import {useCsrfInit} from "@/hooks/csrfInit";
+import { useState } from "react";
+import { login, loginWithGoogle } from "@/components/api/auth";
+import { useCsrfInit } from "@/hooks/csrfInit";
 import { useRouter } from 'next/navigation';
+import { useAuth } from "@/contexts/AuthContext";
 
-export default function LoginPage(){
+export default function LoginPage() {
     useCsrfInit();
 
     const router = useRouter();
+    const { setIsLoggedIn } = useAuth();
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -28,6 +30,7 @@ export default function LoginPage(){
         try {
             await login(email, password);
 
+            setIsLoggedIn(true);
             router.push('/dashboard');
 
         } catch (err: unknown) {
@@ -42,7 +45,7 @@ export default function LoginPage(){
     };
 
     return (
-        <div className="flex min-h-screen flex-col items-center pt-24 bg-background text-foreground">
+        <div className="flex min-h-screen flex-col items-center pt-24 bg-primary-bg text-primary-text">
             <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg text-center">
                 <h1 className="text-3xl font text-center mb-8">Login</h1>
 
@@ -118,8 +121,8 @@ export default function LoginPage(){
                         className="w-6 h-6 mr-3"
                     />
                     <span className="text-foreground font-medium">
-            Continue with Google
-          </span>
+                        Continue with Google
+                    </span>
                 </button>
             </div>
         </div>

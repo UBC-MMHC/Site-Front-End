@@ -1,8 +1,8 @@
 "use client"
 import "../globals.css";
-import {useRouter, useSearchParams} from 'next/navigation'
-import {useState, Suspense} from "react";
-import {reset_password} from "@/components/api/auth";
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, Suspense } from "react";
+import { reset_password } from "@/components/api/auth";
 // import {useCsrfInit} from "@/hooks/csrfInit";
 
 function ResetPasswordForm() {
@@ -13,7 +13,7 @@ function ResetPasswordForm() {
     const [error, setError] = useState<string | null>(null);
 
     const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
-        
+
         e.preventDefault();
         if (isLoading) return;
 
@@ -47,7 +47,7 @@ function ResetPasswordForm() {
 
 
     return (
-        <div className="flex min-h-screen flex-col items-center pt-24 bg-background text-foreground">
+        <div className="flex min-h-screen flex-col items-center pt-24 bg-primary-bg text-primary-text">
             <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg text-center">
                 <h1 className="text-3xl font text-center mb-8">Reset Password</h1>
 
@@ -84,7 +84,7 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
     return (
-        <div className="flex min-h-screen flex-col items-center pt-24 bg-background text-foreground">
+        <div className="flex min-h-screen flex-col items-center pt-24 bg-primary-bg text-primary-text">
             <Suspense fallback={<div className="text-center">Loading reset form...</div>}>
                 <ResetPasswordForm />
             </Suspense>
