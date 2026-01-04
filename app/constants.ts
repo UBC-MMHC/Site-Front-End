@@ -5,10 +5,12 @@ export const MEMBERSHIP_SIGNUP_URL = "https://forms.gle/Nq1NNWKjXafmFCrF7";
 export const EXEC_SIGNUP_URL = "https://forms.gle/Ys43WB2vfQc1UP6r7";
 export const LINKEDIN_URL = "https://www.linkedin.com/company/ubcmmhc/posts";
 
+const backendUrl = process.env.NEXT_PUBLIC_BASE_URL_API || "http://localhost:8080";
+
 // API routes go through Next.js proxy (defined in next.config.ts)
 export const API_ROUTES_URL = {
   login_email: "/api/auth/login-user",
-  login_google: "/oauth2/authorization/google",
+  login_google: `${backendUrl}/oauth2/authorization/google`,
   register_email: "/api/auth/register-user",
   forgot_password: "/api/auth/forgot-password",
   reset_password: "/api/auth/reset-password",
