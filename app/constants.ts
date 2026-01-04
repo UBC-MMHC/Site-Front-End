@@ -15,6 +15,7 @@ export const API_ROUTES_URL = {
   forgot_password: "/api/auth/forgot-password",
   reset_password: "/api/auth/reset-password",
   logout: "/api/auth/logout",
+  set_token: "/api/auth/set-token",
   verify_session: "/api/auth/verify-session",
 
   csrf_token: "/api/csrf-token",

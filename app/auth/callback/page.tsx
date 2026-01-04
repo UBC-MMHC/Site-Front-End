@@ -1,19 +1,44 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import { API_ROUTES_URL } from "@/app/constants";
 
 export default function AuthCallbackPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const { setIsLoggedIn } = useAuth();
 
     useEffect(() => {
-        setIsLoggedIn(true);
-        localStorage.setItem("isLoggedIn", "true");
+        const token = searchParams.get("token");
 
-        router.push("/dashboard");
-    }, [router, setIsLoggedIn]);
+        async function setTokenCookie() {
+            if (token) {
+                try {
+                    const res = await fetch(API_ROUTES_URL.set_token, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ token }),
+                        credentials: "include",
+                    });
+
+                    if (res.ok) {
+                        setIsLoggedIn(true);
+                        localStorage.setItem("isLoggedIn", "true");
+                    }
+                } catch (error) {
+                    console.error("Failed to set token:", error);
+                }
+            }
+
+            router.push("/dashboard");
+        }
+
+        setTokenCookie();
+    }, [router, searchParams, setIsLoggedIn]);
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-primary-bg">
@@ -24,3 +49,4 @@ export default function AuthCallbackPage() {
         </div>
     );
 }
+
