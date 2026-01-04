@@ -5,6 +5,7 @@ import EventList from "@/components/events/EventList";
 import LinkButton from "@/components/ui/LinkButton";
 import NewsletterSignup from "@/components/newsletter/newsletterSignup";
 import SocialButton from "@/components/ui/SocialButton";
+import AuthRedirect from "@/components/AuthRedirect";
 
 const MMHCTag = () => {
   return (
@@ -34,75 +35,77 @@ const MMHCTag = () => {
 
 const HomePage = () => {
   return (
-    <div className="w-full overflow-x-hidden bg-primary-bg text-primary-text text-center">
-      <Hero imageSrc="/hero/MMHCHeroImage.png" children={MMHCTag()} />
+    <AuthRedirect>
+      <div className="w-full overflow-x-hidden bg-primary-bg text-primary-text text-center">
+        <Hero imageSrc="/hero/MMHCHeroImage.png" children={MMHCTag()} />
 
-      {/* Who we are */}
-      <section className="w-full pt-20 bg-primary-bg">
-        <div className="max-w-4xl mx-auto px-6 text-left">
-          <h2 className="text-4xl font-bold text-primary-text text-center mb-5 tracking-wide">Who we are</h2>
-          <p className="text-xl leading-relaxed text-primary-text">
-            We are a community of men dedicated to peer support, open discussion, and self-improvement. Our mission is
-            to eradicate the stigma around men’s mental health by supporting, educating, and providing peer support for
-            students around campus.
-          </p>
-        </div>
-      </section>
-
-      {/* Our Pillars */}
-      <section className="w-full py-20">
-        <h2 className="text-4xl font-bold text-primary-text text-center mb-5 tracking-wide">Our Pillars</h2>
-        <div className="w-4xl mx-auto flex flex-col sm:flex-row gap-8">
-          <div className="flex-1 border-2 rounded-xl p-6">
-            <h3 className="text-2xl font-bold mb-6">Community</h3>
-            <p className="text-xl leading-relaxed text-primary-text text-left">
-              Connecting individuals interested in mens mental health and self-improvement through social events,
-              volunteering, and deep discussions.
+        {/* Who we are */}
+        <section className="w-full pt-20 bg-primary-bg">
+          <div className="max-w-4xl mx-auto px-6 text-left">
+            <h2 className="text-4xl font-bold text-primary-text text-center mb-5 tracking-wide">Who we are</h2>
+            <p className="text-xl leading-relaxed text-primary-text">
+              We are a community of men dedicated to peer support, open discussion, and self-improvement. Our mission is
+              to eradicate the stigma around men’s mental health by supporting, educating, and providing peer support for
+              students around campus.
             </p>
           </div>
+        </section>
 
-          <div className="flex-1 border-2 rounded-xl p-6">
-            <h3 className="text-2xl font-bold mb-6">Grit</h3>
-            <p className="text-xl leading-relaxed text-primary-text text-left">
-              Developing perseverance through regular physical challenges and workouts such as runs and cold plunges.{" "}
-            </p>
-          </div>
-
-          <div className="flex-1 border-2 rounded-xl p-6">
-            <h3 className="text-2xl font-bold mb-6">Growth</h3>
-            <p className="text-xl leading-relaxed text-primary-text text-left">
-              Encouraging self-development through action-based discussions, accountability systems, and grit
-              challenges.{" "}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/*Upcoming Events*/}
-      <section className="w-full py-20">
-        <h2 className="text-4xl font-bold text-primary-text text-center mb-5 tracking-wide">Upcoming Events</h2>
-        <EventList />
-      </section>
-
-      {/*Newsletter*/}
-      <section className="w-full py-20 px-10">
-        <div className="flex flex-col sm:flex-row items-center mx-auto max-w-4xl gap-8">
-          <div className="flex flex-col flex-1 items-center sm:items-start text-center sm:text-left">
-            <h2 className="text-4xl font-bold text-primary-text mb-5 tracking-wide">Stay Updated</h2>
-            <p className="text-xl leading-relaxed text-primary-text max-w-sm">
-              Subscribe to our weekly newsletter to stay up to date with new events news about the club
-            </p>
-          </div>
-
-          <div className="flex flex-col flex-1 items-center">
-            <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden mb-4">
-              <Image src="/MMHC_cropped_logo.png" alt="UBC MMHC logo" fill className="object-cover" />
+        {/* Our Pillars */}
+        <section className="w-full py-20">
+          <h2 className="text-4xl font-bold text-primary-text text-center mb-5 tracking-wide">Our Pillars</h2>
+          <div className="w-4xl mx-auto flex flex-col sm:flex-row gap-8">
+            <div className="flex-1 border-2 rounded-xl p-6">
+              <h3 className="text-2xl font-bold mb-6">Community</h3>
+              <p className="text-xl leading-relaxed text-primary-text text-left">
+                Connecting individuals interested in mens mental health and self-improvement through social events,
+                volunteering, and deep discussions.
+              </p>
             </div>
-            <NewsletterSignup />
+
+            <div className="flex-1 border-2 rounded-xl p-6">
+              <h3 className="text-2xl font-bold mb-6">Grit</h3>
+              <p className="text-xl leading-relaxed text-primary-text text-left">
+                Developing perseverance through regular physical challenges and workouts such as runs and cold plunges.{" "}
+              </p>
+            </div>
+
+            <div className="flex-1 border-2 rounded-xl p-6">
+              <h3 className="text-2xl font-bold mb-6">Growth</h3>
+              <p className="text-xl leading-relaxed text-primary-text text-left">
+                Encouraging self-development through action-based discussions, accountability systems, and grit
+                challenges.{" "}
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+
+        {/*Upcoming Events*/}
+        <section className="w-full py-20">
+          <h2 className="text-4xl font-bold text-primary-text text-center mb-5 tracking-wide">Upcoming Events</h2>
+          <EventList />
+        </section>
+
+        {/*Newsletter*/}
+        <section className="w-full py-20 px-10">
+          <div className="flex flex-col sm:flex-row items-center mx-auto max-w-4xl gap-8">
+            <div className="flex flex-col flex-1 items-center sm:items-start text-center sm:text-left">
+              <h2 className="text-4xl font-bold text-primary-text mb-5 tracking-wide">Stay Updated</h2>
+              <p className="text-xl leading-relaxed text-primary-text max-w-sm">
+                Subscribe to our weekly newsletter to stay up to date with new events news about the club
+              </p>
+            </div>
+
+            <div className="flex flex-col flex-1 items-center">
+              <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden mb-4">
+                <Image src="/MMHC_cropped_logo.png" alt="UBC MMHC logo" fill className="object-cover" />
+              </div>
+              <NewsletterSignup />
+            </div>
+          </div>
+        </section>
+      </div>
+    </AuthRedirect >
   );
 };
 
