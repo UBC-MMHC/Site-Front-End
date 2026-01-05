@@ -35,7 +35,10 @@ const MMHCTag = () => {
 const HomePage = () => {
   return (
     <div className="w-full overflow-x-hidden bg-primary-bg text-primary-text text-center">
-      <Hero imageSrc="/hero/MMHCHeroImage.png" children={MMHCTag()} />
+      <Hero
+        imageSrcs={["/hero/DiscussionHero.JPG", "/hero/HikingGroup.png", "/hero/Beachheader.jpg"]}
+        children={MMHCTag()}
+      />
 
       {/* Who we are */}
       <section className="w-full pt-20 bg-primary-bg">

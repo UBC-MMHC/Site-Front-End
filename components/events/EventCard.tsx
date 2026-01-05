@@ -1,32 +1,12 @@
 import * as React from "react";
 import { CalendarEventView } from "@/lib/calendarEventView";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Repeat, Star } from "lucide-react";
 
 // TODO: Refactor thumbnail to be property of CalendarEventView
 
-const MONTH_NAMES = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 type EventCardProps = Readonly<{
   ev: CalendarEventView;
@@ -35,9 +15,7 @@ type EventCardProps = Readonly<{
 }>;
 
 function EventCard({ ev, thumbnail }: EventCardProps) {
-  const dateString = `${ev.weekday}, ${MONTH_NAMES[ev.month - 1]} ${ev.day}, ${
-    ev.year
-  }`;
+  const dateString = `${ev.weekday}, ${MONTH_NAMES[ev.month - 1]} ${ev.day}, ${ev.year}`;
   const timeString = `${ev.startTime} – ${ev.endTime}`;
 
   const hasLocation = Boolean(ev.location && ev.location.trim().length > 0);
@@ -45,9 +23,7 @@ function EventCard({ ev, thumbnail }: EventCardProps) {
 
   const isStringThumb = typeof thumbnail === "string" && thumbnail.length > 0;
   const hasCustomNode = Boolean(thumbnail) && typeof thumbnail !== "string";
-  const mediaUrl = isStringThumb
-    ? (thumbnail as string)
-    : "/building_dither.svg";
+  const mediaUrl = isStringThumb ? (thumbnail as string) : "/events/building_dither.svg";
 
   return (
     <Card className="overflow-hidden gap-4 py-0">
@@ -58,12 +34,7 @@ function EventCard({ ev, thumbnail }: EventCardProps) {
               <div className="max-h-full max-w-full">{thumbnail}</div>
             </div>
           ) : (
-            <img
-              alt={ev.title}
-              src={mediaUrl}
-              className="absolute inset-0 h-full w-full object-cover"
-              loading="lazy"
-            />
+            <img alt={ev.title} src={mediaUrl} className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
           )}
         </div>
       </div>
@@ -98,14 +69,10 @@ function EventCard({ ev, thumbnail }: EventCardProps) {
             <span className="leading-5">{ev.location}</span>
           </div>
         ) : null}
-        {ev.description ? (
-          <p className="text-sm leading-6">{ev.description}</p>
-        ) : null}
+        {ev.description ? <p className="text-sm leading-6">{ev.description}</p> : null}
       </CardContent>
 
-      <CardFooter className="justify-end px-5">
-        {/* Reserved for actions/links if needed later */}
-      </CardFooter>
+      <CardFooter className="justify-end px-5">{/* Reserved for actions/links if needed later */}</CardFooter>
     </Card>
   );
 }
