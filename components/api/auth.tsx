@@ -12,7 +12,6 @@ function getCsrfToken() {
  * headers, credentials, and error handling automatically.
  */
 async function authPostRequest(url: string, payload: Record<string, any>) {
-
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -47,4 +46,17 @@ export async function reset_password(token: string, newPassword: string) {
 
 export function loginWithGoogle() {
   window.location.href = API_ROUTES_URL.login_google;
+}
+
+export async function logout() {
+  const res = await fetch(API_ROUTES_URL.logout, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    await handleApiError(res);
+  }
+
+  return res.text();
 }

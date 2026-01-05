@@ -2,10 +2,10 @@
 import "../globals.css";
 import { useState } from "react";
 import { forgot_password } from "@/components/api/auth";
-// import { useCsrfInit } from "@/hooks/csrfInit";
+import { useCsrfInit } from "@/hooks/csrfInit";
 
 export default function ForgotPasswordPage() {
-  // useCsrfInit();
+  useCsrfInit();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,7 +35,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center pt-24 bg-background text-foreground">
+    <div className="flex min-h-screen flex-col items-center pt-24 bg-primary-bg text-primary-text">
       <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg text-center">
         <h1 className="text-3xl font text-center mb-8">Forgot Password</h1>
 

@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+
 interface NavLinkProps {
   href: string;
   text: string;
@@ -13,14 +14,19 @@ const NavLink = ({ href, text }: NavLinkProps) => {
 
   useEffect(() => {
     setIsActive(currentRoute === href);
-  }, [currentRoute]);
+  }, [currentRoute, href]);
 
   return (
     <a
       href={href}
-      className={`px-4 py-2 rounded-full transition-colors text-lg font-medium ${
-        isActive ? "text-primary-text" : "text-grey-text hover:text-accent-1"
-      }`}>
+      className={`
+        px-4 py-2 text-sm transition-colors
+        ${isActive
+          ? "text-primary-text"
+          : "text-grey-text/70 hover:text-primary-text"
+        }
+      `}
+    >
       {text}
     </a>
   );

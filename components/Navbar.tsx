@@ -4,51 +4,76 @@ import { useState, useEffect } from "react";
 import NavLink from "./NavLink";
 import Link from "next/link";
 import Image from "next/image";
+import { useAuth } from "@/contexts/AuthContext";
+import { logout as logoutApi } from "@/components/api/auth";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const [visible, setVisible] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
+  const { isLoggedIn, isLoading, logout } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
-    let lastScrollY = window.scrollY;
-
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY < lastScrollY || currentScrollY < 10) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
-      lastScrollY = currentScrollY;
+      setScrolled(window.scrollY > 10);
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await logoutApi();
+      logout();
+      router.push("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      logout();
+      router.push("/");
+    }
+  };
 
   return (
     <nav
       className={`
-                fixed top-0 w-full z-50 shadow-lg 
-                bg-primary-bg backdrop-blur-sm 
-                transition-all duration-400 ease-in-out
-                ${visible ? "translate-y-0" : "-translate-y-full"}
-            `}>
-      <div className="px-6 sm:px-8 lg:px-10 py-3 flex justify-between items-center">
-        <div className="text-xl font-bold text-white tracking-wider">
-          <Link href="/" className="flex items-center space-x-2">
-            <Image src="/MMHC_cropped_logo.png" alt="UBC MMHC logo" width={30} height={30} className="rounded-full" />
-            <span>UBC MMHC</span>
-          </Link>
-        </div>
-        <div className="space-x-3">
-          <NavLink href="/" text="Home" />
-          <NavLink href="/events" text="Events" />
-          <NavLink href="/about" text="About" />
-          <NavLink href="/login" text="Sign In" />
+        fixed top-0 w-full z-50
+        transition-all duration-300 ease-in-out
+        ${scrolled ? "bg-primary-bg/80 backdrop-blur-xl border-b border-white/5" : "bg-transparent"}
+      `}>
+      <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+        <Link href="/" className="flex items-center space-x-3 group">
+          <Image
+            src="/MMHC_cropped_logo.png"
+            alt="UBC MMHC"
+            width={32}
+            height={32}
+            className="rounded-full opacity-90 group-hover:opacity-100 transition-opacity"
+          />
+          <span className="text-primary-text font-medium tracking-tight text-lg opacity-90 group-hover:opacity-100 transition-opacity">
+            UBC MMHC
+          </span>
+        </Link>
+
+        <div className="flex items-center space-x-1 min-h-[40px]">
+          {isLoading ? null : isLoggedIn ? (
+            <>
+              <NavLink href="/dashboard" text="Dashboard" />
+              <NavLink href="/profile" text="Profile" />
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 text-sm text-grey-text/70 hover:text-primary-text transition-colors">
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink href="/" text="Home" />
+              <NavLink href="/events" text="Events" />
+              <NavLink href="/about" text="About" />
+              <NavLink href="/login" text="Sign In" />
+            </>
+          )}
         </div>
       </div>
     </nav>
