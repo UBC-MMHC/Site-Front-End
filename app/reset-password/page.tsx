@@ -3,11 +3,11 @@ import "../globals.css";
 import {useRouter, useSearchParams} from 'next/navigation'
 import {useState} from "react";
 import {reset_password} from "@/components/api/auth";
-import {useCsrfInit} from "@/hooks/csrfInit";
+// import {useCsrfInit} from "@/hooks/csrfInit";
 
 export default function ResetPasswordPage(){
 
-    useCsrfInit();
+    // useCsrfInit();
 
     const router = useRouter();
     const searchParams = useSearchParams();

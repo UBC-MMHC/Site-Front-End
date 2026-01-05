@@ -20,7 +20,10 @@ function getThumbnailForEvent(ev: CalendarEventView): string | undefined {
 function groupEventsByYear(events: CalendarEventView[]): Record<string, CalendarEventView[]> {
   const map: Record<string, CalendarEventView[]> = {};
   for (const ev of events) {
-    const yearKey = String(ev.year);
+    // Calculate year from unix timestamp using UTC to ensure consistent grouping
+    // (The actual display will use user's timezone in EventCard)
+    const year = new Date(ev.startUnix).getUTCFullYear();
+    const yearKey = String(year);
     if (!map[yearKey]) map[yearKey] = [];
     map[yearKey].push(ev);
   }

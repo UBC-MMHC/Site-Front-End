@@ -12,13 +12,11 @@ function getCsrfToken() {
  * headers, credentials, and error handling automatically.
  */
 async function authPostRequest(url: string, payload: Record<string, any>) {
-  const csrfToken = getCsrfToken();
 
   const res = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-XSRF-TOKEN": csrfToken,
     },
     body: JSON.stringify(payload),
     credentials: "include",

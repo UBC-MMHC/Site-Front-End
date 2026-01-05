@@ -2,13 +2,13 @@
 import "../globals.css";
 import {useState} from "react";
 import {register} from "@/components/api/auth";
-import {useCsrfInit} from "@/hooks/csrfInit";
+// import {useCsrfInit} from "@/hooks/csrfInit";
 import { useRouter } from 'next/navigation';
 import {validatePassword} from "@/utils/validatePassword";
 
 export default function RegisterPage() {
 
-    useCsrfInit();
+    // useCsrfInit();
     const router = useRouter();
 
     const [isLoading, setIsLoading] = useState(false);
