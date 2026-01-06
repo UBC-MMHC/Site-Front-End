@@ -52,7 +52,8 @@ export default function ForgotPasswordPage() {
 
           <button
             type="submit"
-            className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md hover:opacity-90 transition">
+            className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md hover:opacity-90 transition"
+          >
             {isLoading ? "Email Sent" : "Forgot Password"}
           </button>
           {message && <p className={`text-sm mt-2 ${error ? "text-red-500" : "text-green-500"}`}>{message}</p>}
