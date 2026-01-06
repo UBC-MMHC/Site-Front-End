@@ -5,7 +5,7 @@ const About = () => {
   return (
     <div className="w-full overflow-x-hidden bg-white text-s-text text-center">
       <Hero
-        imageSrc="/HikingGroup.png"
+        imageSrcs={["/hero/HikingGroup.png", "/events/BeachRunGroup.jpeg", "/hero/DiscussionTableHero.JPG"]}
         children={<p className="text-lg md:text-4xl font-bold text-secondary text-shadow-4xl text-center">About Us</p>}
       />
 
@@ -14,7 +14,7 @@ const About = () => {
         <div className="max-w-4xl mx-auto px-6 text-left">
           <div className="w-full flex justify-center mb-8">
             <img
-              src="/DanielWhyWeJournal.jpg"
+              src="/about/DanielWhyWeJournal.jpg"
               alt="Our mission"
               className="
                 w-9/10

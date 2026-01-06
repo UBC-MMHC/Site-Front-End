@@ -12,7 +12,6 @@ function getCsrfToken() {
  * headers, credentials, and error handling automatically.
  */
 async function authPostRequest(url: string, payload: Record<string, any>) {
-
   const res = await fetch(url, {
     method: "POST",
     headers: {

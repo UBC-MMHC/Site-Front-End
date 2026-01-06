@@ -39,12 +39,8 @@ const Navbar = () => {
       className={`
         fixed top-0 w-full z-50
         transition-all duration-300 ease-in-out
-        ${scrolled
-          ? "bg-primary-bg/80 backdrop-blur-xl border-b border-white/5"
-          : "bg-transparent"
-        }
-      `}
-    >
+        ${scrolled ? "bg-primary-bg/80 backdrop-blur-xl border-b border-white/5" : "bg-transparent"}
+      `}>
       <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center space-x-3 group">
           <Image
@@ -66,8 +62,7 @@ const Navbar = () => {
               <NavLink href="/profile" text="Profile" />
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm text-grey-text/70 hover:text-primary-text transition-colors"
-              >
+                className="px-4 py-2 text-sm text-grey-text/70 hover:text-primary-text transition-colors">
                 Sign Out
               </button>
             </>

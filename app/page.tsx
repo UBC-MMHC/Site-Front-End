@@ -37,7 +37,10 @@ const HomePage = () => {
   return (
     <AuthRedirect>
       <div className="w-full overflow-x-hidden bg-primary-bg text-primary-text text-center">
-        <Hero imageSrc="/hero/MMHCHeroImage.png" children={MMHCTag()} />
+        <Hero
+          imageSrcs={["/hero/DiscussionHero.JPG", "/hero/HikingGroup.png", "/hero/Beachheader.jpg"]}
+          children={MMHCTag()}
+        />
 
         {/* Who we are */}
         <section className="w-full pt-20 bg-primary-bg">
@@ -45,8 +48,8 @@ const HomePage = () => {
             <h2 className="text-4xl font-bold text-primary-text text-center mb-5 tracking-wide">Who we are</h2>
             <p className="text-xl leading-relaxed text-primary-text">
               We are a community of men dedicated to peer support, open discussion, and self-improvement. Our mission is
-              to eradicate the stigma around men’s mental health by supporting, educating, and providing peer support for
-              students around campus.
+              to eradicate the stigma around men’s mental health by supporting, educating, and providing peer support
+              for students around campus.
             </p>
           </div>
         </section>
@@ -105,7 +108,7 @@ const HomePage = () => {
           </div>
         </section>
       </div>
-    </AuthRedirect >
+    </AuthRedirect>
   );
 };
 

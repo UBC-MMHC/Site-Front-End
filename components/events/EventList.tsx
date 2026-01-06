@@ -1,28 +1,23 @@
 import { getFutureCalendarEvents } from "@/lib/calendarEvent";
-import {
-  CalendarEventView,
-  buildCalendarEventViews,
-} from "@/lib/calendarEventView";
+import { CalendarEventView, buildCalendarEventViews } from "@/lib/calendarEventView";
 import { CalendarDays } from "lucide-react";
 import EventCard from "./EventCard";
 
 function getThumbnailForEvent(ev: CalendarEventView): string | undefined {
   const title = ev.title?.toLowerCase() ?? "";
   if (title.includes("discussion")) {
-    return "/plato_dither.svg";
+    return "/events/plato_dither.svg";
   } else if (title.includes("study session")) {
-    return "/tree_dither.svg";
+    return "/events/tree_dither.svg";
   } else if (title.includes("test")) {
-    return "/test_event.jpg";
+    return "/events/test_event.jpg";
   } else if (title.includes("mmhc run")) {
-    return "/run_dither.svg";
+    return "/events/run_dither.svg";
   }
   return undefined;
 }
 
-function groupEventsByYear(
-  events: CalendarEventView[]
-): Record<string, CalendarEventView[]> {
+function groupEventsByYear(events: CalendarEventView[]): Record<string, CalendarEventView[]> {
   const map: Record<string, CalendarEventView[]> = {};
   for (const ev of events) {
     // Calculate year from unix timestamp using UTC to ensure consistent grouping
@@ -39,9 +34,7 @@ function groupEventsByYear(
   return map;
 }
 
-export function EventByYear({
-  events,
-}: Readonly<{ events: CalendarEventView[] }>) {
+export function EventByYear({ events }: Readonly<{ events: CalendarEventView[] }>) {
   const byYear = groupEventsByYear(events);
   const years = Object.keys(byYear)
     .map(Number)
@@ -70,11 +63,7 @@ export function EventByYear({
           </header>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
             {byYear[String(year)].map((ev) => (
-              <EventCard
-                key={ev.id}
-                ev={ev}
-                thumbnail={getThumbnailForEvent(ev)}
-              />
+              <EventCard key={ev.id} ev={ev} thumbnail={getThumbnailForEvent(ev)} />
             ))}
           </div>
         </section>
@@ -90,9 +79,7 @@ export default async function EventList() {
   if (!events.length) {
     return (
       <div className="text-gray-500 text-sm border border-dashed border-gray-300 rounded-xl p-8 text-center">
-        <p className="font-medium text-gray-700 mb-1">
-          No upcoming events found.
-        </p>
+        <p className="font-medium text-gray-700 mb-1">No upcoming events found.</p>
         <p className="text-gray-500">Check back soon.</p>
       </div>
     );
