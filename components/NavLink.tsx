@@ -20,11 +20,10 @@ const NavLink = ({ href, text }: NavLinkProps) => {
     <a
       href={href}
       className={`
+        md:text-lg
+        text-xl
         px-4 py-2 text-sm transition-colors
-        ${isActive
-          ? "text-primary-text"
-          : "text-grey-text/70 hover:text-primary-text"
-        }
+        ${isActive ? "text-primary-text" : "text-grey-text/70 hover:text-primary-text"}
       `}
     >
       {text}
