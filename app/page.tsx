@@ -55,10 +55,14 @@ const HomePage = () => {
         </section>
 
         {/* Our Pillars */}
-        <section className="w-full py-20">
-          <h2 className="text-4xl font-bold text-primary-text text-center mb-5 tracking-wide">Our Pillars</h2>
-          <div className="w-4xl mx-auto flex flex-col sm:flex-row gap-8">
-            <div className="flex-1 border-2 rounded-xl p-6">
+        <section className="w-full py-20 px-6">
+          <h2 className="text-4xl font-bold text-primary-text text-center mb-12 tracking-wide">Our Pillars</h2>
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 items-center md:items-stretch justify-center">
+            {/* Community Card */}
+            <div
+              className="flex-1 w-full max-w-sm border border-white/10 rounded-xl p-8 
+                bg-linear-to-t from-white/5 to-white/2"
+            >
               <h3 className="text-2xl font-bold mb-6">Community</h3>
               <p className="text-xl leading-relaxed text-primary-text text-left">
                 Connecting individuals interested in mens mental health and self-improvement through social events,
@@ -66,18 +70,26 @@ const HomePage = () => {
               </p>
             </div>
 
-            <div className="flex-1 border-2 rounded-xl p-6">
+            {/* Grit Card */}
+            <div
+              className="flex-1 w-full max-w-sm border border-white/10 rounded-xl p-8 
+                bg-linear-to-t from-white/5 to-white/2"
+            >
               <h3 className="text-2xl font-bold mb-6">Grit</h3>
               <p className="text-xl leading-relaxed text-primary-text text-left">
-                Developing perseverance through regular physical challenges and workouts such as runs and cold plunges.{" "}
+                Developing perseverance through regular physical challenges and workouts such as runs and cold plunges.
               </p>
             </div>
 
-            <div className="flex-1 border-2 rounded-xl p-6">
+            {/* Growth Card */}
+            <div
+              className="flex-1 w-full max-w-sm border border-white/10 rounded-xl p-8 
+                bg-linear-to-t from-white/5 to-white/2"
+            >
               <h3 className="text-2xl font-bold mb-6">Growth</h3>
               <p className="text-xl leading-relaxed text-primary-text text-left">
                 Encouraging self-development through action-based discussions, accountability systems, and grit
-                challenges.{" "}
+                challenges.
               </p>
             </div>
           </div>

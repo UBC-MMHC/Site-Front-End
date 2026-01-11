@@ -6,7 +6,7 @@ const About = () => {
     <div className="w-full overflow-x-hidden bg-white text-s-text text-center">
       <Hero
         imageSrcs={["/hero/HikingGroup.png", "/events/BeachRunGroup.jpeg", "/hero/DiscussionTableHero.JPG"]}
-        children={<p className="text-lg md:text-4xl font-bold text-secondary text-shadow-4xl text-center">About Us</p>}
+        children={<p className="text-4xl font-bold text-secondary text-shadow-4xl text-center">About Us</p>}
       />
 
       {/* Mission */}
