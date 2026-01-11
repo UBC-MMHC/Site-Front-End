@@ -78,7 +78,7 @@ const Navbar = () => {
         <div
           ref={mobileMenuRef}
           className={`
-            fixed inset-x-0 top-0 flex flex-col items-end bg-primary-bg/80 p-8 pt-20 transition-transform duration-250
+            fixed inset-x-0 top-0 flex flex-col items-end bg-primary-bg/80 p-8 pt-20 transition-transform duration-250 px-3
             ${isOpen ? "translate-y-0" : "-translate-y-full"}
             md:static md:flex-row md:translate-y-0 md:bg-transparent md:p-0 md:space-x-1
           `}
