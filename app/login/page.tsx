@@ -44,7 +44,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center pt-24 bg-primary-bg text-primary-text">
+    <div className="flex min-h-screen flex-col items-center pt-24 bg-primary-bg text-primary-text px-4">
       <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg text-center">
         <h1 className="text-3xl font text-center mb-8">Login</h1>
 
@@ -72,7 +72,8 @@ export default function LoginPage() {
               type="button"
               onClick={() => router.push("/forgot-password")}
               className="text-xs text-muted-foreground hover:text-primary transition hover:cursor-pointer"
-              disabled={isLoading}>
+              disabled={isLoading}
+            >
               Forgot password?
             </button>
           </div>
@@ -80,7 +81,8 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md hover:opacity-90 transition disabled:opacity-50">
+            className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md hover:opacity-90 transition disabled:opacity-50"
+          >
             {isLoading ? "Signing In..." : "Sign In"}
           </button>
 
@@ -90,7 +92,8 @@ export default function LoginPage() {
             type="submit"
             onClick={() => router.push("/register")}
             disabled={isLoading}
-            className="w-full py-3 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground text-foreground font-medium rounded-md transition disabled:opacity-50">
+            className="w-full py-3 border border-input bg-transparent hover:bg-accent hover:text-accent-foreground text-foreground font-medium rounded-md transition disabled:opacity-50"
+          >
             {isLoading ? "Redirecting..." : "Sign Up"}
           </button>
         </form>
@@ -106,7 +109,8 @@ export default function LoginPage() {
         <button
           onClick={() => loginWithGoogle()}
           disabled={isLoading}
-          className="flex items-center justify-center w-full py-3 border border-border rounded-md hover:bg-accent transition">
+          className="flex items-center justify-center w-full py-3 border border-border rounded-md hover:bg-accent transition"
+        >
           <img
             src="https://developers.google.com/identity/images/g-logo.png"
             alt="Google logo"
