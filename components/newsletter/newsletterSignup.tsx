@@ -27,7 +27,7 @@ const NewsletterSignup = () => {
       setErrorMessage("Error subscribing email to newsletter, please try again later.");
     }
 
-    setSuccessMessage("Successfully subscribed to the newsletter.");
+    setSuccessMessage("Successfully subscribed to the newsletter!");
     setDidSignup(true);
   };
 
@@ -50,7 +50,8 @@ const NewsletterSignup = () => {
                  text-secondary font-semibold rounded-md shadow-md 
                  hover:bg-accent-1 transition duration-300 
                  w-full sm:w-auto min-w-[100px] whitespace-nowrap justify-center
-                 items-center hover:cursor-pointer">
+                 items-center hover:cursor-pointer"
+        >
           Subscribe
         </button>
       </div>
