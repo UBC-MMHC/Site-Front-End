@@ -26,7 +26,8 @@ const LinkButton = ({ link, text, size = "md" }: LinkButtonProps) => {
           rounded-md shadow-md
           hover:bg-accent-1
           cursor-pointer transition duration-300
-        `}>
+        `}
+      >
         {text}
       </button>
     </Link>

@@ -27,10 +27,7 @@ const MONTH_NAMES = [
 
 function ordinal(n: number): string {
   const abs = Math.abs(n);
-  const suffix =
-    abs % 100 >= 11 && abs % 100 <= 13
-      ? "th"
-      : ["th", "st", "nd", "rd"][abs % 10] ?? "th";
+  const suffix = abs % 100 >= 11 && abs % 100 <= 13 ? "th" : (["th", "st", "nd", "rd"][abs % 10] ?? "th");
   return `${n}${suffix}`;
 }
 
@@ -112,10 +109,7 @@ export function rruleToText(rrule: string): string {
 
   // Weekly patterns: BYDAY list (MO,TU,...) or nth weekdays (1MO, -1FR)
   if (r.BYDAY) {
-    const byDayText = describeByDay(
-      r.BYDAY,
-      /*includeOrdinals*/ r.FREQ !== "WEEKLY"
-    );
+    const byDayText = describeByDay(r.BYDAY, /*includeOrdinals*/ r.FREQ !== "WEEKLY");
     // For weekly, prefer plurals ("Mondays"); for monthly/yearly, ordinals like "the first Monday"
     const prefix = r.FREQ === "WEEKLY" ? "on " : "on ";
     pieces.push(`${prefix}${byDayText}`);
@@ -134,9 +128,7 @@ export function rruleToText(rrule: string): string {
 
   // End conditions
   if (r.COUNT) {
-    pieces.push(
-      `for ${Number(r.COUNT)} occurrence${Number(r.COUNT) === 1 ? "" : "s"}`
-    );
+    pieces.push(`for ${Number(r.COUNT)} occurrence${Number(r.COUNT) === 1 ? "" : "s"}`);
   }
 
   // Tidy up spacing

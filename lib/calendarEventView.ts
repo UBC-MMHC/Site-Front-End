@@ -14,9 +14,7 @@ export type CalendarEventView = {
   featured: boolean;
 };
 
-export function buildCalendarEventViews(
-  events: CalendarEvent[]
-): CalendarEventView[] {
+export function buildCalendarEventViews(events: CalendarEvent[]): CalendarEventView[] {
   return (
     events
       // Filter out subsequent recurring occurrences with the same title (keep earliest upcoming)
@@ -31,19 +29,10 @@ export function buildCalendarEventViews(
             seenRecurringTitles.add(key);
             return true;
           };
-        })()
+        })(),
       )
       .map((evt) => {
-        const {
-          id,
-          title,
-          startDate,
-          endDate,
-          location,
-          description,
-          isRecurring,
-          recurrenceRule,
-        } = evt;
+        const { id, title, startDate, endDate, location, description, isRecurring, recurrenceRule } = evt;
 
         return {
           id,

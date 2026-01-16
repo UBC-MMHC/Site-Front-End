@@ -18,14 +18,13 @@ type GetEventsOpts = {
   maxOccurrences?: number;
 };
 
-export async function getFutureCalendarEvents(
-  now = Date.now(),
-  opts: GetEventsOpts = {}
-): Promise<CalendarEvent[]> {
+export async function getFutureCalendarEvents(now = Date.now(), opts: GetEventsOpts = {}): Promise<CalendarEvent[]> {
   const lookaheadMs = opts.lookaheadMs ?? 1000 * 60 * 60 * 24 * 180; // 180 days
   const maxOccurrences = opts.maxOccurrences ?? 1000;
 
-  const r = await fetch(process.env.ICS_URL!, { next: { revalidate: 60 } });
+  const icsUrl =
+    process.env.ICS_URL || "https://calendar.google.com/calendar/ical/ubcmmhc%40gmail.com/public/basic.ics";
+  const r = await fetch(icsUrl, { next: { revalidate: 60 } });
   if (!r.ok) throw new Error("Upstream calendar fetch failed");
 
   const text = await r.text();

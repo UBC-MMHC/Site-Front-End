@@ -26,7 +26,8 @@ const Footer = () => {
               <a
                 href={MEMBERSHIP_SIGNUP_URL}
                 target="_blank"
-                className="text-grey-text hover:text-white transition-colors">
+                className="text-grey-text hover:text-white transition-colors"
+              >
                 Become a Member
               </a>
             </li>
