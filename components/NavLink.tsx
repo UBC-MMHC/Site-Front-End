@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 
 interface NavLinkProps {
   href: string;
-  text: string;
+  children: React.ReactNode;
+  currentRoute: string;
+  setCurrentRoute: (route: string) => void;
 }
 
 const NavLink = ({ href, text }: NavLinkProps) => {
