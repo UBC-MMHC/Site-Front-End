@@ -14,21 +14,33 @@ const NewsletterSignup = () => {
       return;
     }
 
+    setErrorMessage("");
+    setSuccessMessage("");
     setIsWaiting(true);
-    const res = await fetch(API_ROUTES_URL.subscribe_email_to_newsletter, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: emailInput }),
-    });
-    setIsWaiting(false);
 
-    if (!res.ok) {
-      console.error(res.text);
-      setErrorMessage("Error subscribing email to newsletter, please try again later.");
+    try {
+      const res = await fetch(API_ROUTES_URL.subscribe_email_to_newsletter, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: emailInput }),
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Newsletter signup error:", errorText);
+        setErrorMessage("Error subscribing to newsletter. Please try again later.");
+        return;
+      }
+
+      setSuccessMessage("Successfully subscribed to the newsletter!");
+      setDidSignup(true);
+    } catch (err) {
+      console.error("Newsletter signup failed:", err);
+      setErrorMessage("Network error. Please try again later.");
+    } finally {
+      setIsWaiting(false);
     }
-
-    setSuccessMessage("Successfully subscribed to the newsletter!");
-    setDidSignup(true);
   };
 
   return (
