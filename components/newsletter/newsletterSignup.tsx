@@ -14,33 +14,21 @@ const NewsletterSignup = () => {
       return;
     }
 
-    setErrorMessage("");
-    setSuccessMessage("");
     setIsWaiting(true);
+    const res = await fetch(API_ROUTES_URL.subscribe_email_to_newsletter, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: emailInput }),
+    });
+    setIsWaiting(false);
 
-    try {
-      const res = await fetch(API_ROUTES_URL.subscribe_email_to_newsletter, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: emailInput }),
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error("Newsletter signup error:", errorText);
-        setErrorMessage("Error subscribing to newsletter. Please try again later.");
-        return;
-      }
-
-      setSuccessMessage("Successfully subscribed to the newsletter!");
-      setDidSignup(true);
-    } catch (err) {
-      console.error("Newsletter signup failed:", err);
-      setErrorMessage("Network error. Please try again later.");
-    } finally {
-      setIsWaiting(false);
+    if (!res.ok) {
+      console.error(res.text);
+      setErrorMessage("Error subscribing email to newsletter, please try again later.");
     }
+
+    setSuccessMessage("Successfully subscribed to the newsletter!");
+    setDidSignup(true);
   };
 
   return (
@@ -62,7 +50,8 @@ const NewsletterSignup = () => {
                  text-secondary font-semibold rounded-md shadow-md 
                  hover:bg-accent-1 transition duration-300 
                  w-full sm:w-auto min-w-[100px] whitespace-nowrap justify-center
-                 items-center hover:cursor-pointer">
+                 items-center hover:cursor-pointer"
+        >
           Subscribe
         </button>
       </div>
