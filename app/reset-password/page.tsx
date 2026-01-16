@@ -3,7 +3,7 @@ import "../globals.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
 import { reset_password } from "@/components/api/auth";
-// import {useCsrfInit} from "@/hooks/csrfInit";
+import { validatePassword } from "@/utils/validatePassword";
 
 function ResetPasswordForm() {
   const router = useRouter();
@@ -29,6 +29,13 @@ function ResetPasswordForm() {
 
     const formData = new FormData(e.currentTarget);
     const password = formData.get("password") as string;
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setError(passwordError);
+      setIsLoading(false);
+      return;
+    }
 
     try {
       await reset_password(token, password);
