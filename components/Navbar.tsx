@@ -97,6 +97,7 @@ const Navbar = () => {
           ) : (
             <>
               <NavLink href="/" text="Home" />
+              <NavLink href="/membership" text="Membership" />
               <NavLink href="/events" text="Events" />
               <NavLink href="/about" text="About" />
               <NavLink href="/login" text="Sign In" />
