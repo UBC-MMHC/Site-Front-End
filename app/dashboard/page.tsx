@@ -1,12 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { API_ROUTES_URL } from "@/app/constants";
 
 export default function DashboardPage(): React.ReactElement {
   const [email, setEmail] = useState("");
   const [isSubscribing, setIsSubscribing] = useState(false);
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "success" | "error" | "already_subscribed">("idle");
+
+  useEffect(() => {
+    const checkSubscription = async () => {
+      try {
+        const res = await fetch("/api/auth/me", { credentials: "include" });
+        if (res.ok) {
+          const userData = await res.json();
+          if (userData.newsletterSubscription) {
+            setStatus("already_subscribed");
+          }
+        }
+      } catch (err) {
+        console.log("Could not check subscription status");
+      }
+    };
+    checkSubscription();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,8 +61,12 @@ export default function DashboardPage(): React.ReactElement {
         </p>
 
         <div className="mt-12">
-          {status === "success" ? (
-            <p className="text-grey-text font-light">Thank you. We&apos;ll be in touch.</p>
+          {status === "success" || status === "already_subscribed" ? (
+            <p className="text-grey-text font-light">
+              {status === "already_subscribed"
+                ? "You're already subscribed, we'll let you know when something new comes!"
+                : "Thank you. We'll be in touch."}
+            </p>
           ) : (
             <>
               <p className="text-grey-text/60 text-sm mb-4">Get notified when we launch.</p>
