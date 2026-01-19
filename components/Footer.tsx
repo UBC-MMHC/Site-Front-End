@@ -1,5 +1,6 @@
 import Image from "next/image";
 import {
+	DISCORD_URL,
 	EMAIL,
 	EXEC_SIGNUP_URL,
 	INSTAGRAM_URL,
@@ -44,6 +45,15 @@ const Footer = () => {
 								className="text-grey-text transition-colors hover:text-white"
 							>
 								Instagram
+							</a>
+						</li>
+						<li>
+							<a
+								href={DISCORD_URL}
+								target="_blank"
+								className="text-grey-text transition-colors hover:text-white"
+							>
+								Join our Discord
 							</a>
 						</li>
 						<li>
