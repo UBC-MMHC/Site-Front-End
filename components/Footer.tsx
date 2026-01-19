@@ -1,5 +1,6 @@
 import Image from "next/image";
 import {
+  DISCORD_URL,
   EMAIL,
   EXEC_SIGNUP_URL,
   INSTAGRAM_URL,
@@ -26,13 +27,19 @@ const Footer = () => {
               <a
                 href={MEMBERSHIP_SIGNUP_URL}
                 target="_blank"
-                className="text-grey-text hover:text-white transition-colors">
+                className="text-grey-text hover:text-white transition-colors"
+              >
                 Become a Member
               </a>
             </li>
             <li>
               <a href={INSTAGRAM_URL} target="_blank" className="text-grey-text hover:text-white transition-colors">
                 Instagram
+              </a>
+            </li>
+            <li>
+              <a href={DISCORD_URL} target="_blank" className="text-grey-text hover:text-white transition-colors">
+                Join our Discord
               </a>
             </li>
             <li>

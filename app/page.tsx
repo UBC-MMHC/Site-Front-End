@@ -1,6 +1,6 @@
 import Hero from "@/components/Hero";
 import Image from "next/image";
-import { EMAIL, INSTAGRAM_URL, LINKEDIN_URL, MEMBERSHIP_SIGNUP_URL } from "@/app/constants";
+import { DISCORD_URL, EMAIL, INSTAGRAM_URL, LINKEDIN_URL, MEMBERSHIP_SIGNUP_URL } from "@/app/constants";
 import EventList from "@/components/events/EventList";
 import LinkButton from "@/components/ui/LinkButton";
 import NewsletterSignup from "@/components/newsletter/newsletterSignup";
@@ -26,6 +26,7 @@ const MMHCTag = () => {
         <div className="flex flex-row justify-center gap-5 mt-4">
           <SocialButton network="instagram" url={INSTAGRAM_URL} />
           <SocialButton network="linkedin" url={LINKEDIN_URL} />
+          <SocialButton network="discord" url={DISCORD_URL} />
           <SocialButton network="email" url={`mailto:${EMAIL}`} />
         </div>
       </div>

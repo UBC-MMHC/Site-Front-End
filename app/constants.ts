@@ -4,6 +4,7 @@ export const LINK_TREE = "https://linktr.ee/ubcmmhc";
 export const MEMBERSHIP_SIGNUP_URL = "https://forms.gle/Nq1NNWKjXafmFCrF7";
 export const EXEC_SIGNUP_URL = "https://forms.gle/Ys43WB2vfQc1UP6r7";
 export const LINKEDIN_URL = "https://www.linkedin.com/company/ubcmmhc/posts";
+export const DISCORD_URL = "https://discord.gg/zzD5Gha4dA";
 
 const backendUrl = process.env.NEXT_PUBLIC_BASE_URL_API || "http://localhost:8080";
 
