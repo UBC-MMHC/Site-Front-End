@@ -44,12 +44,10 @@ export default function MembershipGate({ children }: MembershipGateProps) {
     checkMembership();
   }, [isLoggedIn, authLoading, router, logout]);
 
-  // Not logged in - return null while redirect happens
   if (!authLoading && !isLoggedIn) {
     return null;
   }
 
-  // Loading state
   if (authLoading || isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-primary-bg">
@@ -58,14 +56,12 @@ export default function MembershipGate({ children }: MembershipGateProps) {
     );
   }
 
-  // No membership - will redirect
   if (!membershipStatus?.hasMembership) {
     return null;
   }
 
   return (
     <>
-      {/* Subtle payment reminder banner */}
       {!membershipStatus.isPaid && (
         <div className="fixed top-16 left-0 right-0 z-40 bg-amber-500/10 backdrop-blur-sm border-b border-amber-500/20 px-4 py-3 animate-slide-up">
           <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
@@ -79,8 +75,6 @@ export default function MembershipGate({ children }: MembershipGateProps) {
           </div>
         </div>
       )}
-
-      {/* Content with padding when banner is shown */}
       <div className={!membershipStatus.isPaid ? "pt-12" : ""}>{children}</div>
     </>
   );
