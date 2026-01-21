@@ -4,85 +4,90 @@ import { handleApiError } from "@/components/api/apiErrorHandling";
 export type MembershipType = "UBC_STUDENT" | "NON_UBC_STUDENT" | "NON_STUDENT";
 
 export interface MembershipRegistrationData {
-  fullName: string;
-  email: string;
-  membershipType: MembershipType;
-  studentId?: string;
-  instagram?: string;
-  instagramGroupchat: boolean;
-  newsletterOptIn: boolean;
+	fullName: string;
+	email: string;
+	membershipType: MembershipType;
+	studentId?: string;
+	instagram?: string;
+	instagramGroupchat: boolean;
+	newsletterOptIn: boolean;
 }
 
 export interface CheckoutSessionResponse {
-  sessionId: string;
-  sessionUrl: string;
+	sessionId: string;
+	sessionUrl: string;
 }
 
 export interface MembershipStatus {
-  active: boolean;
-  membershipType: string;
-  startDate: string | null;
-  endDate: string | null;
-  verifiedAt: string | null;
+	active: boolean;
+	membershipType: string;
+	startDate: string | null;
+	endDate: string | null;
+	verifiedAt: string | null;
 }
 
 /**
  * Register for membership and get Stripe checkout URL.
  */
-export async function registerMembership(data: MembershipRegistrationData): Promise<CheckoutSessionResponse> {
-  const res = await fetch(API_ROUTES_URL.membership_register, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-    credentials: "include",
-  });
+export async function registerMembership(
+	data: MembershipRegistrationData
+): Promise<CheckoutSessionResponse> {
+	const res = await fetch(API_ROUTES_URL.membership_register, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(data),
+		credentials: "include",
+	});
 
-  if (!res.ok) {
-    await handleApiError(res);
-  }
+	if (!res.ok) {
+		await handleApiError(res);
+	}
 
-  return res.json();
+	return res.json();
 }
 
 /**
  * Get current user's membership status (requires authentication).
  */
 export async function getMembershipStatus(): Promise<MembershipStatus> {
-  const res = await fetch(API_ROUTES_URL.membership_status, {
-    method: "GET",
-    credentials: "include",
-  });
+	const res = await fetch(API_ROUTES_URL.membership_status, {
+		method: "GET",
+		credentials: "include",
+	});
 
-  if (!res.ok) {
-    await handleApiError(res);
-  }
+	if (!res.ok) {
+		await handleApiError(res);
+	}
 
-  return res.json();
+	return res.json();
 }
 
 /**
  * Check if an email has an active membership (public endpoint).
  */
 export async function checkMembership(email: string): Promise<{ active: boolean }> {
-  const res = await fetch(`${API_ROUTES_URL.membership_check}?email=${encodeURIComponent(email)}`, {
-    method: "GET",
-    credentials: "include",
-  });
+	const res = await fetch(
+		`${API_ROUTES_URL.membership_check}?email=${encodeURIComponent(email)}`,
+		{
+			method: "GET",
+			credentials: "include",
+		}
+	);
 
-  if (!res.ok) {
-    await handleApiError(res);
-  }
+	if (!res.ok) {
+		await handleApiError(res);
+	}
 
-  return res.json();
+	return res.json();
 }
 
 export interface MyMembershipStatus {
-  hasMembership: boolean;
-  isPaid: boolean;
-  membershipType: string | null;
-  paymentStatus: string | null;
+	hasMembership: boolean;
+	isPaid: boolean;
+	membershipType: string | null;
+	paymentStatus: string | null;
 }
 
 /**
@@ -90,16 +95,16 @@ export interface MyMembershipStatus {
  * Used for gating access to dashboard/profile.
  */
 export async function getMyMembershipStatus(): Promise<MyMembershipStatus> {
-  const res = await fetch(API_ROUTES_URL.membership_my_status, {
-    method: "GET",
-    credentials: "include",
-  });
+	const res = await fetch(API_ROUTES_URL.membership_my_status, {
+		method: "GET",
+		credentials: "include",
+	});
 
-  if (!res.ok) {
-    throw new Error("Failed to get membership status");
-  }
+	if (!res.ok) {
+		throw new Error("Failed to get membership status");
+	}
 
-  return res.json();
+	return res.json();
 }
 
 /**
@@ -107,14 +112,14 @@ export async function getMyMembershipStatus(): Promise<MyMembershipStatus> {
  * Requires authentication.
  */
 export async function retryPayment(): Promise<CheckoutSessionResponse> {
-  const res = await fetch(API_ROUTES_URL.membership_retry_payment, {
-    method: "POST",
-    credentials: "include",
-  });
+	const res = await fetch(API_ROUTES_URL.membership_retry_payment, {
+		method: "POST",
+		credentials: "include",
+	});
 
-  if (!res.ok) {
-    throw new Error("Failed to create payment session");
-  }
+	if (!res.ok) {
+		throw new Error("Failed to create payment session");
+	}
 
-  return res.json();
+	return res.json();
 }

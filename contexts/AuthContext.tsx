@@ -1,48 +1,58 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import type { ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useSyncExternalStore } from "react";
 
 interface AuthContextType {
-  isLoggedIn: boolean;
-  isLoading: boolean;
-  setIsLoggedIn: (value: boolean) => void;
-  logout: () => void;
+	isLoggedIn: boolean;
+	isLoading: boolean;
+	setIsLoggedIn: (value: boolean) => void;
+	logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Hook to safely detect if component has mounted (client-side)
+function useHasMounted() {
+	return useSyncExternalStore(
+		() => () => {},
+		() => true,
+		() => false
+	);
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+	const hasMounted = useHasMounted();
 
-  useEffect(() => {
-    const authState = localStorage.getItem("isLoggedIn");
-    if (authState === "true") {
-      setIsLoggedIn(true);
-    }
-    setIsLoading(false);
-  }, []);
+	const [isLoggedIn, setIsLoggedIn] = useState(() => {
+		if (typeof window === "undefined") return false;
+		return localStorage.getItem("isLoggedIn") === "true";
+	});
 
-  useEffect(() => {
-    if (!isLoading) {
-      localStorage.setItem("isLoggedIn", String(isLoggedIn));
-    }
-  }, [isLoggedIn, isLoading]);
+	const isLoading = !hasMounted;
 
-  const logout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem("isLoggedIn");
-  };
+	useEffect(() => {
+		if (hasMounted) {
+			localStorage.setItem("isLoggedIn", String(isLoggedIn));
+		}
+	}, [isLoggedIn, hasMounted]);
 
-  return (
-    <AuthContext.Provider value={{ isLoggedIn, isLoading, setIsLoggedIn, logout }}>{children}</AuthContext.Provider>
-  );
+	const logout = () => {
+		setIsLoggedIn(false);
+		localStorage.removeItem("isLoggedIn");
+	};
+
+	return (
+		<AuthContext.Provider value={{ isLoggedIn, isLoading, setIsLoggedIn, logout }}>
+			{children}
+		</AuthContext.Provider>
+	);
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
+	const context = useContext(AuthContext);
+	if (context === undefined) {
+		throw new Error("useAuth must be used within an AuthProvider");
+	}
+	return context;
 }
