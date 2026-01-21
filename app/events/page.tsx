@@ -6,15 +6,15 @@ import { EventsSkeleton } from "../../components/events/skeletons";
 export const dynamic = "force-dynamic";
 
 export default function EventsPage() {
-    return (
-        <main className="bg-primary-bg min-h-screen px-6 pt-24 pb-16">
-            <section className="mx-auto max-w-4xl">
-                <h2 className="text-primary-text mb-8 text-5xl font-semibold">Upcoming Events</h2>
+	return (
+		<main className="bg-primary-bg min-h-screen px-6 pt-24 pb-16">
+			<section className="mx-auto max-w-4xl">
+				<h2 className="text-primary-text mb-8 text-5xl font-semibold">Upcoming Events</h2>
 
-                <Suspense fallback={<EventsSkeleton />}>
-                    <EventList />
-                </Suspense>
-            </section>
-        </main>
-    );
+				<Suspense fallback={<EventsSkeleton />}>
+					<EventList />
+				</Suspense>
+			</section>
+		</main>
+	);
 }
