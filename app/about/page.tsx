@@ -12,9 +12,7 @@ const About = () => {
 					"/hero/DiscussionTableHero.JPG",
 				]}
 			>
-				<p className="text-secondary text-shadow-4xl text-center text-4xl font-bold">
-					About Us
-				</p>
+				<p className="text-secondary text-shadow-4xl text-center text-4xl font-bold">About Us</p>
 			</Hero>
 
 			{/* Mission */}
@@ -34,13 +32,12 @@ const About = () => {
 					</h2>
 
 					<p className="text-secondary-text text-xl leading-relaxed">
-						Mental health issues are very prevalent on university campuses. Generally,
-						the first and most difficult step for men in treating their mental health is
-						reaching out and seeking help. It is crucial to encourage open conversation
-						and we are striving to be that first step for the countless men on campus
-						that feel helpless and uncared for. In the process of promoting admission of
-						mental health issues, and how to start improving, we will talk about daily
-						habitual activities and behaviour that will, in the least, aid with mental
+						Mental health issues are very prevalent on university campuses. Generally, the first and
+						most difficult step for men in treating their mental health is reaching out and seeking
+						help. It is crucial to encourage open conversation and we are striving to be that first
+						step for the countless men on campus that feel helpless and uncared for. In the process
+						of promoting admission of mental health issues, and how to start improving, we will talk
+						about daily habitual activities and behaviour that will, in the least, aid with mental
 						health.
 					</p>
 				</div>
@@ -58,11 +55,10 @@ const About = () => {
 					</div>
 
 					<p className="text-secondary-text text-xl leading-relaxed">
-						We hope to see a positive impact in the lives of our members, and to have
-						them walk out more confident, self-aware, and healthier than they had walked
-						in. We believe that our meetings can act as a checkup for our members where
-						they can evaluate their improvement and be motivated as a group to take care
-						of their mental wellbeing.
+						We hope to see a positive impact in the lives of our members, and to have them walk out
+						more confident, self-aware, and healthier than they had walked in. We believe that our
+						meetings can act as a checkup for our members where they can evaluate their improvement
+						and be motivated as a group to take care of their mental wellbeing.
 					</p>
 				</div>
 			</section>

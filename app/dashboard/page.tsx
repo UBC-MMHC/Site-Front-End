@@ -6,9 +6,7 @@ import { API_ROUTES_URL } from "@/app/constants";
 export default function DashboardPage(): React.ReactElement {
 	const [email, setEmail] = useState("");
 	const [isSubscribing, setIsSubscribing] = useState(false);
-	const [status, setStatus] = useState<"idle" | "success" | "error" | "already_subscribed">(
-		"idle"
-	);
+	const [status, setStatus] = useState<"idle" | "success" | "error" | "already_subscribed">("idle");
 
 	useEffect(() => {
 		const checkSubscription = async () => {
@@ -71,9 +69,7 @@ export default function DashboardPage(): React.ReactElement {
 						</p>
 					) : (
 						<>
-							<p className="text-grey-text/60 mb-4 text-sm">
-								Get notified when we launch.
-							</p>
+							<p className="text-grey-text/60 mb-4 text-sm">Get notified when we launch.</p>
 							<form
 								onSubmit={handleSubmit}
 								className="mx-auto flex max-w-xs items-center justify-center gap-2"
@@ -92,12 +88,7 @@ export default function DashboardPage(): React.ReactElement {
 									disabled={isSubscribing || !email}
 									className="text-grey-text hover:text-accent-2 p-2 transition-colors disabled:opacity-30"
 								>
-									<svg
-										className="h-5 w-5"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
+									<svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path
 											strokeLinecap="round"
 											strokeLinejoin="round"

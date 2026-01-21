@@ -101,11 +101,7 @@ const Navbar = () => {
 					className="text-primary-text z-50 p-2 md:hidden"
 					onClick={() => setIsOpen(!isOpen)}
 				>
-					{isOpen ? (
-						<span className="text-2xl">✕</span>
-					) : (
-						<span className="text-2xl">☰</span>
-					)}
+					{isOpen ? <span className="text-2xl">✕</span> : <span className="text-2xl">☰</span>}
 				</button>
 			</div>
 		</nav>
