@@ -1,0 +1,9 @@
+# Load nvm (Node Version Manager) if it exists
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Fallback: Add common node installation paths
+export PATH="/usr/local/bin:$HOME/.nvm/versions/node/v23.6.0/bin:$PATH"
+
+# Run lint-staged
+npx lint-staged
