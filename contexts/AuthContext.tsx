@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useRef, ReactNode } from "react";
 
 interface AuthContextType {
     isLoggedIn: boolean;
@@ -12,22 +12,22 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(() => {
+        if (typeof window === "undefined") return false;
+        return localStorage.getItem("isLoggedIn") === "true";
+    });
+    // isLoading is false on client (localStorage read synchronously), true on server for SSR
+    const [isLoading] = useState(() => typeof window === "undefined");
+    const isInitialMount = useRef(true);
 
     useEffect(() => {
-        const authState = localStorage.getItem("isLoggedIn");
-        if (authState === "true") {
-            setIsLoggedIn(true);
+        // Skip the first render to avoid writing the initial value back to localStorage
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            return;
         }
-        setIsLoading(false);
-    }, []);
-
-    useEffect(() => {
-        if (!isLoading) {
-            localStorage.setItem("isLoggedIn", String(isLoggedIn));
-        }
-    }, [isLoggedIn, isLoading]);
+        localStorage.setItem("isLoggedIn", String(isLoggedIn));
+    }, [isLoggedIn]);
 
     const logout = () => {
         setIsLoggedIn(false);
@@ -48,4 +48,3 @@ export function useAuth() {
     }
     return context;
 }
-

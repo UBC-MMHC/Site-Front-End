@@ -6,88 +6,88 @@ import { reset_password } from "@/components/api/auth";
 import { validatePassword } from "@/utils/validatePassword";
 
 function ResetPasswordForm() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-  const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (isLoading) return;
+    const handleResetPassword = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (isLoading) return;
 
-    setIsLoading(true);
-    setError(null);
+        setIsLoading(true);
+        setError(null);
 
-    const token = searchParams.get("token");
+        const token = searchParams.get("token");
 
-    if (!token) {
-      setError("Error: Token is missing from the URL.");
-      setIsLoading(false);
-      return;
-    }
+        if (!token) {
+            setError("Error: Token is missing from the URL.");
+            setIsLoading(false);
+            return;
+        }
 
-    const formData = new FormData(e.currentTarget);
-    const password = formData.get("password") as string;
+        const formData = new FormData(e.currentTarget);
+        const password = formData.get("password") as string;
 
-    const passwordError = validatePassword(password);
-    if (passwordError) {
-      setError(passwordError);
-      setIsLoading(false);
-      return;
-    }
+        const passwordError = validatePassword(password);
+        if (passwordError) {
+            setError(passwordError);
+            setIsLoading(false);
+            return;
+        }
 
-    try {
-      await reset_password(token, password);
-      router.push("/login");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unexpected error occurred.");
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        try {
+            await reset_password(token, password);
+            router.push("/login");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unexpected error occurred.");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-  return (
-    <div className="flex min-h-screen flex-col items-center pt-24 bg-primary-bg text-primary-text">
-      <div className="w-full max-w-md p-8 bg-card text-card-foreground rounded-2xl shadow-lg text-center">
-        <h1 className="text-3xl font text-center mb-8">Reset Password</h1>
+    return (
+        <div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center pt-24">
+            <div className="bg-card text-card-foreground w-full max-w-md rounded-2xl p-8 text-center shadow-lg">
+                <h1 className="font mb-8 text-center text-3xl">Reset Password</h1>
 
-        {/* Password */}
-        <form onSubmit={handleResetPassword} className="space-y-4">
-          <input
-            name="password"
-            type="password"
-            placeholder="********"
-            required
-            disabled={isLoading}
-            className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground focus:ring-2 focus:ring-ring outline-none"
-          />
+                {/* Password */}
+                <form onSubmit={handleResetPassword} className="space-y-4">
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="********"
+                        required
+                        disabled={isLoading}
+                        className="border-input bg-background text-foreground focus:ring-ring w-full rounded-md border px-4 py-3 outline-none focus:ring-2"
+                    />
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md hover:opacity-90 transition disabled:opacity-50"
-          >
-            Reset Password
-          </button>
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="bg-primary text-primary-foreground w-full rounded-md py-3 font-medium transition hover:opacity-90 disabled:opacity-50"
+                    >
+                        Reset Password
+                    </button>
 
-          {error && <p className="text-sm mt-2 text-red-500">{error}</p>}
-        </form>
-      </div>
-    </div>
-  );
+                    {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+                </form>
+            </div>
+        </div>
+    );
 }
 
 export default function ResetPasswordPage() {
-  return (
-    <div className="flex min-h-screen flex-col items-center pt-24 bg-primary-bg text-primary-text">
-      <Suspense fallback={<div className="text-center">Loading reset form...</div>}>
-        <ResetPasswordForm />
-      </Suspense>
-    </div>
-  );
+    return (
+        <div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center pt-24">
+            <Suspense fallback={<div className="text-center">Loading reset form...</div>}>
+                <ResetPasswordForm />
+            </Suspense>
+        </div>
+    );
 }
