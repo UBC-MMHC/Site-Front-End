@@ -32,17 +32,16 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      register(email, password);
-
+      await register(email, password);
       router.push("/login");
     } catch (err: unknown) {
-      setIsLoading(false);
-
       if (err instanceof Error) {
         setError(err.message);
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 

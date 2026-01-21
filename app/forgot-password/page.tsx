@@ -31,6 +31,8 @@ export default function ForgotPasswordPage() {
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -52,11 +54,13 @@ export default function ForgotPasswordPage() {
 
           <button
             type="submit"
-            className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md hover:opacity-90 transition"
+            disabled={isLoading}
+            className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-md hover:opacity-90 transition disabled:opacity-50"
           >
-            {isLoading ? "Email Sent" : "Forgot Password"}
+            {isLoading ? "Sending..." : "Send Reset Email"}
           </button>
-          {message && <p className={`text-sm mt-2 ${error ? "text-red-500" : "text-green-500"}`}>{message}</p>}
+          {message && <p className="text-sm mt-2 text-green-500">{message}</p>}
+          {error && <p className="text-sm mt-2 text-red-500">{error}</p>}
         </form>
       </div>
     </div>
