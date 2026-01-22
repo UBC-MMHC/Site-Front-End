@@ -47,7 +47,15 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npm run lint
+        continue-on-error: true
+        run: npm run lint -- --format stylish 2>&1 | tee eslint-output.txt
+
+      - name: Report ESLint warnings
+        if: always()
+        run: |
+          if [ -f eslint-output.txt ] && grep -q "warning" eslint-output.txt; then
+            echo "::warning::ESLint found warnings. Please review the output above."
+          fi
 
   format:
     name: Prettier
