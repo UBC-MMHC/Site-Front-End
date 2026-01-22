@@ -25,12 +25,9 @@ export async function getFutureCalendarEvents(
 	const lookaheadMs = opts.lookaheadMs ?? 1000 * 60 * 60 * 24 * 180; // 180 days
 	const maxOccurrences = opts.maxOccurrences ?? 1000;
 
-	const icsUrl = process.env.ICS_URL;
-	if (!icsUrl) {
-		console.warn("ICS_URL environment variable is not set");
-		return [];
-	}
-
+	const icsUrl =
+		process.env.ICS_URL ||
+		"https://calendar.google.com/calendar/ical/ubcmmhc%40gmail.com/public/basic.ics";
 	const r = await fetch(icsUrl, { next: { revalidate: 60 } });
 	if (!r.ok) throw new Error("Upstream calendar fetch failed");
 
@@ -121,21 +118,17 @@ export async function getFutureCalendarEvents(
 
 /** Extract a canonical RRULE string if present */
 function getRRuleString(vevent: ICAL.Component): string {
-	try {
-		const prop = vevent.getFirstProperty("rrule");
-		if (!prop) return "";
-		const recur = prop.getFirstValue() as ICAL.Recur | undefined;
-		if (!recur || typeof recur.toString !== "function") return "";
-		// .toJSON() is also available; toString() yields an RFC5545 string
-		return recur.toString();
-	} catch {
-		return "";
-	}
+	const prop = vevent.getFirstProperty("rrule");
+	if (!prop) return "";
+	const recur = prop.getFirstValue() as ICAL.Recur;
+	// .toJSON() is also available; toString() yields an RFC5545 string
+	return recur?.toString?.() ?? "";
 }
 
 /** Tiny helper for non-UID events (should be rare) */
 function cryptoRandomId(): string {
 	if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+		// @ts-expect-error crypto.randomUUID may not be typed in all environments
 		return crypto.randomUUID();
 	}
 	return "evt_" + Math.random().toString(36).slice(2);

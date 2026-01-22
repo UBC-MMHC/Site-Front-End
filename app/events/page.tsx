@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import EventList from "../../components/events/EventList";
 import { EventsSkeleton } from "../../components/events/skeletons";
 
-// Opt-out of static rendering - calendar data requires runtime fetch
 export const dynamic = "force-dynamic";
 
 export default function EventsPage() {

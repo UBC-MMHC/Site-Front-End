@@ -14,5 +14,9 @@ export default function AuthRedirect({ children }: { children: React.ReactNode }
 		}
 	}, [isLoggedIn, isLoading, router]);
 
+	if (isLoading || isLoggedIn) {
+		return null;
+	}
+
 	return <>{children}</>;
 }

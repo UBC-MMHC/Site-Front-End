@@ -14,6 +14,7 @@ const NewsletterSignup = () => {
 			return;
 		}
 
+		// Clear previous messages
 		setErrorMessage("");
 		setSuccessMessage("");
 		setIsWaiting(true);
@@ -23,7 +24,6 @@ const NewsletterSignup = () => {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email: emailInput }),
-				credentials: "include",
 			});
 
 			if (!res.ok) {

@@ -1,7 +1,7 @@
 export const INSTAGRAM_URL = "https://www.instagram.com/ubcmmhc/";
 export const EMAIL = "ubcmmhc@gmail.com";
 export const LINK_TREE = "https://linktr.ee/ubcmmhc";
-export const MEMBERSHIP_SIGNUP_URL = "https://forms.gle/Nq1NNWKjXafmFCrF7";
+export const MEMBERSHIP_SIGNUP_URL = "/membership";
 export const EXEC_SIGNUP_URL = "https://forms.gle/Ys43WB2vfQc1UP6r7";
 export const LINKEDIN_URL = "https://www.linkedin.com/company/ubcmmhc/posts";
 export const DISCORD_URL = "https://discord.gg/zzD5Gha4dA";
@@ -22,4 +22,11 @@ export const API_ROUTES_URL = {
 	csrf_token: "/api/csrf-token",
 
 	subscribe_email_to_newsletter: "/api/newsletter/add-email",
+
+	// Membership
+	membership_register: "/api/membership/register",
+	membership_status: "/api/membership/status",
+	membership_check: "/api/membership/check",
+	membership_my_status: "/api/membership/my-status",
+	membership_retry_payment: "/api/membership/retry-payment",
 };
