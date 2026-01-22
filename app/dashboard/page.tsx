@@ -4,12 +4,10 @@ import React, { useState, useEffect } from "react";
 import { API_ROUTES_URL } from "@/app/constants";
 import MembershipGate from "@/components/MembershipGate";
 
-export default function DashboardPage(): any {
-	// test elint
+export default function DashboardPage(): React.ReactElement {
 	const [email, setEmail] = useState("");
 	const [isSubscribing, setIsSubscribing] = useState(false);
 	const [status, setStatus] = useState<"idle" | "success" | "error" | "already_subscribed">("idle");
-	const testUnusedVar = "test";
 
 	useEffect(() => {
 		const checkSubscription = async () => {
