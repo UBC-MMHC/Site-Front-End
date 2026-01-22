@@ -68,13 +68,10 @@ export async function getMembershipStatus(): Promise<MembershipStatus> {
  * Check if an email has an active membership (public endpoint).
  */
 export async function checkMembership(email: string): Promise<{ active: boolean }> {
-	const res = await fetch(
-		`${API_ROUTES_URL.membership_check}?email=${encodeURIComponent(email)}`,
-		{
-			method: "GET",
-			credentials: "include",
-		}
-	);
+	const res = await fetch(`${API_ROUTES_URL.membership_check}?email=${encodeURIComponent(email)}`, {
+		method: "GET",
+		credentials: "include",
+	});
 
 	if (!res.ok) {
 		await handleApiError(res);
