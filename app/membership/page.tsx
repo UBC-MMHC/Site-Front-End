@@ -91,9 +91,7 @@ export default function MembershipPage() {
 			fullName: formData.get("fullName") as string,
 			email: formData.get("email") as string,
 			membershipType: formData.get("membershipType") as MembershipType,
-			studentId: isStudentType
-				? (formData.get("studentId") as string) || undefined
-				: undefined,
+			studentId: isStudentType ? (formData.get("studentId") as string) || undefined : undefined,
 			instagram: (formData.get("instagram") as string) || undefined,
 			instagramGroupchat: formData.get("instagramGroupchat") === "on",
 			newsletterOptIn: formData.get("newsletterOptIn") === "on",
@@ -122,9 +120,7 @@ export default function MembershipPage() {
 		return (
 			<div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center px-6 pt-32 pb-12">
 				<div className="animate-slide-up w-full max-w-md text-center">
-					<h1 className="mb-3 text-4xl font-light tracking-tight">
-						Complete your payment
-					</h1>
+					<h1 className="mb-3 text-4xl font-light tracking-tight">Complete your payment</h1>
 					<p className="text-grey-text/70 mb-10 font-light">
 						You&apos;re almost there. Finish setting up your{" "}
 						<span className="text-primary-text">
@@ -145,10 +141,7 @@ export default function MembershipPage() {
 
 					<p className="text-grey-text/50 mt-8 text-sm">
 						Need help?{" "}
-						<a
-							href="mailto:ubcmmhc@gmail.com"
-							className="text-accent-2 hover:underline"
-						>
+						<a href="mailto:ubcmmhc@gmail.com" className="text-accent-2 hover:underline">
 							Contact us
 						</a>
 					</p>
@@ -161,9 +154,7 @@ export default function MembershipPage() {
 	return (
 		<div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center px-6 pt-24 pb-12">
 			<div className="animate-slide-up w-full max-w-md">
-				<h1 className="mb-2 text-center text-4xl font-light tracking-tight">
-					Become a Member
-				</h1>
+				<h1 className="mb-2 text-center text-4xl font-light tracking-tight">Become a Member</h1>
 				<p className="text-grey-text/70 mb-10 text-center font-light">
 					Join UBC Men&apos;s Mental Health Club
 				</p>
@@ -205,10 +196,7 @@ export default function MembershipPage() {
 
 					{/* Membership Type */}
 					<div>
-						<label
-							htmlFor="membershipType"
-							className="text-grey-text/80 mb-2 block text-sm"
-						>
+						<label htmlFor="membershipType" className="text-grey-text/80 mb-2 block text-sm">
 							Membership Type
 						</label>
 						<select
@@ -235,10 +223,7 @@ export default function MembershipPage() {
 					{/* Student ID */}
 					{isStudentType && (
 						<div className="animate-slide-up">
-							<label
-								htmlFor="studentId"
-								className="text-grey-text/80 mb-2 block text-sm"
-							>
+							<label htmlFor="studentId" className="text-grey-text/80 mb-2 block text-sm">
 								Student ID <span className="text-grey-text/50">(optional)</span>
 							</label>
 							<input
