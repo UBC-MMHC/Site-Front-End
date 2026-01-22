@@ -25,7 +25,13 @@ export async function getFutureCalendarEvents(
 	const lookaheadMs = opts.lookaheadMs ?? 1000 * 60 * 60 * 24 * 180; // 180 days
 	const maxOccurrences = opts.maxOccurrences ?? 1000;
 
-	const r = await fetch(process.env.ICS_URL!, { next: { revalidate: 60 } });
+	const icsUrl = process.env.ICS_URL;
+	if (!icsUrl) {
+		console.warn("ICS_URL environment variable is not set");
+		return [];
+	}
+
+	const r = await fetch(icsUrl, { next: { revalidate: 60 } });
 	if (!r.ok) throw new Error("Upstream calendar fetch failed");
 
 	const text = await r.text();
@@ -38,60 +44,70 @@ export async function getFutureCalendarEvents(
 	const out: CalendarEvent[] = [];
 
 	for (const ve of vevents) {
-		const ev = new ICAL.Event(ve);
+		try {
+			const ev = new ICAL.Event(ve);
 
-		// Skip past events that have fully ended before the window.
-		if (!ev.isRecurring()) {
-			const start = ev.startDate.toJSDate();
-			const end = ev.endDate.toJSDate();
-			if (end < windowStart) continue;
+			// Skip events with missing dates
+			if (!ev.startDate || !ev.endDate) continue;
 
-			out.push({
-				id: ev.uid || cryptoRandomId(),
-				title: ev.summary || "",
-				startDate: start,
-				endDate: end,
-				location: ev.location || "",
-				description: ev.description || "",
-				isRecurring: false,
-				recurrenceRule: "",
+			// Skip past events that have fully ended before the window.
+			if (!ev.isRecurring()) {
+				const start = ev.startDate.toJSDate();
+				const end = ev.endDate.toJSDate();
+				if (end < windowStart) continue;
+
+				out.push({
+					id: ev.uid || cryptoRandomId(),
+					title: ev.summary || "",
+					startDate: start,
+					endDate: end,
+					location: ev.location || "",
+					description: ev.description || "",
+					isRecurring: false,
+					recurrenceRule: "",
+				});
+				continue;
+			}
+
+			// Recurring: expand within the window
+			const baseStart = ev.startDate.clone();
+			const duration = ev.endDate.subtractDate(ev.startDate);
+
+			const it = new ICAL.RecurExpansion({
+				component: ve,
+				dtstart: baseStart,
 			});
+
+			let count = 0;
+			while (count < maxOccurrences && it.next()) {
+				const occStart = it.last; // ICAL.Time
+				if (!occStart) break;
+
+				const occStartDate = occStart.toJSDate();
+				if (occStartDate > windowEnd) break; // beyond our window
+				if (occStartDate < windowStart) continue; // before window
+
+				const occEnd = occStart.clone();
+				occEnd.addDuration(duration);
+
+				const id = `${ev.uid || cryptoRandomId()}-${occStart.toUnixTime()}`;
+
+				out.push({
+					id,
+					title: ev.summary || "",
+					startDate: occStartDate,
+					endDate: occEnd.toJSDate(),
+					location: ev.location || "",
+					description: ev.description || "",
+					isRecurring: true,
+					recurrenceRule: getRRuleString(ve), // e.g. "FREQ=WEEKLY;BYDAY=MO,WE,FR"
+				});
+
+				count++;
+			}
+		} catch {
+			// Skip malformed events
 			continue;
-		}
-
-		// Recurring: expand within the window
-		const baseStart = ev.startDate.clone();
-		const duration = ev.endDate.subtractDate(ev.startDate);
-
-		const it = new ICAL.RecurExpansion({
-			component: ve,
-			dtstart: baseStart,
-		});
-
-		let count = 0;
-		while (count < maxOccurrences && it.next()) {
-			const occStart = it.last; // ICAL.Time
-			const occStartDate = occStart.toJSDate();
-			if (occStartDate > windowEnd) break; // beyond our window
-			if (occStartDate < windowStart) continue; // before window
-
-			const occEnd = occStart.clone();
-			occEnd.addDuration(duration);
-
-			const id = `${ev.uid || cryptoRandomId()}-${occStart.toUnixTime()}`;
-
-			out.push({
-				id,
-				title: ev.summary || "",
-				startDate: occStartDate,
-				endDate: occEnd.toJSDate(),
-				location: ev.location || "",
-				description: ev.description || "",
-				isRecurring: true,
-				recurrenceRule: getRRuleString(ve), // e.g. "FREQ=WEEKLY;BYDAY=MO,WE,FR"
-			});
-
-			count++;
 		}
 	}
 
@@ -104,18 +120,22 @@ export async function getFutureCalendarEvents(
 }
 
 /** Extract a canonical RRULE string if present */
-function getRRuleString(vevent: any): string {
-	const prop = vevent.getFirstProperty("rrule");
-	if (!prop) return "";
-	const recur = prop.getFirstValue() as ICAL.Recur;
-	// .toJSON() is also available; toString() yields an RFC5545 string
-	return recur?.toString?.() ?? "";
+function getRRuleString(vevent: ICAL.Component): string {
+	try {
+		const prop = vevent.getFirstProperty("rrule");
+		if (!prop) return "";
+		const recur = prop.getFirstValue() as ICAL.Recur | undefined;
+		if (!recur || typeof recur.toString !== "function") return "";
+		// .toJSON() is also available; toString() yields an RFC5545 string
+		return recur.toString();
+	} catch {
+		return "";
+	}
 }
 
 /** Tiny helper for non-UID events (should be rare) */
-function cryptoRandomId() {
+function cryptoRandomId(): string {
 	if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-		// @ts-expect-error
 		return crypto.randomUUID();
 	}
 	return "evt_" + Math.random().toString(36).slice(2);

@@ -45,11 +45,7 @@ const HomePage = () => {
 		<AuthRedirect>
 			<div className="bg-primary-bg text-primary-text w-full overflow-x-hidden text-center">
 				<Hero
-					imageSrcs={[
-						"/hero/DiscussionHero.JPG",
-						"/hero/HikingGroup.png",
-						"/hero/Beachheader.jpg",
-					]}
+					imageSrcs={["/hero/DiscussionHero.JPG", "/hero/HikingGroup.png", "/hero/Beachheader.jpg"]}
 				>
 					{MMHCTag()}
 				</Hero>
@@ -61,10 +57,9 @@ const HomePage = () => {
 								Who we are
 							</h2>
 							<p className="text-primary-text text-xl leading-relaxed">
-								We are a community of men dedicated to peer support, open
-								discussion, and self-improvement. Our mission is to eradicate the
-								stigma around men’s mental health by supporting, educating, and
-								providing peer support for students around campus.
+								We are a community of men dedicated to peer support, open discussion, and
+								self-improvement. Our mission is to eradicate the stigma around men’s mental health
+								by supporting, educating, and providing peer support for students around campus.
 							</p>
 						</div>
 					</section>
@@ -79,9 +74,8 @@ const HomePage = () => {
 							<div className="w-full max-w-sm flex-1 rounded-xl border border-white/10 bg-linear-to-t from-white/5 to-white/2 p-8">
 								<h3 className="mb-6 text-2xl font-bold">Community</h3>
 								<p className="text-primary-text text-left text-xl leading-relaxed">
-									Connecting individuals interested in mens mental health and
-									self-improvement through social events, volunteering, and deep
-									discussions.
+									Connecting individuals interested in mens mental health and self-improvement
+									through social events, volunteering, and deep discussions.
 								</p>
 							</div>
 
@@ -89,8 +83,8 @@ const HomePage = () => {
 							<div className="w-full max-w-sm flex-1 rounded-xl border border-white/10 bg-linear-to-t from-white/5 to-white/2 p-8">
 								<h3 className="mb-6 text-2xl font-bold">Grit</h3>
 								<p className="text-primary-text text-left text-xl leading-relaxed">
-									Developing perseverance through regular physical challenges and
-									workouts such as runs and cold plunges.
+									Developing perseverance through regular physical challenges and workouts such as
+									runs and cold plunges.
 								</p>
 							</div>
 
@@ -98,8 +92,8 @@ const HomePage = () => {
 							<div className="w-full max-w-sm flex-1 rounded-xl border border-white/10 bg-linear-to-t from-white/5 to-white/2 p-8">
 								<h3 className="mb-6 text-2xl font-bold">Growth</h3>
 								<p className="text-primary-text text-left text-xl leading-relaxed">
-									Encouraging self-development through action-based discussions,
-									accountability systems, and grit challenges.
+									Encouraging self-development through action-based discussions, accountability
+									systems, and grit challenges.
 								</p>
 							</div>
 						</div>
@@ -121,8 +115,8 @@ const HomePage = () => {
 									Stay Updated
 								</h2>
 								<p className="text-primary-text max-w-sm text-xl leading-relaxed">
-									Subscribe to our weekly newsletter to stay up to date with new
-									events news about the club
+									Subscribe to our weekly newsletter to stay up to date with new events news about
+									the club
 								</p>
 							</div>
 
