@@ -89,9 +89,7 @@ const Footer = () => {
 				{/* Right column */}
 				<div>
 					<h3 className="mb-2 text-lg font-semibold">Newsletter</h3>
-					<p className="text-md text-primary-text pb-2">
-						Subscribe to our weekly newsletter
-					</p>
+					<p className="text-md text-primary-text pb-2">Subscribe to our weekly newsletter</p>
 					<NewsletterSignup />
 				</div>
 			</div>
@@ -99,8 +97,7 @@ const Footer = () => {
 			{/* Bottom bar */}
 			<div className="p-3 pt-0 text-center">
 				<p className="text-primary-text text-xs">
-					&copy; {new Date().getFullYear()} UBC Men&apos;s Mental Health Club. All rights
-					reserved.
+					&copy; {new Date().getFullYear()} UBC Men&apos;s Mental Health Club. All rights reserved.
 				</p>
 			</div>
 		</footer>

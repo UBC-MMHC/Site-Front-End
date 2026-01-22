@@ -41,60 +41,70 @@ export async function getFutureCalendarEvents(
 	const out: CalendarEvent[] = [];
 
 	for (const ve of vevents) {
-		const ev = new ICAL.Event(ve);
+		try {
+			const ev = new ICAL.Event(ve);
 
-		// Skip past events that have fully ended before the window.
-		if (!ev.isRecurring()) {
-			const start = ev.startDate.toJSDate();
-			const end = ev.endDate.toJSDate();
-			if (end < windowStart) continue;
+			// Skip events with missing dates
+			if (!ev.startDate || !ev.endDate) continue;
 
-			out.push({
-				id: ev.uid || cryptoRandomId(),
-				title: ev.summary || "",
-				startDate: start,
-				endDate: end,
-				location: ev.location || "",
-				description: ev.description || "",
-				isRecurring: false,
-				recurrenceRule: "",
+			// Skip past events that have fully ended before the window.
+			if (!ev.isRecurring()) {
+				const start = ev.startDate.toJSDate();
+				const end = ev.endDate.toJSDate();
+				if (end < windowStart) continue;
+
+				out.push({
+					id: ev.uid || cryptoRandomId(),
+					title: ev.summary || "",
+					startDate: start,
+					endDate: end,
+					location: ev.location || "",
+					description: ev.description || "",
+					isRecurring: false,
+					recurrenceRule: "",
+				});
+				continue;
+			}
+
+			// Recurring: expand within the window
+			const baseStart = ev.startDate.clone();
+			const duration = ev.endDate.subtractDate(ev.startDate);
+
+			const it = new ICAL.RecurExpansion({
+				component: ve,
+				dtstart: baseStart,
 			});
+
+			let count = 0;
+			while (count < maxOccurrences && it.next()) {
+				const occStart = it.last; // ICAL.Time
+				if (!occStart) break;
+
+				const occStartDate = occStart.toJSDate();
+				if (occStartDate > windowEnd) break; // beyond our window
+				if (occStartDate < windowStart) continue; // before window
+
+				const occEnd = occStart.clone();
+				occEnd.addDuration(duration);
+
+				const id = `${ev.uid || cryptoRandomId()}-${occStart.toUnixTime()}`;
+
+				out.push({
+					id,
+					title: ev.summary || "",
+					startDate: occStartDate,
+					endDate: occEnd.toJSDate(),
+					location: ev.location || "",
+					description: ev.description || "",
+					isRecurring: true,
+					recurrenceRule: getRRuleString(ve), // e.g. "FREQ=WEEKLY;BYDAY=MO,WE,FR"
+				});
+
+				count++;
+			}
+		} catch {
+			// Skip malformed events
 			continue;
-		}
-
-		// Recurring: expand within the window
-		const baseStart = ev.startDate.clone();
-		const duration = ev.endDate.subtractDate(ev.startDate);
-
-		const it = new ICAL.RecurExpansion({
-			component: ve,
-			dtstart: baseStart,
-		});
-
-		let count = 0;
-		while (count < maxOccurrences && it.next()) {
-			const occStart = it.last; // ICAL.Time
-			const occStartDate = occStart.toJSDate();
-			if (occStartDate > windowEnd) break; // beyond our window
-			if (occStartDate < windowStart) continue; // before window
-
-			const occEnd = occStart.clone();
-			occEnd.addDuration(duration);
-
-			const id = `${ev.uid || cryptoRandomId()}-${occStart.toUnixTime()}`;
-
-			out.push({
-				id,
-				title: ev.summary || "",
-				startDate: occStartDate,
-				endDate: occEnd.toJSDate(),
-				location: ev.location || "",
-				description: ev.description || "",
-				isRecurring: true,
-				recurrenceRule: getRRuleString(ve), // e.g. "FREQ=WEEKLY;BYDAY=MO,WE,FR"
-			});
-
-			count++;
 		}
 	}
 
@@ -116,7 +126,7 @@ function getRRuleString(vevent: ICAL.Component): string {
 }
 
 /** Tiny helper for non-UID events (should be rare) */
-function cryptoRandomId() {
+function cryptoRandomId(): string {
 	if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
 		// @ts-expect-error crypto.randomUUID may not be typed in all environments
 		return crypto.randomUUID();

@@ -89,13 +89,7 @@ function EventCard({ ev, thumbnail }: EventCardProps) {
 							<div className="max-h-full max-w-full">{thumbnail}</div>
 						</div>
 					) : (
-						<Image
-							alt={ev.title}
-							src={mediaUrl}
-							fill
-							className="object-cover"
-							loading="lazy"
-						/>
+						<Image alt={ev.title} src={mediaUrl} fill className="object-cover" loading="lazy" />
 					)}
 				</div>
 			</div>

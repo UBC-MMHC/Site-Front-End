@@ -14,17 +14,17 @@ This project uses **Prettier** for code formatting and **ESLint** for code quali
 
 - **What it does**: Controls code appearance (whitespace, line breaks, quotes, etc.)
 - **When it runs**:
-    - Automatically on save (if VS Code is configured)
-    - Automatically before every commit (via pre-commit hook)
-    - Manually via `npm run format`
+  - Automatically on save (if VS Code is configured)
+  - Automatically before every commit (via pre-commit hook)
+  - Manually via `npm run format`
 
 ### ESLint (Code Quality)
 
 - **What it does**: Catches bugs, enforces best practices, ensures code correctness
 - **When it runs**:
-    - Automatically on save (if VS Code is configured)
-    - Automatically before every commit (via pre-commit hook)
-    - Manually via `npm run lint` or `npm run lint:fix`
+  - Automatically on save (if VS Code is configured)
+  - Automatically before every commit (via pre-commit hook)
+  - Manually via `npm run lint` or `npm run lint:fix`
 
 ## Setup Instructions
 
