@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { createContext, useContext, useState, useEffect, useSyncExternalStore } from "react";
 
 interface AuthContextType {
 	isLoggedIn: boolean;
@@ -12,23 +12,30 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Hook to safely detect if component has mounted (client-side)
+function useHasMounted() {
+	return useSyncExternalStore(
+		() => () => {},
+		() => true,
+		() => false
+	);
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
+	const hasMounted = useHasMounted();
+
 	const [isLoggedIn, setIsLoggedIn] = useState(() => {
 		if (typeof window === "undefined") return false;
 		return localStorage.getItem("isLoggedIn") === "true";
 	});
-	// isLoading is false on client (localStorage read synchronously), true on server for SSR
-	const [isLoading] = useState(() => typeof window === "undefined");
-	const isInitialMount = useRef(true);
+
+	const isLoading = !hasMounted;
 
 	useEffect(() => {
-		// Skip the first render to avoid writing the initial value back to localStorage
-		if (isInitialMount.current) {
-			isInitialMount.current = false;
-			return;
+		if (hasMounted) {
+			localStorage.setItem("isLoggedIn", String(isLoggedIn));
 		}
-		localStorage.setItem("isLoggedIn", String(isLoggedIn));
-	}, [isLoggedIn]);
+	}, [isLoggedIn, hasMounted]);
 
 	const logout = () => {
 		setIsLoggedIn(false);
