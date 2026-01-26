@@ -116,7 +116,7 @@ function EventCard({ ev, thumbnail }: EventCardProps) {
 
 			<CardContent className="space-y-3 px-5 pb-5">
 				{hasLocation ? (
-					<div className="flex flex-row items-center gap-2">
+					<div className="flex flex-row items-center justify-between">
 						<div className="text-muted-foreground flex shrink-1 items-start gap-2 text-sm">
 							<span className="leading-5">{ev.location}</span>
 						</div>
