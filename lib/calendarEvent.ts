@@ -41,11 +41,62 @@ export async function getFutureCalendarEvents(
 	const windowStart = new Date(now);
 	const windowEnd = new Date(now + lookaheadMs);
 
-	const out: CalendarEvent[] = [];
+	// Group VEVENTs by UID to properly handle recurring events with modifications.
+	// When a recurring event is modified in Google Calendar (e.g., renamed),
+	// it can create multiple VEVENTs with the same UID.
+	const eventsByUid = new Map<
+		string,
+		{ main: ICAL.Component | null; exceptions: ICAL.Component[] }
+	>();
 
 	for (const ve of vevents) {
 		try {
 			const ev = new ICAL.Event(ve);
+			const uid = ev.uid || cryptoRandomId();
+
+			if (!eventsByUid.has(uid)) {
+				eventsByUid.set(uid, { main: null, exceptions: [] });
+			}
+
+			const group = eventsByUid.get(uid)!;
+
+			if (ev.isRecurrenceException()) {
+				// This VEVENT has a RECURRENCE-ID, meaning it's an exception/modification
+				// to a specific occurrence of a recurring event
+				group.exceptions.push(ve);
+			} else if (group.main === null) {
+				// First main event for this UID
+				group.main = ve;
+			} else {
+				// Multiple main events with same UID (no RECURRENCE-ID) - pick the newer one
+				// This can happen when Google Calendar updates a recurring event's properties
+				const existingStamp = getEventTimestamp(group.main);
+				const newStamp = getEventTimestamp(ve);
+				if (newStamp > existingStamp) {
+					group.main = ve;
+				}
+			}
+		} catch {
+			continue;
+		}
+	}
+
+	const out: CalendarEvent[] = [];
+
+	for (const [uid, group] of eventsByUid) {
+		if (!group.main) continue;
+
+		try {
+			const ev = new ICAL.Event(group.main);
+
+			// Relate all exceptions to the main event so ical.js can handle them
+			for (const exceptionVe of group.exceptions) {
+				try {
+					ev.relateException(new ICAL.Event(exceptionVe));
+				} catch {
+					// Skip malformed exceptions
+				}
+			}
 
 			// Skip events with missing dates
 			if (!ev.startDate || !ev.endDate) continue;
@@ -57,7 +108,7 @@ export async function getFutureCalendarEvents(
 				if (end < windowStart) continue;
 
 				out.push({
-					id: ev.uid || cryptoRandomId(),
+					id: uid,
 					title: ev.summary || "",
 					startDate: start,
 					endDate: end,
@@ -73,37 +124,39 @@ export async function getFutureCalendarEvents(
 			const baseStart = ev.startDate.clone();
 			const duration = ev.endDate.subtractDate(ev.startDate);
 
-			const it = new ICAL.RecurExpansion({
-				component: ve,
-				dtstart: baseStart,
-			});
+			const it = ev.iterator();
 
 			let count = 0;
-			while (count < maxOccurrences && it.next()) {
-				const occStart = it.last; // ICAL.Time
-				if (!occStart) break;
-
+			let occStart = it.next();
+			while (count < maxOccurrences && occStart) {
 				const occStartDate = occStart.toJSDate();
 				if (occStartDate > windowEnd) break; // beyond our window
-				if (occStartDate < windowStart) continue; // before window
 
-				const occEnd = occStart.clone();
-				occEnd.addDuration(duration);
+				if (occStartDate >= windowStart) {
+					const occEnd = occStart.clone();
+					occEnd.addDuration(duration);
 
-				const id = `${ev.uid || cryptoRandomId()}-${occStart.toUnixTime()}`;
+					// Get the occurrence details (handles exceptions automatically)
+					const occDetails = ev.getOccurrenceDetails(occStart);
+					const occEvent = occDetails.item;
 
-				out.push({
-					id,
-					title: ev.summary || "",
-					startDate: occStartDate,
-					endDate: occEnd.toJSDate(),
-					location: ev.location || "",
-					description: ev.description || "",
-					isRecurring: true,
-					recurrenceRule: getRRuleString(ve), // e.g. "FREQ=WEEKLY;BYDAY=MO,WE,FR"
-				});
+					const id = `${uid}-${occStart.toUnixTime()}`;
 
-				count++;
+					out.push({
+						id,
+						title: occEvent.summary || "",
+						startDate: occStartDate,
+						endDate: occEnd.toJSDate(),
+						location: occEvent.location || "",
+						description: occEvent.description || "",
+						isRecurring: true,
+						recurrenceRule: getRRuleString(group.main),
+					});
+
+					count++;
+				}
+
+				occStart = it.next();
 			}
 		} catch {
 			// Skip malformed events
@@ -139,4 +192,19 @@ function cryptoRandomId(): string {
 		return crypto.randomUUID();
 	}
 	return "evt_" + Math.random().toString(36).slice(2);
+}
+
+/** Get the timestamp for a VEVENT to determine which version is newer.
+ *  Prefers LAST-MODIFIED, falls back to DTSTAMP, then 0. */
+function getEventTimestamp(ve: ICAL.Component): number {
+	try {
+		const lastMod = ve.getFirstPropertyValue("last-modified") as ICAL.Time | undefined;
+		if (lastMod) return lastMod.toUnixTime();
+
+		const dtstamp = ve.getFirstPropertyValue("dtstamp") as ICAL.Time | undefined;
+		if (dtstamp) return dtstamp.toUnixTime();
+	} catch {
+		// Ignore errors
+	}
+	return 0;
 }

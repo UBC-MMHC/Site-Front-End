@@ -77,7 +77,7 @@ export default async function EventList() {
 	const events = await getFutureCalendarEvents(); // server-side fetch (no client call)
 	const upcomingEventViews = buildCalendarEventViews(events);
 
-	if (!events.length) {
+	if (!upcomingEventViews.length) {
 		return (
 			<div className="rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
 				<p className="mb-1 font-medium text-gray-700">No upcoming events found.</p>
