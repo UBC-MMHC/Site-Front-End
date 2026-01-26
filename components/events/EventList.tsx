@@ -56,10 +56,10 @@ export function EventByYear({ events }: Readonly<{ events: CalendarEventView[] }
 			{years.map((year) => (
 				<section key={year} className="space-y-4">
 					<header className="flex items-center gap-3">
-						<h2 className="text-4xl font-bold tracking-tight">{year}</h2>
-						<span className="text-muted-foreground text-2xl">
-							{byYear[String(year)].length} event
-							{byYear[String(year)].length === 1 ? "" : "s"}
+						<h2 className="text-primary-text text-3xl font-light">{year}</h2>
+						<span className="text-muted-foreground text-3xl font-light">
+							({byYear[String(year)].length} event
+							{byYear[String(year)].length === 1 ? "" : "s"})
 						</span>
 					</header>
 					<div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
