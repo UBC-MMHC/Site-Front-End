@@ -5,6 +5,8 @@ export const MEMBERSHIP_SIGNUP_URL = "/membership";
 export const EXEC_SIGNUP_URL = "https://forms.gle/Ys43WB2vfQc1UP6r7";
 export const LINKEDIN_URL = "https://www.linkedin.com/company/ubcmmhc/posts";
 export const DISCORD_URL = "https://discord.gg/zzD5Gha4dA";
+export const GOOGLE_CALENDAR_URL =
+	"https://calendar.google.com/calendar/u/2?cid=dWJjbW1oY0BnbWFpbC5jb20";
 
 const backendUrl = process.env.NEXT_PUBLIC_BASE_URL_API || "http://localhost:8080";
 
