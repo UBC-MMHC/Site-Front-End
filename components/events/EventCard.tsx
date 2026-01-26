@@ -116,28 +116,26 @@ function EventCard({ ev, thumbnail }: EventCardProps) {
 
 			<CardContent className="space-y-3 px-5 pb-5">
 				{hasLocation ? (
-					<div className="flex flex-col gap-2">
-						<div className="text-muted-foreground flex items-start gap-2 text-sm">
-							<MapPin className="mt-0.5 h-4 w-4 shrink-0" />
+					<div className="flex flex-row items-center gap-2">
+						<div className="text-muted-foreground flex shrink-1 items-start gap-2 text-sm">
 							<span className="leading-5">{ev.location}</span>
 						</div>
 						<a
 							href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.location)}`}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="transition-opacity hover:opacity-80"
+							className="shrink-0 transition-opacity hover:opacity-80"
 						>
 							<Image
 								src="/buttons/View in Maps MMHC Button.png"
 								alt="View in Maps"
 								width={160}
 								height={36}
-								className="h-auto"
 							/>
 						</a>
 					</div>
 				) : null}
-				{ev.description ? <p className="text-sm leading-6">{ev.description}</p> : null}
+				{ev.description ? <p className="text leading-6">{ev.description}</p> : null}
 			</CardContent>
 		</Card>
 	);
