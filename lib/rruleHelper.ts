@@ -10,6 +10,13 @@ const DAY_NAMES: Record<string, string> = {
 	SU: "Sunday",
 };
 
+// Map JS day index (0=Sun, 1=Mon, ...) to RRULE day code
+const DAY_CODES = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
+
+function getDayCodeFromDate(date: Date): string {
+	return DAY_CODES[date.getDay()];
+}
+
 const MONTH_NAMES = [
 	"January",
 	"February",
@@ -54,16 +61,16 @@ function listJoin(items: string[]): string {
 function describeFreq(freq?: string, intervalStr?: string): string {
 	const interval = Math.max(1, Number(intervalStr || "1"));
 	const map: Record<string, [singular: string, plural: string]> = {
-		DAILY: ["Daily", `Every ${interval} days`],
-		WEEKLY: ["Weekly", `Every ${interval} weeks`],
-		MONTHLY: ["Monthly", `Every ${interval} months`],
-		YEARLY: ["Yearly", `Every ${interval} years`],
-		HOURLY: ["Hourly", `Every ${interval} hours`],
-		MINUTELY: ["Every minute", `Every ${interval} minutes`],
-		SECONDLY: ["Every second", `Every ${interval} seconds`],
+		DAILY: ["daily", `every ${interval} days`],
+		WEEKLY: ["weekly", `every ${interval} weeks`],
+		MONTHLY: ["monthly", `every ${interval} months`],
+		YEARLY: ["yearly", `every ${interval} years`],
+		HOURLY: ["hourly", `every ${interval} hours`],
+		MINUTELY: ["minutely", `every ${interval} minutes`],
+		SECONDLY: ["every second", `every ${interval} seconds`],
 	};
 	const entry = map[(freq || "").toUpperCase()];
-	if (!entry) return "";
+	if (!entry) return "on a schedule";
 	return interval === 1 ? entry[0] : entry[1];
 }
 
@@ -76,10 +83,10 @@ function describeByDay(byday: string, includeOrdinals = true): string {
 		const [, nthStr, dayCodeRaw] = m;
 		const dayCode = dayCodeRaw.toUpperCase();
 		const dayName = DAY_NAMES[dayCode] ?? dayCode;
-		if (!nthStr || !includeOrdinals) return dayName;
+		if (!nthStr || !includeOrdinals) return `${dayName}s`;
 		const nth = Number(nthStr);
-		if (nth === -1) return `last ${dayName}`;
-		return `${ordinal(nth)} ${dayName}`;
+		if (nth === -1) return `the last ${dayName}`;
+		return `the ${ordinal(nth)} ${dayName}`;
 	});
 	return listJoin(parts);
 }
@@ -102,37 +109,60 @@ function describeByMonth(bymonth: string): string {
 	return listJoin(parts);
 }
 
-export function rruleToText(rrule: string): string {
-	if (!rrule) return "";
-
+export function rruleToText(rrule: string, startDate?: Date): string {
 	const r = parseRRule(rrule);
 	const freq = (r.FREQ || "").toUpperCase();
 
-	// For monthly events with BYDAY (e.g., "2nd Mon"), just show the day pattern
-	if (freq === "MONTHLY" && r.BYDAY) {
-		return describeByDay(r.BYDAY, true);
-	}
-
-	// For weekly events, show "Weekly" or day pattern
-	if (freq === "WEEKLY") {
-		if (r.BYDAY) {
-			return describeByDay(r.BYDAY, false);
-		}
-		return "Weekly";
-	}
-
-	// For other frequencies, show the frequency
 	const freqText = describeFreq(r.FREQ, r.INTERVAL);
-	if (!freqText) return "";
+	const pieces: string[] = [`Recurring ${freqText}`];
 
-	return freqText;
+	// For weekly events, always show the day (from BYDAY or inferred from startDate)
+	if (freq === "WEEKLY") {
+		let dayCode = r.BYDAY;
+		if (!dayCode && startDate) {
+			dayCode = getDayCodeFromDate(startDate);
+		}
+		if (dayCode) {
+			const byDayText = describeByDay(dayCode, false);
+			pieces.push(`on ${byDayText}`);
+		}
+	} else if (r.BYDAY) {
+		// Monthly/yearly with BYDAY (e.g., "the 1st Monday")
+		const byDayText = describeByDay(r.BYDAY, true);
+		pieces.push(`on ${byDayText}`);
+	}
+
+	// Monthly "on day 15" (BYMONTHDAY)
+	if (r.BYMONTHDAY) {
+		pieces.push(`on the ${describeByMonthDay(r.BYMONTHDAY)}`);
+	}
+
+	// Yearly "in June" or "in March and September"
+	if (r.BYMONTH) {
+		const months = describeByMonth(r.BYMONTH);
+		pieces.push(`in ${months}`);
+	}
+
+	// End conditions
+	if (r.COUNT) {
+		pieces.push(`for ${Number(r.COUNT)} occurrence${Number(r.COUNT) === 1 ? "" : "s"}`);
+	}
+
+	// Tidy up spacing
+	const text = pieces.join(" ").replace(/\s+/g, " ").trim();
+
+	// Example: "Recurring weekly on Thursdays"
+	return text;
 }
 
 /** Combines multiple RRULE strings into a single concise description.
- *  For monthly events with BYDAY, merges the day patterns (e.g., "2nd & 4th Mon"). */
-export function combineRRules(rrules: string[]): string {
+ *  For monthly events with BYDAY, merges the day patterns (e.g., "Recurring monthly on the 2nd and 4th Monday").
+ *  For weekly events, merges the days (e.g., "Recurring weekly on Thursdays and Wednesdays").
+ *  @param rrules - Array of RRULE strings
+ *  @param startDates - Optional array of start dates (parallel to rrules) to infer days for weekly events without BYDAY */
+export function combineRRules(rrules: string[], startDates?: Date[]): string {
 	if (rrules.length === 0) return "";
-	if (rrules.length === 1) return rruleToText(rrules[0]);
+	if (rrules.length === 1) return rruleToText(rrules[0], startDates?.[0]);
 
 	// Parse all rules
 	const parsed = rrules.map(parseRRule);
@@ -157,22 +187,35 @@ export function combineRRules(rrules: string[]): string {
 			const bNum = bMatch?.[1] ? Number(bMatch[1]) : 0;
 			return aNum - bNum;
 		});
-		return describeByDay(sorted.join(","), true);
+		const byDayText = describeByDay(sorted.join(","), true);
+		return `Recurring monthly on ${byDayText}`;
 	}
 
-	// Check if all are weekly with BYDAY - can merge them
-	const allWeeklyByDay = parsed.every((r) => (r.FREQ || "").toUpperCase() === "WEEKLY" && r.BYDAY);
+	// Check if all are weekly - merge the days
+	const allWeekly = parsed.every((r) => (r.FREQ || "").toUpperCase() === "WEEKLY");
 
-	if (allWeeklyByDay) {
-		const allTokens = new Set<string>();
-		for (const r of parsed) {
-			const tokens = r.BYDAY.split(",").filter(Boolean);
-			tokens.forEach((t) => allTokens.add(t.toUpperCase()));
+	if (allWeekly) {
+		// Collect all day codes from BYDAY or infer from startDates
+		const allDayCodes = new Set<string>();
+		for (let i = 0; i < parsed.length; i++) {
+			const r = parsed[i];
+			if (r.BYDAY) {
+				const tokens = r.BYDAY.split(",").filter(Boolean);
+				tokens.forEach((t) => allDayCodes.add(t.toUpperCase()));
+			} else if (startDates?.[i]) {
+				allDayCodes.add(getDayCodeFromDate(startDates[i]));
+			}
 		}
-		return describeByDay(Array.from(allTokens).join(","), false);
+		if (allDayCodes.size > 0) {
+			const byDayText = describeByDay(Array.from(allDayCodes).join(","), false);
+			return `Recurring weekly on ${byDayText}`;
+		}
+		return "Recurring weekly";
 	}
 
 	// Fallback: just join unique text representations
-	const uniqueTexts = [...new Set(rrules.map(rruleToText).filter(Boolean))];
+	const uniqueTexts = [
+		...new Set(rrules.map((r, i) => rruleToText(r, startDates?.[i])).filter(Boolean)),
+	];
 	return uniqueTexts.join(" & ");
 }

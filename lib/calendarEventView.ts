@@ -15,14 +15,11 @@ export interface CalendarEventView {
 }
 
 export function buildCalendarEventViews(events: CalendarEvent[]): CalendarEventView[] {
-	// First, filter out events we don't want to show
-	const filtered = events.filter((evt) => evt.title !== "Weekly Executive Meeting");
-
 	// Separate recurring and non-recurring events
 	const nonRecurring: CalendarEvent[] = [];
 	const recurringByTitle = new Map<string, CalendarEvent[]>();
 
-	for (const evt of filtered) {
+	for (const evt of events) {
 		if (!evt.isRecurring) {
 			nonRecurring.push(evt);
 		} else {
@@ -60,17 +57,20 @@ export function buildCalendarEventViews(events: CalendarEvent[]): CalendarEventV
 		const earliest = eventsWithTitle[0];
 
 		// Collect unique recurrence rules from all events with this title
+		// Also track corresponding start dates for inferring days for weekly events
 		const uniqueRules: string[] = [];
+		const startDates: Date[] = [];
 		const seenRules = new Set<string>();
 		for (const evt of eventsWithTitle) {
 			if (evt.recurrenceRule && !seenRules.has(evt.recurrenceRule)) {
 				seenRules.add(evt.recurrenceRule);
 				uniqueRules.push(evt.recurrenceRule);
+				startDates.push(evt.startDate);
 			}
 		}
 
 		// Build combined recurrence string
-		const combinedRecurrence = combineRRules(uniqueRules);
+		const combinedRecurrence = combineRRules(uniqueRules, startDates);
 
 		views.push({
 			id: earliest.id,
