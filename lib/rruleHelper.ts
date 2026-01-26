@@ -10,6 +10,13 @@ const DAY_NAMES: Record<string, string> = {
 	SU: "Sunday",
 };
 
+// Map JS day index (0=Sun, 1=Mon, ...) to RRULE day code
+const DAY_CODES = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
+
+function getDayCodeFromDate(date: Date): string {
+	return DAY_CODES[date.getDay()];
+}
+
 const MONTH_NAMES = [
 	"January",
 	"February",
@@ -102,16 +109,26 @@ function describeByMonth(bymonth: string): string {
 	return listJoin(parts);
 }
 
-export function rruleToText(rrule: string): string {
+export function rruleToText(rrule: string, startDate?: Date): string {
 	const r = parseRRule(rrule);
+	const freq = (r.FREQ || "").toUpperCase();
 
 	const freqText = describeFreq(r.FREQ, r.INTERVAL);
 	const pieces: string[] = [`Recurring ${freqText}`];
 
-	// BYDAY patterns: nth weekdays (1MO, -1FR) for monthly/yearly
-	// For weekly, skip showing the day since it's already visible from the event date
-	if (r.BYDAY && r.FREQ !== "WEEKLY") {
-		const byDayText = describeByDay(r.BYDAY, /*includeOrdinals*/ true);
+	// For weekly events, always show the day (from BYDAY or inferred from startDate)
+	if (freq === "WEEKLY") {
+		let dayCode = r.BYDAY;
+		if (!dayCode && startDate) {
+			dayCode = getDayCodeFromDate(startDate);
+		}
+		if (dayCode) {
+			const byDayText = describeByDay(dayCode, false);
+			pieces.push(`on ${byDayText}`);
+		}
+	} else if (r.BYDAY) {
+		// Monthly/yearly with BYDAY (e.g., "the 1st Monday")
+		const byDayText = describeByDay(r.BYDAY, true);
 		pieces.push(`on ${byDayText}`);
 	}
 
@@ -134,16 +151,18 @@ export function rruleToText(rrule: string): string {
 	// Tidy up spacing
 	const text = pieces.join(" ").replace(/\s+/g, " ").trim();
 
-	// Small polish: "on the last Monday" (already correct), but ensure capitalization
-	// Example: "Recurring weekly on Tuesdays and Thursdays"
+	// Example: "Recurring weekly on Thursdays"
 	return text;
 }
 
 /** Combines multiple RRULE strings into a single concise description.
- *  For monthly events with BYDAY, merges the day patterns (e.g., "Recurring monthly on the 2nd and 4th Monday"). */
-export function combineRRules(rrules: string[]): string {
+ *  For monthly events with BYDAY, merges the day patterns (e.g., "Recurring monthly on the 2nd and 4th Monday").
+ *  For weekly events, merges the days (e.g., "Recurring weekly on Thursdays and Wednesdays").
+ *  @param rrules - Array of RRULE strings
+ *  @param startDates - Optional array of start dates (parallel to rrules) to infer days for weekly events without BYDAY */
+export function combineRRules(rrules: string[], startDates?: Date[]): string {
 	if (rrules.length === 0) return "";
-	if (rrules.length === 1) return rruleToText(rrules[0]);
+	if (rrules.length === 1) return rruleToText(rrules[0], startDates?.[0]);
 
 	// Parse all rules
 	const parsed = rrules.map(parseRRule);
@@ -172,14 +191,31 @@ export function combineRRules(rrules: string[]): string {
 		return `Recurring monthly on ${byDayText}`;
 	}
 
-	// Check if all are weekly - just show "Recurring weekly" (day is visible from event date)
+	// Check if all are weekly - merge the days
 	const allWeekly = parsed.every((r) => (r.FREQ || "").toUpperCase() === "WEEKLY");
 
 	if (allWeekly) {
+		// Collect all day codes from BYDAY or infer from startDates
+		const allDayCodes = new Set<string>();
+		for (let i = 0; i < parsed.length; i++) {
+			const r = parsed[i];
+			if (r.BYDAY) {
+				const tokens = r.BYDAY.split(",").filter(Boolean);
+				tokens.forEach((t) => allDayCodes.add(t.toUpperCase()));
+			} else if (startDates?.[i]) {
+				allDayCodes.add(getDayCodeFromDate(startDates[i]));
+			}
+		}
+		if (allDayCodes.size > 0) {
+			const byDayText = describeByDay(Array.from(allDayCodes).join(","), false);
+			return `Recurring weekly on ${byDayText}`;
+		}
 		return "Recurring weekly";
 	}
 
 	// Fallback: just join unique text representations
-	const uniqueTexts = [...new Set(rrules.map(rruleToText).filter(Boolean))];
+	const uniqueTexts = [
+		...new Set(rrules.map((r, i) => rruleToText(r, startDates?.[i])).filter(Boolean)),
+	];
 	return uniqueTexts.join(" & ");
 }

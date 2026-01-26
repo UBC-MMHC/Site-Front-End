@@ -60,17 +60,20 @@ export function buildCalendarEventViews(events: CalendarEvent[]): CalendarEventV
 		const earliest = eventsWithTitle[0];
 
 		// Collect unique recurrence rules from all events with this title
+		// Also track corresponding start dates for inferring days for weekly events
 		const uniqueRules: string[] = [];
+		const startDates: Date[] = [];
 		const seenRules = new Set<string>();
 		for (const evt of eventsWithTitle) {
 			if (evt.recurrenceRule && !seenRules.has(evt.recurrenceRule)) {
 				seenRules.add(evt.recurrenceRule);
 				uniqueRules.push(evt.recurrenceRule);
+				startDates.push(evt.startDate);
 			}
 		}
 
 		// Build combined recurrence string
-		const combinedRecurrence = combineRRules(uniqueRules);
+		const combinedRecurrence = combineRRules(uniqueRules, startDates);
 
 		views.push({
 			id: earliest.id,
