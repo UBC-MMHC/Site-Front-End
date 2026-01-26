@@ -15,14 +15,11 @@ export interface CalendarEventView {
 }
 
 export function buildCalendarEventViews(events: CalendarEvent[]): CalendarEventView[] {
-	// First, filter out events we don't want to show
-	const filtered = events.filter((evt) => evt.title !== "Weekly Executive Meeting");
-
 	// Separate recurring and non-recurring events
 	const nonRecurring: CalendarEvent[] = [];
 	const recurringByTitle = new Map<string, CalendarEvent[]>();
 
-	for (const evt of filtered) {
+	for (const evt of events) {
 		if (!evt.isRecurring) {
 			nonRecurring.push(evt);
 		} else {
