@@ -108,12 +108,11 @@ export function rruleToText(rrule: string): string {
 	const freqText = describeFreq(r.FREQ, r.INTERVAL);
 	const pieces: string[] = [`Recurring ${freqText}`];
 
-	// Weekly patterns: BYDAY list (MO,TU,...) or nth weekdays (1MO, -1FR)
-	if (r.BYDAY) {
-		const byDayText = describeByDay(r.BYDAY, /*includeOrdinals*/ r.FREQ !== "WEEKLY");
-		// For weekly, prefer plurals ("Mondays"); for monthly/yearly, ordinals like "the first Monday"
-		const prefix = r.FREQ === "WEEKLY" ? "on " : "on ";
-		pieces.push(`${prefix}${byDayText}`);
+	// BYDAY patterns: nth weekdays (1MO, -1FR) for monthly/yearly
+	// For weekly, skip showing the day since it's already visible from the event date
+	if (r.BYDAY && r.FREQ !== "WEEKLY") {
+		const byDayText = describeByDay(r.BYDAY, /*includeOrdinals*/ true);
+		pieces.push(`on ${byDayText}`);
 	}
 
 	// Monthly "on day 15" (BYMONTHDAY)
@@ -173,17 +172,11 @@ export function combineRRules(rrules: string[]): string {
 		return `Recurring monthly on ${byDayText}`;
 	}
 
-	// Check if all are weekly with BYDAY - can merge them
-	const allWeeklyByDay = parsed.every((r) => (r.FREQ || "").toUpperCase() === "WEEKLY" && r.BYDAY);
+	// Check if all are weekly - just show "Recurring weekly" (day is visible from event date)
+	const allWeekly = parsed.every((r) => (r.FREQ || "").toUpperCase() === "WEEKLY");
 
-	if (allWeeklyByDay) {
-		const allTokens = new Set<string>();
-		for (const r of parsed) {
-			const tokens = r.BYDAY.split(",").filter(Boolean);
-			tokens.forEach((t) => allTokens.add(t.toUpperCase()));
-		}
-		const byDayText = describeByDay(Array.from(allTokens).join(","), false);
-		return `Recurring weekly on ${byDayText}`;
+	if (allWeekly) {
+		return "Recurring weekly";
 	}
 
 	// Fallback: just join unique text representations
