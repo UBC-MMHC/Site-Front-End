@@ -131,8 +131,23 @@ function EventCard({ ev, thumbnail }: EventCardProps) {
 				{ev.description ? <p className="text-sm leading-6">{ev.description}</p> : null}
 			</CardContent>
 
-			<CardFooter className="justify-end px-5">
-				{/* Reserved for actions/links if needed later */}
+			<CardFooter className="justify-end px-5 pb-5">
+				{hasLocation ? (
+					<a
+						href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.location)}`}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="transition-opacity hover:opacity-80"
+					>
+						<Image
+							src="/buttons/View in Maps MMHC Button.png"
+							alt="View in Maps"
+							width={180}
+							height={40}
+							className="h-auto"
+						/>
+					</a>
+				) : null}
 			</CardFooter>
 		</Card>
 	);
