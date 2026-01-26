@@ -54,16 +54,16 @@ function listJoin(items: string[]): string {
 function describeFreq(freq?: string, intervalStr?: string): string {
 	const interval = Math.max(1, Number(intervalStr || "1"));
 	const map: Record<string, [singular: string, plural: string]> = {
-		DAILY: ["Daily", `Every ${interval} days`],
-		WEEKLY: ["Weekly", `Every ${interval} weeks`],
-		MONTHLY: ["Monthly", `Every ${interval} months`],
-		YEARLY: ["Yearly", `Every ${interval} years`],
-		HOURLY: ["Hourly", `Every ${interval} hours`],
-		MINUTELY: ["Every minute", `Every ${interval} minutes`],
-		SECONDLY: ["Every second", `Every ${interval} seconds`],
+		DAILY: ["daily", `every ${interval} days`],
+		WEEKLY: ["weekly", `every ${interval} weeks`],
+		MONTHLY: ["monthly", `every ${interval} months`],
+		YEARLY: ["yearly", `every ${interval} years`],
+		HOURLY: ["hourly", `every ${interval} hours`],
+		MINUTELY: ["minutely", `every ${interval} minutes`],
+		SECONDLY: ["every second", `every ${interval} seconds`],
 	};
 	const entry = map[(freq || "").toUpperCase()];
-	if (!entry) return "";
+	if (!entry) return "on a schedule";
 	return interval === 1 ? entry[0] : entry[1];
 }
 
@@ -76,10 +76,10 @@ function describeByDay(byday: string, includeOrdinals = true): string {
 		const [, nthStr, dayCodeRaw] = m;
 		const dayCode = dayCodeRaw.toUpperCase();
 		const dayName = DAY_NAMES[dayCode] ?? dayCode;
-		if (!nthStr || !includeOrdinals) return dayName;
+		if (!nthStr || !includeOrdinals) return `${dayName}s`;
 		const nth = Number(nthStr);
-		if (nth === -1) return `last ${dayName}`;
-		return `${ordinal(nth)} ${dayName}`;
+		if (nth === -1) return `the last ${dayName}`;
+		return `the ${ordinal(nth)} ${dayName}`;
 	});
 	return listJoin(parts);
 }
@@ -103,33 +103,45 @@ function describeByMonth(bymonth: string): string {
 }
 
 export function rruleToText(rrule: string): string {
-	if (!rrule) return "";
-
 	const r = parseRRule(rrule);
-	const freq = (r.FREQ || "").toUpperCase();
 
-	// For monthly events with BYDAY (e.g., "2nd Mon"), just show the day pattern
-	if (freq === "MONTHLY" && r.BYDAY) {
-		return describeByDay(r.BYDAY, true);
-	}
-
-	// For weekly events, show "Weekly" or day pattern
-	if (freq === "WEEKLY") {
-		if (r.BYDAY) {
-			return describeByDay(r.BYDAY, false);
-		}
-		return "Weekly";
-	}
-
-	// For other frequencies, show the frequency
 	const freqText = describeFreq(r.FREQ, r.INTERVAL);
-	if (!freqText) return "";
+	const pieces: string[] = [`Recurring ${freqText}`];
 
-	return freqText;
+	// Weekly patterns: BYDAY list (MO,TU,...) or nth weekdays (1MO, -1FR)
+	if (r.BYDAY) {
+		const byDayText = describeByDay(r.BYDAY, /*includeOrdinals*/ r.FREQ !== "WEEKLY");
+		// For weekly, prefer plurals ("Mondays"); for monthly/yearly, ordinals like "the first Monday"
+		const prefix = r.FREQ === "WEEKLY" ? "on " : "on ";
+		pieces.push(`${prefix}${byDayText}`);
+	}
+
+	// Monthly "on day 15" (BYMONTHDAY)
+	if (r.BYMONTHDAY) {
+		pieces.push(`on the ${describeByMonthDay(r.BYMONTHDAY)}`);
+	}
+
+	// Yearly "in June" or "in March and September"
+	if (r.BYMONTH) {
+		const months = describeByMonth(r.BYMONTH);
+		pieces.push(`in ${months}`);
+	}
+
+	// End conditions
+	if (r.COUNT) {
+		pieces.push(`for ${Number(r.COUNT)} occurrence${Number(r.COUNT) === 1 ? "" : "s"}`);
+	}
+
+	// Tidy up spacing
+	const text = pieces.join(" ").replace(/\s+/g, " ").trim();
+
+	// Small polish: "on the last Monday" (already correct), but ensure capitalization
+	// Example: "Recurring weekly on Tuesdays and Thursdays"
+	return text;
 }
 
 /** Combines multiple RRULE strings into a single concise description.
- *  For monthly events with BYDAY, merges the day patterns (e.g., "2nd & 4th Mon"). */
+ *  For monthly events with BYDAY, merges the day patterns (e.g., "Recurring monthly on the 2nd and 4th Monday"). */
 export function combineRRules(rrules: string[]): string {
 	if (rrules.length === 0) return "";
 	if (rrules.length === 1) return rruleToText(rrules[0]);
@@ -157,7 +169,8 @@ export function combineRRules(rrules: string[]): string {
 			const bNum = bMatch?.[1] ? Number(bMatch[1]) : 0;
 			return aNum - bNum;
 		});
-		return describeByDay(sorted.join(","), true);
+		const byDayText = describeByDay(sorted.join(","), true);
+		return `Recurring monthly on ${byDayText}`;
 	}
 
 	// Check if all are weekly with BYDAY - can merge them
@@ -169,7 +182,8 @@ export function combineRRules(rrules: string[]): string {
 			const tokens = r.BYDAY.split(",").filter(Boolean);
 			tokens.forEach((t) => allTokens.add(t.toUpperCase()));
 		}
-		return describeByDay(Array.from(allTokens).join(","), false);
+		const byDayText = describeByDay(Array.from(allTokens).join(","), false);
+		return `Recurring weekly on ${byDayText}`;
 	}
 
 	// Fallback: just join unique text representations
