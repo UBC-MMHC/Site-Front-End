@@ -2,7 +2,30 @@ import { getFutureCalendarEvents } from "@/lib/calendarEvent";
 import type { CalendarEventView } from "@/lib/calendarEventView";
 import { buildCalendarEventViews } from "@/lib/calendarEventView";
 import { CalendarDays } from "lucide-react";
+import { GOOGLE_CALENDAR_URL } from "@/app/constants";
+import Image from "next/image";
 import EventCard from "./EventCard";
+
+export function CalendarSubscribeLink() {
+	return (
+		<div className="mb-8 flex flex-row items-center gap-2 text-center">
+			<a
+				href={GOOGLE_CALENDAR_URL}
+				target="_blank"
+				rel="noopener noreferrer"
+				className="transition-opacity hover:opacity-80"
+			>
+				<Image
+					src="/buttons/MMHC Events Calendar Button.png"
+					alt="MMHC Events Calendar"
+					width={280 * 1.25}
+					height={50 * 1.25}
+					className="h-auto"
+				/>
+			</a>
+		</div>
+	);
+}
 
 function getThumbnailForEvent(ev: CalendarEventView): string | undefined {
 	const title = ev.title?.toLowerCase() ?? "";
@@ -52,24 +75,29 @@ export function EventByYear({ events }: Readonly<{ events: CalendarEventView[] }
 	}
 
 	return (
-		<div className="space-y-10">
-			{years.map((year) => (
-				<section key={year} className="space-y-4">
-					<header className="flex items-center gap-3">
-						<h2 className="text-primary-text text-3xl font-light">{year}</h2>
-						<span className="text-muted-foreground text-3xl font-light">
-							({byYear[String(year)].length} event
-							{byYear[String(year)].length === 1 ? "" : "s"})
-						</span>
-					</header>
-					<div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
-						{byYear[String(year)].map((ev) => (
-							<EventCard key={ev.id} ev={ev} thumbnail={getThumbnailForEvent(ev)} />
-						))}
-					</div>
-				</section>
-			))}
-		</div>
+		<>
+			<span className="text-muted-foreground ml-auto flex justify-start text-3xl font-light">
+				<CalendarSubscribeLink />
+			</span>
+			<div className="space-y-10">
+				{years.map((year) => (
+					<section key={year} className="space-y-4">
+						<header className="flex items-center gap-3">
+							<h2 className="text-primary-text text-3xl font-light">{year}</h2>
+							<span className="text-muted-foreground text-3xl font-light">
+								({byYear[String(year)].length} event
+								{byYear[String(year)].length === 1 ? "" : "s"})
+							</span>
+						</header>
+						<div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+							{byYear[String(year)].map((ev) => (
+								<EventCard key={ev.id} ev={ev} thumbnail={getThumbnailForEvent(ev)} />
+							))}
+						</div>
+					</section>
+				))}
+			</div>
+		</>
 	);
 }
 

@@ -3,14 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import type { CalendarEventView } from "@/lib/calendarEventView";
-import {
-	Card,
-	CardHeader,
-	CardTitle,
-	CardDescription,
-	CardContent,
-	CardFooter,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Repeat, Star } from "lucide-react";
 
@@ -121,34 +114,31 @@ function EventCard({ ev, thumbnail }: EventCardProps) {
 				</div>
 			</CardHeader>
 
-			<CardContent className="space-y-3 px-5">
+			<CardContent className="space-y-3 px-5 pb-5">
 				{hasLocation ? (
-					<div className="text-muted-foreground flex items-start gap-2 text-sm">
-						<MapPin className="mt-0.5 h-4 w-4 shrink-0" />
-						<span className="leading-5">{ev.location}</span>
+					<div className="flex flex-col gap-2">
+						<div className="text-muted-foreground flex items-start gap-2 text-sm">
+							<MapPin className="mt-0.5 h-4 w-4 shrink-0" />
+							<span className="leading-5">{ev.location}</span>
+						</div>
+						<a
+							href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.location)}`}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="transition-opacity hover:opacity-80"
+						>
+							<Image
+								src="/buttons/View in Maps MMHC Button.png"
+								alt="View in Maps"
+								width={160}
+								height={36}
+								className="h-auto"
+							/>
+						</a>
 					</div>
 				) : null}
 				{ev.description ? <p className="text-sm leading-6">{ev.description}</p> : null}
 			</CardContent>
-
-			<CardFooter className="justify-end px-5 pb-5">
-				{hasLocation ? (
-					<a
-						href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.location)}`}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="transition-opacity hover:opacity-80"
-					>
-						<Image
-							src="/buttons/View in Maps MMHC Button.png"
-							alt="View in Maps"
-							width={180}
-							height={40}
-							className="h-auto"
-						/>
-					</a>
-				) : null}
-			</CardFooter>
 		</Card>
 	);
 }
