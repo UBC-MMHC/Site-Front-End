@@ -1,7 +1,18 @@
 import { API_ROUTES_URL } from "@/app/constants";
 import { handleApiError } from "@/components/api/apiErrorHandling";
 
-export type MembershipType = "UBC_STUDENT" | "NON_UBC_STUDENT" | "NON_STUDENT";
+export enum MembershipType {
+	UBC_STUDENT = "UBC_STUDENT",
+	NON_UBC_STUDENT = "NON_UBC_STUDENT",
+	NON_STUDENT = "NON_STUDENT",
+}
+
+export enum PaymentMethod {
+	STRIPE = "STRIPE",
+	CASH = "CASH",
+	ETRANSFER = "ETRANSFER",
+	OTHER = "OTHER",
+}
 
 export interface MembershipRegistrationData {
 	fullName: string;
@@ -11,11 +22,12 @@ export interface MembershipRegistrationData {
 	instagram?: string;
 	instagramGroupchat: boolean;
 	newsletterOptIn: boolean;
+	paymentMethod?: PaymentMethod;
 }
 
 export interface CheckoutSessionResponse {
-	sessionId: string;
-	sessionUrl: string;
+	sessionId: string | null;
+	sessionUrl: string | null;
 }
 
 export interface MembershipStatus {
