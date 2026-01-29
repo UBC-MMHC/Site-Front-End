@@ -31,4 +31,9 @@ export const API_ROUTES_URL = {
 	membership_check: "/api/membership/check",
 	membership_my_status: "/api/membership/my-status",
 	membership_retry_payment: "/api/membership/retry-payment",
+
+	// Admin
+	admin_pending_memberships: "/api/admin/memberships/pending",
+	admin_approve_membership: "/api/admin/memberships",
+	admin_assign_role: "/api/admin/users",
 };
