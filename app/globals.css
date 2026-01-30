@@ -2,8 +2,14 @@
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
 
-/* Color picker debug section so vscde has the color picker */
 :root {
+	/* Blog library colors */
+	--color-primary: #2f4a6e;
+	--color-primary-bg: #16345a;
+	--color-secondary: #ffffff;
+	--color-secondary-bg: #ffffff;
+
+	/* Existing debug colors */
 	--debug-primary-bg: #16345a;
 	--debug-primary-bg-dark: #132c4e;
 	--debug-primary-text: #f7fafc;
