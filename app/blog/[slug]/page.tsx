@@ -21,7 +21,7 @@ export default function BlogPostPage(): React.ReactElement {
 						onClick={() => router.push("/blog")}
 						className="font-medium text-gray-700 hover:text-gray-900"
 					>
-						← Back to blog
+						Back to blog
 					</button>
 				</div>
 			</div>
@@ -30,7 +30,7 @@ export default function BlogPostPage(): React.ReactElement {
 
 	return (
 		<>
-			<div className="bg-primary pt-24"></div>
+			<div className="bg-primary-bg pt-24"></div>
 			<div className="bg-secondary flex min-h-screen items-center justify-center">
 				<BlogPostComponent post={post} onBackClick={() => router.push("/blog")} />
 			</div>

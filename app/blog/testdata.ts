@@ -1,4 +1,6 @@
-export const TEST_POSTS = [
+import type { BlogPost } from "../../packages/blog-frontend/dist/types";
+
+export const TEST_POSTS: BlogPost[] = [
 	{
 		slug: "getting-started",
 		title: "Getting Started with React",
@@ -41,7 +43,7 @@ After you understand components and state, try building a small project, like a 
 React has a steep learning curve at first, but with practice you’ll be able to create dynamic and responsive applications quickly.
 
 `,
-		featured: true,
+		isFeatured: true,
 		date: new Date("2024-01-15"),
 		image: "/hero/beachheader.jpg",
 		tags: ["React", "JavaScript", "Beginner"],
@@ -55,6 +57,7 @@ React has a steep learning curve at first, but with practice you’ll be able to
 		date: new Date("2024-01-20"),
 		image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop",
 		tags: ["React", "Hooks", "Advanced"],
+		isFeatured: false,
 	},
 	{
 		slug: "next-js-guide",
@@ -64,6 +67,7 @@ React has a steep learning curve at first, but with practice you’ll be able to
 		date: new Date("2024-01-25"),
 		image: "/events/BeachRunGroup.jpeg",
 		tags: ["Next.js", "Framework", "Full-stack"],
+		isFeatured: false,
 	},
 	{
 		slug: "typescript-tips",
@@ -73,5 +77,6 @@ React has a steep learning curve at first, but with practice you’ll be able to
 		date: new Date("2024-02-01"),
 		image: "/hero/DiscussionHero.JPG",
 		tags: ["TypeScript", "Best Practices", "Code Quality"],
+		isFeatured: false,
 	},
 ];
