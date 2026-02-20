@@ -2,7 +2,7 @@
 
 import React from "react";
 import { BlogMainPage } from "blog-frontend";
-import type { BlogPostType } from "../../packages/blog-frontend/dist";
+import type { BlogPostType } from "blog-frontend";
 import { TEST_POSTS } from "./testdata";
 
 export default function BlogPage(): React.ReactElement {
