@@ -10,6 +10,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # This tells git to use the token for any github.com request automatically
+  GIT_CONFIG_PARAMETERS: "'url.https://${{ secrets.GH_ORG_TOKEN }}@github.com/.insteadOf=ssh://git@github.com/' 'url.https://${{ secrets.GH_ORG_TOKEN }}@github.com/.insteadOf=git@github.com:'"
+
 jobs:
   build:
     name: Build
@@ -23,10 +27,10 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
-      - name: Configure Git to use HTTPS with Token
-        run: |
-          git config --global url."https://${{ secrets.GH_ORG_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
-          git config --global url."https://${{secrets.GH_ORG_TOKEN}}@github.com/".insteadOf "git@github.com:"
+      # - name: Configure Git to use HTTPS with Token
+      #   run: |
+      #     git config --global url."https://${{ secrets.GH_ORG_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
+      #     git config --global url."https://${{secrets.GH_ORG_TOKEN}}@github.com/".insteadOf "git@github.com:"
 
       - name: Install dependencies
 
