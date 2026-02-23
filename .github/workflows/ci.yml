@@ -25,6 +25,7 @@ jobs:
           cache: "npm"
       - name: Configure Git to use HTTPS with Token
         run: |
+          git config --global url."https://${{ secrets.GH_ORG_TOKEN }}@github.com/".insteadOf "ssh://git@github.com/"
           git config --global url."https://${{secrets.GH_ORG_TOKEN}}@github.com/".insteadOf "git@github.com:"
 
       - name: Install dependencies
