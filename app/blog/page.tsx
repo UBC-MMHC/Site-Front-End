@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { BlogMainPage } from "blog-frontend";
-import type { BlogPostType } from "blog-frontend";
+import { BlogMainPage } from "@ubc-mmhc/blog-frontend";
+import type { BlogPostType } from "@ubc-mmhc/blog-frontend";
 import { TEST_POSTS } from "./testdata";
 
 export default function BlogPage(): React.ReactElement {
