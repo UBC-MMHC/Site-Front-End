@@ -4,7 +4,8 @@ export const BLOG_POSTS: BlogPostType[] = [
 	{
 		slug: "creativity-over-consumption",
 		title: "Choosing Creativity Over Consumption",
-		summary: "Learn the basics of React and how to set up your first project.",
+		summary:
+			"With so much content available to us, it is easy to keep consuming and stop creating.",
 		content: `## Problems with Consumption
 
 I’m confident you are intimately aware of how pointless a majority of the content you come across is. You’re aware of the countless hours you’ve wasted scrolling social media. You’re likely also aware that a driving factor is procrastination, to distract yourself from difficult emotions to digest. 
