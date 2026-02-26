@@ -2,15 +2,15 @@
 
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
-import { BlogPostComponent } from "../../../packages/blog-frontend/dist/containers/BlogPost";
-import { TEST_POSTS } from "../testdata";
+import { BlogPost } from "@ubc-mmhc/blog-frontend";
+import { BLOG_POSTS } from "../blogData";
 
 export default function BlogPostPage(): React.ReactElement {
 	const params = useParams();
 	const router = useRouter();
 	const slug = params.slug as string;
 
-	const post = TEST_POSTS.find((p) => p.slug === slug);
+	const post = BLOG_POSTS.find((p) => p.slug === slug);
 
 	if (!post) {
 		return (
@@ -32,7 +32,7 @@ export default function BlogPostPage(): React.ReactElement {
 		<>
 			<div className="bg-primary-bg pt-24"></div>
 			<div className="bg-secondary flex min-h-screen items-center justify-center">
-				<BlogPostComponent post={post} onBackClick={() => router.push("/blog")} />
+				<BlogPost post={post} onBackClick={() => router.push("/blog")} />
 			</div>
 		</>
 	);
