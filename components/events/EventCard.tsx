@@ -5,7 +5,7 @@ import Image from "next/image";
 import type { CalendarEventView } from "@/lib/calendarEventView";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Repeat, Star } from "lucide-react";
+import { Repeat, Star } from "lucide-react";
 
 // TODO: Refactor thumbnail to be property of CalendarEventView
 
@@ -117,7 +117,7 @@ function EventCard({ ev, thumbnail }: EventCardProps) {
 			<CardContent className="space-y-3 px-5 pb-3">
 				{hasLocation ? (
 					<div className="flex flex-row justify-between">
-						<div className="text-muted-foreground flex shrink-1 items-start gap-2 text-sm">
+						<div className="text-muted-foreground flex shrink items-start gap-2 text-sm">
 							<span className="leading-5">{ev.location}</span>
 						</div>
 						<a
