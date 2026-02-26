@@ -25,7 +25,7 @@
 		"react-dom": "19.2.0",
 		"react-social-icons": "^6.25.0",
 		"tailwind-merge": "^3.3.1",
-		"blog-frontend": "github:UBC-MMHC/blog-frontend#main"
+		"@ubc-mmhc/blog-frontend": "^1.0.0"
 	},
 	"devDependencies": {
 		"@tailwindcss/postcss": "^4",
