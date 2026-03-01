@@ -4,6 +4,13 @@ on:
   pull_request:
     branches: [main, master]
 
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   lighthouse:
     name: Performance Audit
