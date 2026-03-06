@@ -30,4 +30,4 @@ fs.writeFileSync("package-lock.json", JSON.stringify(lock, null, 2));
 
 // Resolve and add any missing nested dependencies (e.g. react-markdown) to the lockfile.
 // When blog-frontend was a local link, its deps weren't in the lockfile.
-execSync("npm install --package-lock-only", { stdio: "inherit" });
+execSync("npm install --package-lock-only --ignore-scripts", { stdio: "inherit" });
