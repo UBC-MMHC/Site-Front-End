@@ -6,8 +6,9 @@ on:
   pull_request:
     branches: [main, master]
 
+# NODE_AUTH_TOKEN: For @ubc-mmhc/blog-frontend from GitHub Packages.
 env:
-  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_READ_TOKEN }}
 
 permissions:
   contents: read
@@ -17,6 +18,10 @@ jobs:
   audit:
     name: npm Audit
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,6 +31,26 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@ubc-mmhc"
+
+      - name: Patch package-lock for GitHub Packages
+        run: |
+          node -e "
+          const fs = require('fs');
+          const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'));
+          const pkg = lock.packages['node_modules/@ubc-mmhc/blog-frontend'];
+          const local = lock.packages['../blog-frontend'];
+          if (pkg?.resolved?.includes('../blog-frontend') && local) {
+            delete lock.packages['../blog-frontend'];
+            lock.packages['node_modules/@ubc-mmhc/blog-frontend'] = {
+              ...local,
+              resolved: 'https://npm.pkg.github.com/download/@ubc-mmhc/blog-frontend/1.0.1/f5185b258400e4fc55f1af7ad57872343db4ccb8'
+            };
+            delete lock.packages['node_modules/@ubc-mmhc/blog-frontend'].link;
+            fs.writeFileSync('package-lock.json', JSON.stringify(lock, null, 2));
+          }
+          "
 
       - name: Install dependencies
         run: npm ci
