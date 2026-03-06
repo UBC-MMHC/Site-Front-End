@@ -4,7 +4,6 @@ import React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { BlogPost } from "@ubc-mmhc/blog-frontend";
 import { BLOG_POSTS } from "../blogData";
-import { BlogAuthorBadge } from "@/components/blog/BlogAuthorBadge";
 
 export default function BlogPostPage(): React.ReactElement {
 	const params = useParams();
@@ -32,11 +31,8 @@ export default function BlogPostPage(): React.ReactElement {
 	return (
 		<>
 			<div className="bg-primary-bg pt-24"></div>
-			<div className="bg-secondary flex min-h-screen flex-col items-center justify-center">
-				<div className="flex w-full max-w-4xl flex-col gap-4 px-4">
-					{post.author && <BlogAuthorBadge author={post.author} />}
-					<BlogPost post={post} onBackClick={() => router.push("/blog")} />
-				</div>
+			<div className="bg-secondary flex min-h-screen items-center justify-center">
+				<BlogPost post={post} onBackClick={() => router.push("/blog")} />
 			</div>
 		</>
 	);

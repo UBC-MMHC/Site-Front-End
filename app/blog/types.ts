@@ -1,4 +1,4 @@
-import type { BlogPostType } from "@ubc-mmhc/blog-frontend";
+import type { BlogPostType, BlogAuthor } from "@ubc-mmhc/blog-frontend";
 
-export interface BlogAuthor { name: string }
-export type BlogPostWithAuthor = BlogPostType & { author?: BlogAuthor };
+export type { BlogAuthor };
+export type BlogPostWithAuthor = BlogPostType;
