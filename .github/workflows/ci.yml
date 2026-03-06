@@ -39,6 +39,24 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           scope: "@ubc-mmhc"
 
+      - name: Patch package-lock for GitHub Packages
+        run: |
+          node -e "
+          const fs = require('fs');
+          const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'));
+          const pkg = lock.packages['node_modules/@ubc-mmhc/blog-frontend'];
+          const local = lock.packages['../blog-frontend'];
+          if (pkg?.resolved?.includes('../blog-frontend') && local) {
+            delete lock.packages['../blog-frontend'];
+            lock.packages['node_modules/@ubc-mmhc/blog-frontend'] = {
+              ...local,
+              resolved: 'https://npm.pkg.github.com/download/@ubc-mmhc/blog-frontend/1.0.1/f5185b258400e4fc55f1af7ad57872343db4ccb8'
+            };
+            delete lock.packages['node_modules/@ubc-mmhc/blog-frontend'].link;
+            fs.writeFileSync('package-lock.json', JSON.stringify(lock, null, 2));
+          }
+          "
+
       - name: Install dependencies
         run: npm ci
 
@@ -59,6 +77,24 @@ jobs:
           cache: "npm"
           registry-url: "https://npm.pkg.github.com"
           scope: "@ubc-mmhc"
+
+      - name: Patch package-lock for GitHub Packages
+        run: |
+          node -e "
+          const fs = require('fs');
+          const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'));
+          const pkg = lock.packages['node_modules/@ubc-mmhc/blog-frontend'];
+          const local = lock.packages['../blog-frontend'];
+          if (pkg?.resolved?.includes('../blog-frontend') && local) {
+            delete lock.packages['../blog-frontend'];
+            lock.packages['node_modules/@ubc-mmhc/blog-frontend'] = {
+              ...local,
+              resolved: 'https://npm.pkg.github.com/download/@ubc-mmhc/blog-frontend/1.0.1/f5185b258400e4fc55f1af7ad57872343db4ccb8'
+            };
+            delete lock.packages['node_modules/@ubc-mmhc/blog-frontend'].link;
+            fs.writeFileSync('package-lock.json', JSON.stringify(lock, null, 2));
+          }
+          "
 
       - name: Install dependencies
         run: npm ci
@@ -89,6 +125,24 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           scope: "@ubc-mmhc"
 
+      - name: Patch package-lock for GitHub Packages
+        run: |
+          node -e "
+          const fs = require('fs');
+          const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'));
+          const pkg = lock.packages['node_modules/@ubc-mmhc/blog-frontend'];
+          const local = lock.packages['../blog-frontend'];
+          if (pkg?.resolved?.includes('../blog-frontend') && local) {
+            delete lock.packages['../blog-frontend'];
+            lock.packages['node_modules/@ubc-mmhc/blog-frontend'] = {
+              ...local,
+              resolved: 'https://npm.pkg.github.com/download/@ubc-mmhc/blog-frontend/1.0.1/f5185b258400e4fc55f1af7ad57872343db4ccb8'
+            };
+            delete lock.packages['node_modules/@ubc-mmhc/blog-frontend'].link;
+            fs.writeFileSync('package-lock.json', JSON.stringify(lock, null, 2));
+          }
+          "
+
       - name: Install dependencies
         run: npm ci
 
@@ -109,6 +163,24 @@ jobs:
           cache: "npm"
           registry-url: "https://npm.pkg.github.com"
           scope: "@ubc-mmhc"
+
+      - name: Patch package-lock for GitHub Packages
+        run: |
+          node -e "
+          const fs = require('fs');
+          const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'));
+          const pkg = lock.packages['node_modules/@ubc-mmhc/blog-frontend'];
+          const local = lock.packages['../blog-frontend'];
+          if (pkg?.resolved?.includes('../blog-frontend') && local) {
+            delete lock.packages['../blog-frontend'];
+            lock.packages['node_modules/@ubc-mmhc/blog-frontend'] = {
+              ...local,
+              resolved: 'https://npm.pkg.github.com/download/@ubc-mmhc/blog-frontend/1.0.1/f5185b258400e4fc55f1af7ad57872343db4ccb8'
+            };
+            delete lock.packages['node_modules/@ubc-mmhc/blog-frontend'].link;
+            fs.writeFileSync('package-lock.json', JSON.stringify(lock, null, 2));
+          }
+          "
 
       - name: Install dependencies
         run: npm ci
