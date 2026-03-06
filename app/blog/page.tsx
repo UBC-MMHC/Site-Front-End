@@ -2,7 +2,7 @@
 
 import React from "react";
 import { BlogMainPage } from "@ubc-mmhc/blog-frontend";
-import type { BlogPostType } from "@ubc-mmhc/blog-frontend";
+import type { BlogPostWithAuthor } from "./types";
 import { BLOG_POSTS } from "./blogData";
 
 export default function BlogPage(): React.ReactElement {
@@ -12,7 +12,7 @@ export default function BlogPage(): React.ReactElement {
 				<div className="max-w-4xl">
 					<BlogMainPage
 						posts={BLOG_POSTS}
-						getPostHref={function (post: BlogPostType): string {
+						getPostHref={function (post: BlogPostWithAuthor): string {
 							return `/blog/${post.slug}`;
 						}}
 					/>

@@ -1,6 +1,6 @@
-import type { BlogPostType } from "@ubc-mmhc/blog-frontend";
+import type { BlogPostWithAuthor } from "./types";
 
-export const BLOG_POSTS: BlogPostType[] = [
+export const BLOG_POSTS: BlogPostWithAuthor[] = [
 	{
 		slug: "creativity-over-consumption",
 		title: "Choosing Creativity Over Consumption",
@@ -41,5 +41,6 @@ Another practical tip would be to disable, or avoid the temptation of succumbing
 		date: new Date("2026-02-26"),
 		image: "/hero/DiscussionTableHero.JPG",
 		tags: ["Blog", "Creativity"],
+		author: { name: "Daniel Agapov" },
 	},
 ];
