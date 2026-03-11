@@ -3,13 +3,10 @@ import "../globals.css";
 import { useState } from "react";
 import Image from "next/image";
 import { login, loginWithGoogle } from "@/components/api/auth";
-import { useCsrfInit } from "@/hooks/csrfInit";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function LoginPage() {
-	useCsrfInit();
-
 	const router = useRouter();
 	const { setIsLoggedIn } = useAuth();
 

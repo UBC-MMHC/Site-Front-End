@@ -19,10 +19,6 @@ export const API_ROUTES_URL = {
 	reset_password: "/api/auth/reset-password",
 	logout: "/api/auth/logout",
 	set_token: "/api/auth/set-token",
-	verify_session: "/api/auth/verify-session",
-
-	csrf_token: "/api/csrf-token",
-
 	subscribe_email_to_newsletter: "/api/newsletter/add-email",
 
 	// Membership
