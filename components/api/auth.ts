@@ -1,16 +1,6 @@
 import { API_ROUTES_URL } from "@/app/constants";
 import { handleApiError } from "@/components/api/apiErrorHandling";
 
-function getCsrfToken(): string {
-	if (typeof document === "undefined") return "";
-	const match = document.cookie.match(new RegExp("(^| )XSRF-TOKEN=([^;]+)"));
-	return match ? match[2] : "";
-}
-
-/**
- * A wrapper for auth POST requests that handles CSRF tokens,
- * headers, credentials, and error handling automatically.
- */
 async function authPostRequest(url: string, payload: Record<string, string>) {
 	const res = await fetch(url, {
 		method: "POST",
