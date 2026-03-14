@@ -55,7 +55,7 @@ const Navbar = () => {
 
 	return (
 		<nav
-			className={`fixed top-0 z-50 w-full transition-all duration-300 ease-in-out ${scrolled ? "bg-primary-bg/80 border-b border-white/5 backdrop-blur-xl" : "bg-transparent"} `}
+			className={`fixed top-0 z-50 w-full transition-all duration-300 ease-in-out ${scrolled ? "bg-primary-bg/80 backdrop-blur-xl" : "bg-transparent"} `}
 		>
 			<div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
 				<Link href="/" className="group flex items-center space-x-3">
