@@ -25,9 +25,7 @@ export default function MembershipPage() {
 	const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.STRIPE);
 	const [registrationComplete, setRegistrationComplete] = useState(false);
 
-	const isStudentType =
-		membershipType === MembershipType.UBC_STUDENT ||
-		membershipType === MembershipType.NON_UBC_STUDENT;
+	const isStudentType = membershipType === MembershipType.UBC_STUDENT;
 
 	useEffect(() => {
 		const checkExistingMembership = async () => {
@@ -168,20 +166,23 @@ export default function MembershipPage() {
 						</div>
 					</div>
 					<h1 className="mb-3 text-4xl font-light tracking-tight">Registration Received</h1>
-					<p className="text-grey-text/70 mb-8 font-light">
+					<p className="text-grey-text/70 mb-4 font-light">
 						Thank you for registering! Since you selected{" "}
 						<span className="text-primary-text font-medium">{paymentMethod}</span>, your membership
 						will be activated once we verify your payment.
 					</p>
 
-					<div className="mb-8 rounded-lg p-6 text-left">
+					<div className="mb-8 text-left">
 						<h3 className="mb-2 font-medium">Next Steps:</h3>
 						<ul className="text-grey-text/80 space-y-2 text-sm font-light">
 							{paymentMethod === PaymentMethod.ETRANSFER && (
-								<li>
-									• Please send an e-transfer to{" "}
-									<span className="text-primary-text font-medium">narimanimatin5@gmail.com</span>
-								</li>
+								<>
+									<li>
+										• Please send an e-transfer to{" "}
+										<span className="text-primary-text font-medium">narimanimatin5@gmail.com</span>
+									</li>
+									<li>• Please include your full name and student ID in the e-transfer notes.</li>
+								</>
 							)}
 							{paymentMethod === PaymentMethod.CASH && (
 								<li>• Please provide the cash to an executive member at our next event.</li>
@@ -189,8 +190,6 @@ export default function MembershipPage() {
 							{paymentMethod === PaymentMethod.OTHER && (
 								<li>• An executive member will contact you to arrange payment.</li>
 							)}
-							<li>• Include your full name in the payment description/notes.</li>
-							<li>• You will receive a confirmation email once your membership is approved.</li>
 						</ul>
 					</div>
 
@@ -270,9 +269,6 @@ export default function MembershipPage() {
 						>
 							<option value={MembershipType.UBC_STUDENT} className="bg-primary-bg">
 								UBC Student
-							</option>
-							<option value={MembershipType.NON_UBC_STUDENT} className="bg-primary-bg">
-								Non-UBC Student
 							</option>
 							<option value={MembershipType.NON_STUDENT} className="bg-primary-bg">
 								Non-Student
