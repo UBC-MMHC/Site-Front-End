@@ -104,7 +104,7 @@ const HomePage = () => {
 						<h2 className="text-primary-text mb-5 text-center text-4xl font-bold tracking-wide">
 							Upcoming Events
 						</h2>
-						<EventList />
+						<EventList limit={4} />
 					</section>
 
 					{/*Newsletter*/}
