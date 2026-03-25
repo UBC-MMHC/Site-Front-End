@@ -101,11 +101,12 @@ export function EventByYear({ events }: Readonly<{ events: CalendarEventView[] }
 	);
 }
 
-export default async function EventList() {
+export default async function EventList({ limit }: { limit?: number } = {}) {
 	const events = await getFutureCalendarEvents(); // server-side fetch (no client call)
-	const upcomingEventViews = buildCalendarEventViews(events);
+	const allViews = buildCalendarEventViews(events);
+	const upcomingEventViews = limit ? allViews.slice(0, limit) : allViews;
 
-	if (!upcomingEventViews.length) {
+	if (!allViews.length) {
 		return (
 			<div className="rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
 				<p className="mb-1 font-medium text-gray-700">No upcoming events found.</p>

@@ -104,7 +104,7 @@ const HomePage = () => {
 						<h2 className="text-primary-text mb-5 text-center text-4xl font-bold tracking-wide">
 							Upcoming Events
 						</h2>
-						<EventList />
+						<EventList limit={4} />
 					</section>
 
 					{/*Newsletter*/}
@@ -121,14 +121,14 @@ const HomePage = () => {
 							</div>
 
 							<div className="flex flex-1 flex-col items-center">
-								<div className="relative mb-4 h-48 w-48 overflow-hidden rounded-full md:h-56 md:w-56">
+								{/* <div className="relative mb-4 h-48 w-48 overflow-hidden rounded-full md:h-56 md:w-56">
 									<Image
 										src="/MMHC_cropped_logo.png"
 										alt="UBC MMHC logo"
 										fill
-										className="object-cover"
+										className="object-contain"
 									/>
-								</div>
+								</div> */}
 								<NewsletterSignup />
 							</div>
 						</div>
