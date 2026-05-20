@@ -1,0 +1,388 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@custom-variant dark (&:is(.dark *));
+
+/* Theme tokens — light (:root) / dark (.dark) */
+:root {
+	--theme-page: #f8fafc;
+	--theme-page-fg: #0f172a;
+	--theme-fg-muted: #5b6b82;
+	--theme-surface: #ffffff;
+	--theme-surface-elevated: #f0f4f8;
+	--theme-surface-alt: #e8eef6;
+	--theme-border: #d4dce8;
+	--theme-nav: rgb(248 250 252 / 0.95);
+	--theme-pill: #16345a;
+	--theme-pill-fg: #f8fafc;
+	--theme-accent: #16345a;
+	--theme-accent-hover: #1f4570;
+	--theme-accent-muted: #3d5f8a;
+	--theme-line: #b8c5d9;
+	--theme-watermark: #dce4ef;
+	--theme-focus: #3d5f8a;
+	--theme-selection: #c5d4e8;
+	--theme-hero-base: #0f1f38;
+	--theme-tree-trunk: #6b5344;
+	--theme-tree-leaf: #2d5a4a;
+}
+
+/* Dark mode: navy palette (aligned with brand accent #16345A).
+   REVERT: replace .dark block below with the zinc/black values in the comment. */
+.dark {
+	--theme-page: #0b1529;
+	--theme-page-fg: #f1f5f9;
+	--theme-fg-muted: #94a3b8;
+	--theme-surface: rgb(19 34 56 / 0.7);
+	--theme-surface-elevated: rgb(30 51 82 / 0.65);
+	--theme-surface-alt: #0f1f38;
+	--theme-border: rgb(61 95 138 / 0.55);
+	--theme-nav: rgb(11 21 41 / 0.95);
+	--theme-pill: #e8eef6;
+	--theme-pill-fg: #0b1529;
+	--theme-accent: #7eb0e8;
+	--theme-accent-hover: #9cc4f0;
+	--theme-accent-muted: #5b8fd4;
+	--theme-line: #2e4a6e;
+	--theme-watermark: #060d18;
+	--theme-focus: #5b8fd4;
+	--theme-selection: #1e3a5f;
+	--theme-hero-base: #0b1529;
+	--theme-tree-trunk: #8b7355;
+	--theme-tree-leaf: #4a8f6e;
+}
+
+/* REVERT dark mode (zinc/black):
+.dark {
+	--theme-page: #09090b;
+	--theme-page-fg: #fafafa;
+	--theme-fg-muted: #a1a1aa;
+	--theme-surface: rgb(24 24 27 / 0.4);
+	--theme-surface-elevated: rgb(39 39 42 / 0.5);
+	--theme-border: rgb(39 39 42 / 0.8);
+	--theme-nav: rgb(9 9 11 / 0.95);
+	--theme-pill: #fafafa;
+	--theme-pill-fg: #09090b;
+}
+*/
+
+@theme {
+	--color-page: var(--theme-page);
+	--color-page-fg: var(--theme-page-fg);
+	--color-fg-muted: var(--theme-fg-muted);
+	--color-surface: var(--theme-surface);
+	--color-surface-elevated: var(--theme-surface-elevated);
+	--color-surface-alt: var(--theme-surface-alt);
+	--color-border: var(--theme-border);
+	--color-nav: var(--theme-nav);
+	--color-pill: var(--theme-pill);
+	--color-pill-fg: var(--theme-pill-fg);
+	--color-theme-accent: var(--theme-accent);
+	--color-theme-accent-hover: var(--theme-accent-hover);
+	--color-theme-accent-muted: var(--theme-accent-muted);
+	--color-theme-line: var(--theme-line);
+	--color-theme-watermark: var(--theme-watermark);
+	--color-theme-focus: var(--theme-focus);
+	--color-hero-base: var(--theme-hero-base);
+
+	/* ── Brand Colors ────────────────────────────────────────────────── */
+	--color-primary: #2D5A4A;
+	--color-primary-hover: #3b745f;
+	--color-primary-active: #1f4236;
+	--color-accent: #16345A;
+	--color-accent-hover: #1f4570;
+
+	/* ── Text Colors ─────────────────────────────────────────────────── */
+	--color-ink: #1A1A1A;
+	--color-body: #1A1A1A;
+	--color-body-strong: #000000;
+	--color-body-on-light: #1A1A1A;
+	--color-body-on-dark: #F7F5F2;
+	--color-muted: #6B6B6B;
+	--color-muted-soft: #8a8a8a;
+	--color-on-primary: #ffffff;
+	--color-on-dark: #ffffff;
+	--color-on-light: #1A1A1A;
+
+	/* ── Surface Colors ──────────────────────────────────────────────── */
+	--color-canvas: #F7F5F2;
+	--color-canvas-elevated: #ffffff;
+	--color-canvas-dark: #16345A;
+	--color-canvas-light: #ffffff;
+	--color-surface-card: #FFFFFF;
+	--color-surface-soft-light: #E8E4DF;
+	--color-surface-strong-light: #D4CFC7;
+	--color-surface-warm: #E8E4DF;
+
+	/* ── Borders ─────────────────────────────────────────────────────── */
+	--color-hairline: #D4CFC7;
+	--color-hairline-on-light: #D4CFC7;
+	--color-hairline-soft: #E8E4DF;
+	--color-hairline-on-dark: #2a4870;
+
+	/* ── Semantic ────────────────────────────────────────────────────── */
+	--color-semantic-info: #5b8db8;
+	--color-semantic-success: #6b9d7a;
+	--color-semantic-warning: #e8a55c;
+	--color-semantic-urgent: #B85450;
+
+	/* ── Supporting Accents ──────────────────────────────────────────── */
+	--color-accent-sage: #7ba882;
+	--color-accent-clay: #c17c5b;
+	--color-accent-gold: #d4a574;
+
+	/* ── Spacing ─────────────────────────────────────────────────────── */
+	--spacing-xxxs: 4px;
+	--spacing-xxs: 8px;
+	--spacing-xs: 12px;
+	--spacing-sm: 16px;
+	--spacing-md: 24px;
+	--spacing-lg: 32px;
+	--spacing-xl: 48px;
+	--spacing-xxl: 64px;
+	--spacing-super: 96px;
+	--spacing-mega: 128px;
+
+	/* ── Border Radius ───────────────────────────────────────────────── */
+	--radius-xs: 4px;
+	--radius-sm: 6px;
+	--radius-md: 8px;
+	--radius-lg: 12px;
+	--radius-xl: 16px;
+	--radius-xxl: 24px;
+	--radius-full: 9999px;
+
+	/* ── Shadows ─────────────────────────────────────────────────────── */
+	--shadow-sm: 0 2px 8px rgba(22, 52, 90, 0.08);
+	--shadow-md: 0 4px 16px rgba(22, 52, 90, 0.12);
+	--shadow-lg: 0 8px 24px rgba(22, 52, 90, 0.16);
+	--shadow-focus: 0 0 0 3px rgba(45, 90, 74, 0.2);
+
+	/* ── Fonts ───────────────────────────────────────────────────────── */
+	--font-heading: var(--font-manrope);
+	--font-sans: var(--font-inter);
+	--font-display: var(--font-playfair);
+
+	--ease-spring: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@layer components {
+	.eyebrow {
+		font-size: 0.6875rem;
+		font-weight: 500;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+
+	.eyebrow-on-dark {
+		font-size: 0.6875rem;
+		font-weight: 500;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: rgb(255 255 255 / 0.6);
+	}
+
+	.display-accent {
+		font-family: var(--font-playfair), Georgia, serif;
+		font-style: italic;
+		font-weight: 400;
+	}
+}
+
+@layer base {
+	*, *::before, *::after {
+		box-sizing: border-box;
+	}
+
+	body {
+		background-color: var(--theme-page);
+		color: var(--theme-page-fg);
+		font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+	}
+
+	.dark {
+		color-scheme: dark;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		font-family: var(--font-manrope), var(--font-inter), sans-serif;
+	}
+
+	/* ─── Global form element defaults ────────────────────────────────── */
+	/* Inside @layer base so Tailwind utility classes can override them   */
+
+	/* Scoped to legacy forms — use data-form-ui or data-inline on modern forms */
+	form:not([data-inline]):not([data-form-ui]) input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="range"]):not([type="file"]),
+	form:not([data-inline]):not([data-form-ui]) select,
+	form:not([data-inline]):not([data-form-ui]) textarea {
+		display: block;
+		width: 100%;
+		min-height: 48px;
+		padding: 12px 16px;
+		font-size: 15px;
+		line-height: 1.5;
+		color: var(--color-ink);
+		background-color: #ffffff;
+		border: 1px solid var(--color-hairline);
+		border-radius: 6px;
+		outline: none;
+		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	form:not([data-inline]):not([data-form-ui]) input:not([type="checkbox"]):not([type="radio"])::placeholder,
+	form:not([data-inline]):not([data-form-ui]) textarea::placeholder {
+		color: var(--color-muted);
+	}
+
+	form:not([data-inline]):not([data-form-ui]) input:not([type="checkbox"]):not([type="radio"]):focus,
+	form:not([data-inline]):not([data-form-ui]) select:focus,
+	form:not([data-inline]):not([data-form-ui]) textarea:focus {
+		border-color: var(--color-primary);
+		box-shadow: 0 0 0 3px rgba(45, 90, 74, 0.15);
+	}
+
+	form:not([data-inline]):not([data-form-ui]) input:not([type="checkbox"]):not([type="radio"]):disabled,
+	form:not([data-inline]):not([data-form-ui]) select:disabled,
+	form:not([data-inline]):not([data-form-ui]) textarea:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	input[type="checkbox"],
+	input[type="radio"] {
+		width: 20px;
+		height: 20px;
+		min-height: unset;
+		padding: 0;
+		accent-color: var(--color-primary);
+	}
+}
+
+/* Page transition animation */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.page-transition {
+	animation: fadeIn 0.3s ease-out;
+}
+
+/* Smooth content fade-in */
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-slide-up {
+	animation: slideUp 0.4s ease-out forwards;
+}
+
+/* Subtle pulse for loading states */
+@keyframes subtlePulse {
+	0%,
+	100% {
+		opacity: 0.4;
+	}
+	50% {
+		opacity: 1;
+	}
+}
+
+.animate-subtle-pulse {
+	animation: subtlePulse 1.5s ease-in-out infinite;
+}
+
+/* Button transitions */
+button,
+a {
+	transition:
+		opacity 0.15s ease-in-out,
+		transform 0.15s ease-in-out,
+		box-shadow 0.15s ease-in-out,
+		background-color 0.15s ease-in-out;
+}
+
+button:active:not(:disabled) {
+	transform: translateY(0px) scale(0.98);
+}
+
+@utility ease-spring {
+	transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Newsletter pill — prevent global form/button defaults from breaking layout */
+form[data-inline].newsletter-pill-form {
+	display: block;
+	width: 100%;
+	max-width: 28rem; /* explicit rem — not max-w-md (maps to 24px spacing token) */
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: transparent;
+}
+
+form[data-inline].newsletter-pill-form .newsletter-pill-input {
+	display: block;
+	width: 100%;
+	min-height: unset;
+	height: auto;
+	margin: 0;
+	padding: 0.75rem 6.75rem 0.75rem 1.25rem;
+	font-size: 14px;
+	line-height: 1.25;
+	color: var(--theme-page-fg);
+	background-color: var(--theme-surface);
+	border: 1px solid var(--theme-border);
+	border-radius: 9999px;
+	box-shadow: none;
+}
+
+form[data-inline].newsletter-pill-form .newsletter-pill-input:focus {
+	border-color: var(--theme-fg-muted);
+	box-shadow: none;
+	outline: none;
+}
+
+form[data-inline].newsletter-pill-form .newsletter-pill-button {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	bottom: 4px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: auto;
+	min-height: unset;
+	height: auto;
+	margin: 0;
+	padding: 0 1rem;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1;
+	color: var(--theme-pill-fg);
+	background-color: var(--theme-pill);
+	border: none;
+	border-radius: 9999px;
+	cursor: pointer;
+	transform: none;
+}
+
+form[data-inline].newsletter-pill-form .newsletter-pill-button:hover:not(:disabled) {
+	opacity: 0.9;
+}
+
+form[data-inline].newsletter-pill-form .newsletter-pill-button:active:not(:disabled) {
+	transform: none;
+}
+

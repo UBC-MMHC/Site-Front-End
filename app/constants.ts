@@ -1,0 +1,35 @@
+export const INSTAGRAM_URL = "https://www.instagram.com/ubcmmhc/";
+export const EMAIL = "ubcmmhc@gmail.com";
+export const LINK_TREE = "https://linktr.ee/ubcmmhc";
+export const MEMBERSHIP_SIGNUP_URL = "/membership";
+export const EXEC_SIGNUP_URL = "https://forms.gle/hSoutj9TMcdKuqaK8";
+export const LINKEDIN_URL = "https://www.linkedin.com/company/ubcmmhc/posts";
+export const DISCORD_URL = "https://discord.gg/fkJUwnU6pF";
+export const GOOGLE_CALENDAR_URL =
+	"https://calendar.google.com/calendar?cid=dWJjbW1oY0BnbWFpbC5jb20";
+
+const backendUrl = process.env.NEXT_PUBLIC_BASE_URL_API || "http://localhost:8080";
+
+// API routes go through Next.js proxy (defined in next.config.ts)
+export const API_ROUTES_URL = {
+	login_email: "/api/auth/login-user",
+	login_google: `${backendUrl}/oauth2/authorization/google`,
+	register_email: "/api/auth/register-user",
+	forgot_password: "/api/auth/forgot-password",
+	reset_password: "/api/auth/reset-password",
+	logout: "/api/auth/logout",
+	set_token: "/api/auth/set-token",
+	subscribe_email_to_newsletter: "/api/newsletter/add-email",
+
+	// Membership
+	membership_register: "/api/membership/register",
+	membership_status: "/api/membership/status",
+	membership_check: "/api/membership/check",
+	membership_my_status: "/api/membership/my-status",
+	membership_retry_payment: "/api/membership/retry-payment",
+
+	// Admin
+	admin_pending_memberships: "/api/admin/memberships/pending",
+	admin_approve_membership: "/api/admin/memberships",
+	admin_assign_role: "/api/admin/users",
+};
