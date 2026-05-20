@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import ConditionalFooter from "@/components/ConditionalFooter";
+import SiteFooter from "@/components/SiteFooter";
 import { Inter, Manrope, Playfair_Display } from "next/font/google";
 import ClientProviders from "@/components/ClientProviders";
 
@@ -41,7 +41,7 @@ export default function RootLayout({
 				<ClientProviders>
 					<Navbar />
 					<div className="page-transition min-h-screen">{children}</div>
-					<ConditionalFooter />
+					<SiteFooter />
 				</ClientProviders>
 			</body>
 		</html>
