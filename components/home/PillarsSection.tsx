@@ -26,7 +26,7 @@ export default function PillarsSection() {
 	return (
 		<section id="pillars" className="bg-page py-32">
 			<div className="mx-auto max-w-7xl px-6">
-				<div className="mx-auto mb-20 max-w-2xl text-center">
+				<div className="mx-auto mb-20 max-w-copy text-center">
 					<h2 className={`text-3xl font-semibold tracking-tight md:text-4xl ${textHeading}`}>
 						Our Three Pillars
 					</h2>

@@ -10,6 +10,7 @@ import {
 	MEMBERSHIP_SIGNUP_URL,
 } from "@/app/constants";
 import NewsletterSignup from "@/components/newsletter/newsletterSignup";
+import ThemeToggle from "@/components/ThemeToggle";
 import { textHeading, textMuted, textSubtle } from "@/lib/theme";
 
 const linkClass =
@@ -120,10 +121,11 @@ export default function SiteFooter() {
 					</div>
 				</div>
 
-				<div className="border-t border-border pt-8">
-					<p className={`text-center text-xs font-medium ${textSubtle}`}>
+				<div className="flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
+					<p className={`text-center text-xs font-medium sm:text-left ${textSubtle}`}>
 						&copy; {new Date().getFullYear()} UBC Men&apos;s Mental Health Club. Community. Grit. Growth.
 					</p>
+					<ThemeToggle showLabel />
 				</div>
 			</div>
 		</footer>

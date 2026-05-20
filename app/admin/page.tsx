@@ -2,6 +2,22 @@
 
 import React, { useState, useEffect } from "react";
 import { API_ROUTES_URL } from "@/app/constants";
+import DarkPageShell from "@/components/layout/DarkPageShell";
+import { AuthLoading } from "@/components/layout/AuthLoading";
+import {
+	formInputClass,
+	formLabelClass,
+	FormButton,
+	FormSelect,
+} from "@/components/ui/form";
+import {
+	pageShell,
+	pillOutline,
+	pillPrimary,
+	surfaceCard,
+	textHeading,
+	textMuted,
+} from "@/lib/theme";
 
 interface PendingMembership {
 	email: string;
@@ -70,7 +86,7 @@ export default function AdminPage(): React.ReactElement {
 				throw new Error(data.error || "Failed to approve membership");
 			}
 			setActionStatus({ type: "success", message: `Approved ${email} via ${paymentMethod}` });
-			fetchPendingMemberships(); // Refresh list
+			fetchPendingMemberships();
 		} catch (err) {
 			setActionStatus({
 				type: "error",
@@ -138,45 +154,38 @@ export default function AdminPage(): React.ReactElement {
 	};
 
 	if (loading) {
-		return (
-			<div className="bg-primary-bg text-primary-text flex min-h-screen items-center justify-center">
-				<div className="animate-subtle-pulse text-xl">Loading...</div>
-			</div>
-		);
+		return <AuthLoading />;
 	}
 
 	if (error) {
 		return (
-			<div className="bg-primary-bg text-primary-text flex min-h-screen items-center justify-center">
+			<DarkPageShell className="flex min-h-screen flex-col items-center justify-center px-6">
 				<div className="text-center">
-					<p className="text-danger mb-4 text-xl">{error}</p>
-					<button
-						onClick={fetchPendingMemberships}
-						className="bg-accent-2 hover:bg-accent-2/80 rounded px-4 py-2 text-white transition-colors"
-					>
+					<p className="mb-4 text-xl text-red-600 dark:text-red-400">{error}</p>
+					<button type="button" onClick={fetchPendingMemberships} className={pillPrimary}>
 						Retry
 					</button>
 				</div>
-			</div>
+			</DarkPageShell>
 		);
 	}
 
 	return (
-		<div className="bg-primary-bg text-primary-text min-h-screen px-6 py-12">
-			<div className="mx-auto max-w-6xl">
-				<h1 className="mb-8 text-4xl font-semibold">Admin Panel</h1>
+		<div className={`${pageShell} px-6 py-12 pt-28`}>
+			<div className="mx-auto w-full max-w-hero">
+				<h1 className={`mb-8 text-4xl font-semibold ${textHeading}`}>Admin Panel</h1>
 
-				{/* Status message */}
 				{actionStatus && (
 					<div
 						className={`mb-6 rounded-lg p-4 ${
 							actionStatus.type === "success"
-								? "bg-accent-2/20 text-accent-2"
-								: "bg-danger/20 text-danger"
+								? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
+								: "bg-red-500/10 text-red-700 dark:text-red-400"
 						}`}
 					>
 						{actionStatus.message}
 						<button
+							type="button"
 							onClick={() => setActionStatus(null)}
 							className="ml-4 text-sm opacity-70 hover:opacity-100"
 						>
@@ -185,53 +194,62 @@ export default function AdminPage(): React.ReactElement {
 					</div>
 				)}
 
-				{/* Pending Memberships Section */}
 				<section className="mb-12">
-					<h2 className="text-grey-text mb-4 text-2xl font-medium">Pending Memberships</h2>
+					<h2 className={`mb-4 text-2xl font-medium ${textHeading}`}>Pending Memberships</h2>
 					{pendingMemberships.length === 0 ? (
-						<p className="text-grey-text/60">No pending memberships</p>
+						<p className={textMuted}>No pending memberships</p>
 					) : (
-						<div className="overflow-x-auto">
+						<div className={`overflow-x-auto ${surfaceCard}`}>
 							<table className="w-full border-collapse">
 								<thead>
-									<tr className="border-grey-text/20 border-b">
-										<th className="text-grey-text px-4 py-3 text-left text-sm font-medium">Name</th>
-										<th className="text-grey-text px-4 py-3 text-left text-sm font-medium">
+									<tr className="border-b border-border">
+										<th className={`px-4 py-3 text-left text-sm font-medium ${textMuted}`}>
+											Name
+										</th>
+										<th className={`px-4 py-3 text-left text-sm font-medium ${textMuted}`}>
 											Email
 										</th>
-										<th className="text-grey-text px-4 py-3 text-left text-sm font-medium">Type</th>
-										<th className="text-grey-text px-4 py-3 text-left text-sm font-medium">
+										<th className={`px-4 py-3 text-left text-sm font-medium ${textMuted}`}>
+											Type
+										</th>
+										<th className={`px-4 py-3 text-left text-sm font-medium ${textMuted}`}>
 											Student ID
 										</th>
-										<th className="text-grey-text px-4 py-3 text-left text-sm font-medium">
+										<th className={`px-4 py-3 text-left text-sm font-medium ${textMuted}`}>
 											Actions
 										</th>
 									</tr>
 								</thead>
 								<tbody>
 									{pendingMemberships.map((m) => (
-										<tr key={m.email} className="border-grey-text/10 border-b hover:bg-white/5">
+										<tr
+											key={m.email}
+											className="border-b border-border/50 hover:bg-surface-elevated/50"
+										>
 											<td className="px-4 py-3">{m.fullName}</td>
 											<td className="px-4 py-3 text-sm">{m.email}</td>
 											<td className="px-4 py-3 text-sm">{m.membershipType}</td>
-											<td className="px-4 py-3 text-sm">{m.studentId || "-"}</td>
+											<td className="px-4 py-3 text-sm">{m.studentId || "—"}</td>
 											<td className="px-4 py-3">
-												<div className="flex gap-2">
+												<div className="flex flex-wrap gap-2">
 													<button
+														type="button"
 														onClick={() => approveMembership(m.email, "CASH")}
-														className="bg-accent-2 hover:bg-accent-2/80 rounded px-3 py-1 text-sm text-white transition-colors"
+														className={pillPrimary}
 													>
 														Cash
 													</button>
 													<button
+														type="button"
 														onClick={() => approveMembership(m.email, "ETRANSFER")}
-														className="rounded bg-blue-500 px-3 py-1 text-sm text-white transition-colors hover:bg-blue-400"
+														className="rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition-colors hover:bg-blue-500"
 													>
 														E-Transfer
 													</button>
 													<button
+														type="button"
 														onClick={() => approveMembership(m.email, "OTHER")}
-														className="text-grey-text hover:text-primary-text rounded border border-current px-3 py-1 text-sm transition-colors"
+														className={pillOutline}
 													>
 														Other
 													</button>
@@ -245,46 +263,46 @@ export default function AdminPage(): React.ReactElement {
 					)}
 				</section>
 
-				{/* Role Management Section */}
 				<section>
-					<h2 className="text-grey-text mb-4 text-2xl font-medium">Role Management</h2>
-					<div className="bg-accent-1/30 max-w-md rounded-lg p-6">
-						<div className="mb-4">
-							<label className="text-grey-text mb-2 block text-sm">User Email</label>
+					<h2 className={`mb-4 text-2xl font-medium ${textHeading}`}>Role Management</h2>
+					<div className={`max-w-form p-6 ${surfaceCard}`}>
+						<div className="mb-4" data-form-ui>
+							<label className={formLabelClass}>User Email</label>
 							<input
 								type="email"
 								value={roleEmail}
 								onChange={(e) => setRoleEmail(e.target.value)}
 								placeholder="user@example.com"
-								className="border-grey-text/30 focus:border-accent-2 bg-primary-bg w-full rounded border px-4 py-2 text-white transition-colors outline-none"
+								className={formInputClass}
 							/>
 						</div>
-						<div className="mb-4">
-							<label className="text-grey-text mb-2 block text-sm">Role</label>
-							<select
+						<div className="mb-4" data-form-ui>
+							<label className={formLabelClass}>Role</label>
+							<FormSelect
 								value={selectedRole}
 								onChange={(e) => setSelectedRole(e.target.value as RoleType)}
-								className="border-grey-text/30 focus:border-accent-2 bg-primary-bg w-full rounded border px-4 py-2 text-white transition-colors outline-none"
 							>
 								<option value="ROLE_USER">ROLE_USER</option>
 								<option value="ROLE_ADMIN">ROLE_ADMIN</option>
 								<option value="ROLE_SUPERADMIN">ROLE_SUPERADMIN</option>
-							</select>
+							</FormSelect>
 						</div>
 						<div className="flex gap-3">
-							<button
-								onClick={assignRole}
+							<FormButton
+								variant="primary"
+								className="flex-1 !w-auto"
 								disabled={!roleEmail || roleLoading}
-								className="bg-accent-2 hover:bg-accent-2/80 flex-1 rounded px-4 py-2 text-white transition-colors disabled:opacity-50"
+								onClick={assignRole}
 							>
-								{roleLoading ? "..." : "Assign Role"}
-							</button>
+								{roleLoading ? "…" : "Assign Role"}
+							</FormButton>
 							<button
+								type="button"
 								onClick={removeRole}
 								disabled={!roleEmail || roleLoading}
-								className="bg-danger hover:bg-danger/80 flex-1 rounded px-4 py-2 text-white transition-colors disabled:opacity-50"
+								className="flex-1 rounded-full bg-red-600 px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
 							>
-								{roleLoading ? "..." : "Remove Role"}
+								{roleLoading ? "…" : "Remove Role"}
 							</button>
 						</div>
 					</div>

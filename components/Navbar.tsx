@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { logout as logoutApi } from "@/components/api/auth";
-import ThemeToggle from "@/components/ThemeToggle";
 import { pillPrimary } from "@/lib/theme";
 
 const NAV_LINKS = [
@@ -148,7 +147,6 @@ export default function Navbar() {
 				</div>
 
 				<div className="hidden items-center gap-3 md:flex">
-					<ThemeToggle />
 					{isLoading ? null : isLoggedIn ? (
 						<button
 							type="button"
@@ -175,8 +173,7 @@ export default function Navbar() {
 					)}
 				</div>
 
-				<div className="flex items-center gap-2 md:hidden">
-					<ThemeToggle />
+				<div className="flex items-center md:hidden">
 					<button
 						ref={mobileMenuButtonRef}
 						type="button"

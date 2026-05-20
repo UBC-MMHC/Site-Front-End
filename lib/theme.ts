@@ -35,3 +35,22 @@ export const eyebrowBadge =
 
 export const dashedEmpty =
 	"rounded-2xl border border-dashed border-border px-8 py-16 text-center";
+
+/** Centered full-viewport content (dashboard, profile, loading states). */
+export const centerPage =
+	"flex min-h-screen w-full flex-col items-center justify-center px-6";
+
+/** Readable text column — uses --max-width-content, not max-w-xl (48px spacing token). */
+export const contentColumn = "mx-auto w-full min-w-0 max-w-content text-center";
+
+/** Subcopy / forms — uses --max-width-copy / --max-width-form */
+export const copyColumn = "mx-auto w-full min-w-0 max-w-copy";
+export const formColumn = "mx-auto w-full min-w-0 max-w-form";
+
+export const loadingPulse = `animate-subtle-pulse ${textMuted}`;
+
+export const authSpinner =
+	"mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-border border-t-theme-accent";
+
+export const paymentBanner =
+	"border-b border-amber-500/30 bg-amber-500/10 px-4 py-3 backdrop-blur-sm";

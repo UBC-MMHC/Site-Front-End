@@ -142,6 +142,16 @@
 	--spacing-super: 96px;
 	--spacing-mega: 128px;
 
+	/* Max-width caps (rem). Do not use max-w-sm/md/xl/2xl — those alias --spacing-* (16–64px). */
+	--max-width-form: 28rem;
+	--max-width-narrow: 24rem;
+	--max-width-content: 36rem;
+	--max-width-copy: 42rem;
+	--max-width-blog: 48rem;
+	--max-width-wide: 64rem;
+	--max-width-hero: 72rem;
+	--max-width-section: 80rem;
+
 	/* ── Border Radius ───────────────────────────────────────────────── */
 	--radius-xs: 4px;
 	--radius-sm: 6px;

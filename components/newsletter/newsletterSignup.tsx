@@ -80,7 +80,7 @@ const NewsletterSignup = ({ layout = "inline" }: NewsletterSignupProps) => {
 	const isInline = layout === "inline";
 
 	return (
-		<div className="w-full max-w-md min-w-0">
+		<div className="w-full max-w-form min-w-0">
 			<form
 				data-inline
 				onSubmit={(e) => {

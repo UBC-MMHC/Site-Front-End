@@ -10,12 +10,12 @@ export const formSelectClass = `${formInputClass} cursor-pointer appearance-none
 
 export const formLabelClass = "mb-2 block text-sm font-medium text-zinc-700 dark:text-page-fg";
 
-export const formHintClass = "mt-1.5 text-xs text-zinc-500";
+export const formHintClass = "mt-1.5 text-xs text-zinc-500 dark:text-fg-muted";
 
 export function FormPageShell({ children }: { children: ReactNode }) {
 	return (
 		<div className={`w-full px-4 py-24 pt-28 ${pageShell}`}>
-			<div className="mx-auto w-[min(100%,28rem)]">{children}</div>
+			<div className="mx-auto w-full min-w-0 max-w-form">{children}</div>
 		</div>
 	);
 }
@@ -28,7 +28,7 @@ export function FormCard({
 	className?: string;
 }) {
 	return (
-		<div className={`w-full p-8 shadow-lg backdrop-blur-sm ${surfaceCard} ${className}`}>
+		<div className={`w-full min-w-0 p-8 shadow-lg backdrop-blur-sm ${surfaceCard} ${className}`}>
 			{children}
 		</div>
 	);

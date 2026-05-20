@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import type { MembershipRegistrationData, MyMembershipStatus } from "@/components/api/membership";
+import type { ApiError } from "@/components/api/apiErrorHandling";
 import {
 	registerMembership,
 	retryPayment,
@@ -205,6 +206,21 @@ export default function MembershipPage() {
 			}
 		} catch (err: unknown) {
 			setIsLoading(false);
+
+			const apiErr = err as ApiError;
+			if (apiErr.status === 409 || apiErr.status === 503) {
+				try {
+					const status = await getMyMembershipStatus();
+					if (status.hasMembership && !status.isPaid) {
+						setExistingMembership(status);
+						setError(null);
+						return;
+					}
+				} catch {
+					// Fall through to show API error message
+				}
+			}
+
 			setError(err instanceof Error ? err.message : "An error occurred");
 		}
 	};

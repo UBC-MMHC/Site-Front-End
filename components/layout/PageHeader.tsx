@@ -19,7 +19,7 @@ export default function PageHeader({
 			)}
 			<h1 className={`text-3xl font-semibold tracking-tight md:text-5xl ${textHeading}`}>{title}</h1>
 			{description && (
-				<p className={`mt-4 max-w-2xl text-base leading-relaxed md:text-lg ${textMuted}`}>{description}</p>
+				<p className={`mt-4 max-w-copy text-base leading-relaxed md:text-lg ${textMuted}`}>{description}</p>
 			)}
 		</header>
 	);

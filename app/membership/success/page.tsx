@@ -1,11 +1,16 @@
 "use client";
-import "../../globals.css";
+
 import Link from "next/link";
 import { useEffect, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import {
+	FormButton,
+	FormCard,
+	FormHeader,
+	FormPageShell,
+} from "@/components/ui/form";
+import { loadingPulse } from "@/lib/theme";
 
 function SuccessContent() {
-	const _searchParams = useSearchParams();
 	const [isVerifying, setIsVerifying] = useState(true);
 	const [showContent, setShowContent] = useState(false);
 
@@ -19,46 +24,39 @@ function SuccessContent() {
 	}, []);
 
 	if (isVerifying) {
-		return <div className="text-grey-text/60 animate-subtle-pulse">Confirming payment...</div>;
+		return <p className={loadingPulse}>Confirming payment…</p>;
 	}
 
 	return (
-		<div className={`transition-opacity duration-500 ${showContent ? "opacity-100" : "opacity-0"}`}>
-			<div className="bg-accent-2 mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-full">
+		<div
+			className={`transition-opacity duration-500 ${showContent ? "opacity-100" : "opacity-0"}`}
+		>
+			<div className="mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-full bg-theme-accent">
 				<svg className="h-7 w-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
 				</svg>
 			</div>
 
-			<h1 className="mb-3 text-3xl font-light tracking-tight">Welcome to the Club</h1>
-			<p className="text-grey-text/70 mb-10 font-light">
-				Your membership is now active.
-				<br />
-				Thank you for joining us.
-			</p>
+			<FormHeader
+				title="Welcome to the Club"
+				description="Your membership is now active. Thank you for joining us."
+			/>
 
-			<Link
-				href="/dashboard"
-				className="bg-primary-text text-primary-bg inline-block w-full rounded-lg py-3.5 font-medium transition hover:opacity-90"
-			>
-				Go to Dashboard
+			<Link href="/dashboard" className="mt-8 block">
+				<FormButton variant="primary">Go to Dashboard</FormButton>
 			</Link>
 		</div>
 	);
 }
 
-function LoadingFallback() {
-	return <div className="text-grey-text/60 animate-subtle-pulse">Loading...</div>;
-}
-
 export default function MembershipSuccessPage() {
 	return (
-		<div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center justify-center px-6">
-			<div className="w-full max-w-sm text-center">
-				<Suspense fallback={<LoadingFallback />}>
+		<FormPageShell>
+			<FormCard className="text-center">
+				<Suspense fallback={<p className={loadingPulse}>Loading…</p>}>
 					<SuccessContent />
 				</Suspense>
-			</div>
-		</div>
+			</FormCard>
+		</FormPageShell>
 	);
 }
