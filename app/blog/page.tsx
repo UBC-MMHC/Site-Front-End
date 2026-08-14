@@ -1,30 +1,34 @@
 "use client";
 
-import React from "react";
-import { BlogMainPage } from "@ubc-mmhc/blog-frontend";
+import DarkBlogMainPage from "@/components/blog/DarkBlogMainPage";
+import DarkPageShell from "@/components/layout/DarkPageShell";
+import PageHeader from "@/components/layout/PageHeader";
 import type { BlogPostWithAuthor } from "./types";
 import { BLOG_POSTS } from "./blogData";
 
-export default function BlogPage(): React.ReactElement {
+export default function BlogPage() {
 	return (
-		<div className="flex min-h-screen w-full flex-col items-center px-4 pt-24">
-			{BLOG_POSTS?.length > 0 ? (
-				<div className="max-w-4xl">
-					<BlogMainPage
-						posts={BLOG_POSTS}
-						getPostHref={function (post: BlogPostWithAuthor): string {
-							return `/blog/${post.slug}`;
-						}}
+		<DarkPageShell>
+			<main className="px-6 pb-24 pt-28">
+				<div className="mx-auto max-w-7xl">
+					<PageHeader
+						title="Blog"
+						description="Reflections, updates, and perspectives from the UBC MMHC community."
 					/>
+
+					{BLOG_POSTS?.length > 0 ? (
+						<DarkBlogMainPage
+							posts={BLOG_POSTS}
+							getPostHref={(post: BlogPostWithAuthor) => `/blog/${post.slug}`}
+						/>
+					) : (
+						<div className="rounded-2xl border border-dashed border-border px-8 py-16 text-center">
+							<p className="font-medium text-page-fg">No posts yet.</p>
+							<p className="mt-2 text-sm text-fg-muted">Check back soon for new articles.</p>
+						</div>
+					)}
 				</div>
-			) : (
-				// Remove this case and ternary once blog handles this case
-				<div>
-					<p className="text-secondary-text text-xl leading-relaxed">
-						No blogs found, please try again later.
-					</p>
-				</div>
-			)}
-		</div>
+			</main>
+		</DarkPageShell>
 	);
 }

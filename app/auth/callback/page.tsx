@@ -4,6 +4,7 @@ import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { API_ROUTES_URL } from "@/app/constants";
+import { AuthSpinner } from "@/components/layout/AuthLoading";
 
 function AuthCallbackContent() {
 	const router = useRouter();
@@ -47,28 +48,12 @@ function AuthCallbackContent() {
 		setTokenCookie();
 	}, [router, searchParams, setIsLoggedIn]);
 
-	return (
-		<div className="bg-primary-bg flex min-h-screen items-center justify-center">
-			<div className="text-center">
-				<div className="border-accent-2/30 border-t-accent-2 mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2" />
-				<p className="text-grey-text">Completing sign in...</p>
-			</div>
-		</div>
-	);
+	return <AuthSpinner message="Completing sign in…" />;
 }
 
 export default function AuthCallbackPage() {
 	return (
-		<Suspense
-			fallback={
-				<div className="bg-primary-bg flex min-h-screen items-center justify-center">
-					<div className="text-center">
-						<div className="border-accent-2/30 border-t-accent-2 mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2" />
-						<p className="text-grey-text">Completing sign in...</p>
-					</div>
-				</div>
-			}
-		>
+		<Suspense fallback={<AuthSpinner message="Completing sign in…" />}>
 			<AuthCallbackContent />
 		</Suspense>
 	);

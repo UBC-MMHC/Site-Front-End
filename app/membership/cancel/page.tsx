@@ -1,14 +1,22 @@
 "use client";
-import "../../globals.css";
+
 import Link from "next/link";
+import {
+	FormButton,
+	FormCard,
+	FormFooterLink,
+	FormHeader,
+	FormPageShell,
+} from "@/components/ui/form";
+import { textMuted } from "@/lib/theme";
 
 export default function MembershipCancelPage() {
 	return (
-		<div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center justify-center px-6">
-			<div className="animate-slide-up w-full max-w-sm text-center">
-				<div className="bg-grey-text/20 mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-full">
+		<FormPageShell>
+			<FormCard className="animate-slide-up text-center">
+				<div className="mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-full bg-surface-elevated">
 					<svg
-						className="text-grey-text/60 h-7 w-7"
+						className={`h-7 w-7 ${textMuted}`}
 						fill="none"
 						stroke="currentColor"
 						viewBox="0 0 24 24"
@@ -22,29 +30,18 @@ export default function MembershipCancelPage() {
 					</svg>
 				</div>
 
-				<h1 className="mb-3 text-3xl font-light tracking-tight">Payment cancelled</h1>
-				<p className="text-grey-text/70 mb-10 font-light">
-					No charges were made.
-					<br />
-					You can try again whenever you&apos;re ready.
-				</p>
+				<FormHeader
+					title="Payment cancelled"
+					description="No charges were made. You can try again whenever you're ready."
+				/>
 
-				<div className="space-y-3">
-					<Link
-						href="/membership"
-						className="bg-accent-2 inline-block w-full rounded-lg py-3.5 font-medium text-white transition hover:opacity-90"
-					>
-						Try Again
+				<div className="mt-8 space-y-3">
+					<Link href="/membership" className="block">
+						<FormButton variant="primary">Try Again</FormButton>
 					</Link>
-
-					<Link
-						href="/"
-						className="text-grey-text/70 hover:text-grey-text inline-block w-full py-3.5 font-medium transition"
-					>
-						Return Home
-					</Link>
+					<FormFooterLink href="/">Return Home</FormFooterLink>
 				</div>
-			</div>
-		</div>
+			</FormCard>
+		</FormPageShell>
 	);
 }

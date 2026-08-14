@@ -1,22 +1,70 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import NavLink from "./NavLink";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { logout as logoutApi } from "@/components/api/auth";
-import { useRouter } from "next/navigation";
+import { pillPrimary } from "@/lib/theme";
 
-const Navbar = () => {
+const NAV_LINKS = [
+	{ href: "/", label: "Home" },
+	{ href: "/events", label: "Events" },
+	{ href: "/blog", label: "Blog" },
+	{ href: "/about", label: "About" },
+] as const;
+
+const AUTH_LINKS = [
+	{ href: "/dashboard", label: "Dashboard" },
+	{ href: "/profile", label: "Profile" },
+] as const;
+
+function NavItem({
+	href,
+	label,
+	onClick,
+	onHero = false,
+}: {
+	href: string;
+	label: string;
+	onClick?: () => void;
+	onHero?: boolean;
+}) {
+	const pathname = usePathname();
+	const isActive = pathname === href;
+
+	return (
+		<Link
+			href={href}
+			onClick={onClick}
+			className={`px-3 py-2 text-sm font-medium transition-colors md:px-4 ${
+				onHero
+					? isActive
+						? "text-white"
+						: "text-zinc-300 hover:text-white"
+					: isActive
+						? "text-page-fg"
+						: "text-fg-muted hover:text-page-fg"
+			}`}
+		>
+			{label}
+		</Link>
+	);
+}
+
+export default function Navbar() {
 	const { isLoggedIn, isLoading, logout } = useAuth();
 	const router = useRouter();
+	const pathname = usePathname();
+	const isHome = pathname === "/";
 
 	const [scrolled, setScrolled] = useState(false);
-	const [isOpen, setIsOpen] = useState<boolean>(false);
-
+	const [isOpen, setIsOpen] = useState(false);
 	const mobileMenuRef = useRef<HTMLDivElement>(null);
 	const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
+
+	const isTransparent = isHome && !scrolled && !isOpen;
 
 	const handleLogout = async () => {
 		try {
@@ -30,10 +78,12 @@ const Navbar = () => {
 	};
 
 	useEffect(() => {
-		const handleScroll = () => {
-			setScrolled(window.scrollY > 10);
-		};
+		setIsOpen(false);
+	}, [pathname]);
 
+	useEffect(() => {
+		const handleScroll = () => setScrolled(window.scrollY > 24);
+		handleScroll();
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
@@ -53,62 +103,136 @@ const Navbar = () => {
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, [isOpen]);
 
+	const closeMobile = () => setIsOpen(false);
+
+	const headerText = isTransparent ? "text-white" : "text-page-fg";
+
 	return (
-		<nav
-			className={`fixed top-0 z-50 w-full transition-all duration-300 ease-in-out ${scrolled ? "bg-primary-bg/80 backdrop-blur-xl" : "bg-transparent"} `}
+		<header
+			className={`fixed top-0 z-50 w-full transition-all duration-300 ${headerText} ${
+				isTransparent ? "bg-transparent" : "bg-nav/95 backdrop-blur-sm"
+			}`}
 		>
-			<div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-				<Link href="/" className="group flex items-center space-x-3">
+			<nav className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-4 px-6">
+				<Link href="/" className="flex shrink-0 items-center gap-2.5">
 					<Image
 						src="/MMHC_cropped_logo.png"
 						alt="UBC MMHC"
-						width={32}
-						height={32}
-						className="rounded-full opacity-90 transition-opacity group-hover:opacity-100"
+						width={28}
+						height={28}
+						className="rounded-full"
 					/>
-					<span className="text-primary-text text-lg font-medium tracking-tight opacity-90 transition-opacity group-hover:opacity-100">
-						UBC MMHC
-					</span>
+					<span className="text-[15px] font-semibold tracking-tight">UBC MMHC</span>
 				</Link>
 
-				<div
-					ref={mobileMenuRef}
-					className={`bg-primary-bg/80 fixed inset-x-0 top-0 flex flex-col items-end p-8 px-3 pt-20 transition-transform duration-250 ${isOpen ? "translate-y-0" : "-translate-y-full"} md:static md:translate-y-0 md:flex-row md:space-x-1 md:bg-transparent md:p-0`}
-				>
-					{isLoading ? null : (
-						<>
-							<NavLink href="/" text="Home" />
-							<NavLink href="/events" text="Events" />
-							<NavLink href="/blog" text="Blog" />
-							<NavLink href="/about" text="About" />
-							{isLoggedIn ? (
-								<>
-									<NavLink href="/dashboard" text="Dashboard" />
-									<NavLink href="/profile" text="Profile" />
-									<button
-										onClick={handleLogout}
-										className="text-grey-text/70 hover:text-primary-text px-4 py-2 text-sm transition-colors"
-									>
-										Sign Out
-									</button>
-								</>
-							) : (
-								<NavLink href="/login" text="Sign In" />
-							)}
-						</>
+				<div className="hidden items-center md:flex">
+					{NAV_LINKS.map((item) => (
+						<NavItem
+							key={item.href}
+							href={item.href}
+							label={item.label}
+							onHero={isTransparent}
+						/>
+					))}
+					{!isLoading &&
+						isLoggedIn &&
+						AUTH_LINKS.map((item) => (
+							<NavItem
+								key={item.href}
+								href={item.href}
+								label={item.label}
+								onHero={isTransparent}
+							/>
+						))}
+				</div>
+
+				<div className="hidden items-center gap-3 md:flex">
+					{isLoading ? null : isLoggedIn ? (
+						<button
+							type="button"
+							onClick={handleLogout}
+							className={`cursor-pointer text-sm font-medium transition-colors ${
+								isTransparent
+									? "text-zinc-300 hover:text-white"
+									: "text-fg-muted hover:text-page-fg"
+							}`}
+						>
+							Sign Out
+						</button>
+					) : (
+						<Link
+							href="/login"
+							className={
+								isTransparent
+									? "rounded-full bg-zinc-50 px-5 py-2.5 text-xs font-semibold uppercase tracking-wide text-zinc-950 transition-all hover:bg-zinc-200"
+									: pillPrimary
+							}
+						>
+							Sign In
+						</Link>
 					)}
 				</div>
-				{/* Mobile Hamburger Menu Button */}
-				<button
-					ref={mobileMenuButtonRef}
-					className="text-primary-text z-50 p-2 md:hidden"
-					onClick={() => setIsOpen(!isOpen)}
-				>
-					{isOpen ? <span className="text-2xl">✕</span> : <span className="text-2xl">☰</span>}
-				</button>
-			</div>
-		</nav>
-	);
-};
 
-export default Navbar;
+				<div className="flex items-center md:hidden">
+					<button
+						ref={mobileMenuButtonRef}
+						type="button"
+						className="p-2"
+						onClick={() => setIsOpen(!isOpen)}
+						aria-label={isOpen ? "Close menu" : "Open menu"}
+						aria-expanded={isOpen}
+					>
+						<span className="text-xl leading-none">{isOpen ? "✕" : "☰"}</span>
+					</button>
+				</div>
+			</nav>
+
+			<div
+				ref={mobileMenuRef}
+				className={`overflow-hidden border-t border-border bg-page transition-all duration-300 md:hidden ${
+					isOpen ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0"
+				}`}
+			>
+				<div className="flex flex-col px-6 py-4 text-page-fg">
+					{NAV_LINKS.map((item) => (
+						<NavItem
+							key={item.href}
+							href={item.href}
+							label={item.label}
+							onClick={closeMobile}
+						/>
+					))}
+					{!isLoading && isLoggedIn && (
+						<>
+							{AUTH_LINKS.map((item) => (
+								<NavItem
+									key={item.href}
+									href={item.href}
+									label={item.label}
+									onClick={closeMobile}
+								/>
+							))}
+							<button
+								type="button"
+								onClick={() => {
+									closeMobile();
+									void handleLogout();
+								}}
+								className="px-3 py-2 text-left text-sm font-medium text-fg-muted hover:text-page-fg"
+							>
+								Sign Out
+							</button>
+						</>
+					)}
+					{!isLoading && !isLoggedIn && (
+						<div className="mt-3 border-t border-border pt-4">
+							<Link href="/login" className={`${pillPrimary} inline-block`} onClick={closeMobile}>
+								Sign In
+							</Link>
+						</div>
+					)}
+				</div>
+			</div>
+		</header>
+	);
+}

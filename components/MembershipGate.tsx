@@ -6,6 +6,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import type { MyMembershipStatus } from "@/components/api/membership";
 import { getMyMembershipStatus } from "@/components/api/membership";
 import Link from "next/link";
+import { AuthLoading } from "@/components/layout/AuthLoading";
+import { paymentBanner, pillPrimary, textMuted } from "@/lib/theme";
 
 interface MembershipGateProps {
 	children: React.ReactNode;
@@ -50,11 +52,7 @@ export default function MembershipGate({ children }: MembershipGateProps) {
 	}
 
 	if (authLoading || isLoading) {
-		return (
-			<div className="bg-primary-bg flex min-h-screen items-center justify-center">
-				<div className="text-grey-text/60 animate-subtle-pulse">Loading...</div>
-			</div>
-		);
+		return <AuthLoading />;
 	}
 
 	if (!membershipStatus?.hasMembership) {
@@ -64,13 +62,12 @@ export default function MembershipGate({ children }: MembershipGateProps) {
 	return (
 		<>
 			{!membershipStatus.isPaid && (
-				<div className="animate-slide-up fixed top-16 right-0 left-0 z-40 border-b border-amber-500/20 bg-amber-500/10 px-4 py-3 backdrop-blur-sm">
-					<div className="mx-auto flex max-w-4xl items-center justify-between gap-4">
-						<p className="text-sm text-amber-200/90">Complete your payment to unlock full access</p>
-						<Link
-							href="/membership"
-							className="rounded-md bg-amber-500 px-4 py-1.5 text-sm font-medium text-black transition hover:bg-amber-400"
-						>
+				<div className={`animate-slide-up fixed top-16 right-0 left-0 z-40 ${paymentBanner}`}>
+					<div className="mx-auto flex w-full max-w-blog items-center justify-between gap-4 px-4">
+						<p className={`text-sm ${textMuted}`}>
+							Complete your payment to unlock full access
+						</p>
+						<Link href="/membership" className={`${pillPrimary} shrink-0 !py-1.5 !text-[0.7rem]`}>
 							Complete
 						</Link>
 					</div>

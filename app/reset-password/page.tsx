@@ -1,9 +1,18 @@
 "use client";
-import "../globals.css";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
 import { reset_password } from "@/components/api/auth";
 import { validatePassword } from "@/utils/validatePassword";
+import {
+	FormCard,
+	FormFooterLink,
+	FormHeader,
+	FormInput,
+	FormMessage,
+	FormPageShell,
+	FormSubmitButton,
+} from "@/components/ui/form";
 
 function ResetPasswordForm() {
 	const router = useRouter();
@@ -20,7 +29,6 @@ function ResetPasswordForm() {
 		setError(null);
 
 		const token = searchParams.get("token");
-
 		if (!token) {
 			setError("Error: Token is missing from the URL.");
 			setIsLoading(false);
@@ -41,53 +49,50 @@ function ResetPasswordForm() {
 			await reset_password(token, password);
 			router.push("/login");
 		} catch (err: unknown) {
-			if (err instanceof Error) {
-				setError(err.message);
-			} else {
-				setError("An unexpected error occurred.");
-			}
+			setError(err instanceof Error ? err.message : "An unexpected error occurred.");
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
 	return (
-		<div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center pt-24">
-			<div className="bg-card text-card-foreground w-full max-w-md rounded-2xl p-8 text-center shadow-lg">
-				<h1 className="font mb-8 text-center text-3xl">Reset Password</h1>
+		<FormPageShell>
+			<FormCard>
+				<FormHeader title="Reset password" description="Choose a new secure password" />
 
-				{/* Password */}
-				<form onSubmit={handleResetPassword} className="space-y-4">
-					<input
+				<form data-form-ui onSubmit={handleResetPassword} className="space-y-4">
+					<FormInput
 						name="password"
 						type="password"
-						placeholder="********"
+						placeholder="New password"
+						autoComplete="new-password"
 						required
 						disabled={isLoading}
-						className="border-input bg-background text-foreground focus:ring-ring w-full rounded-md border px-4 py-3 outline-none focus:ring-2"
 					/>
 
-					<button
-						type="submit"
-						disabled={isLoading}
-						className="bg-primary text-primary-foreground w-full rounded-md py-3 font-medium transition hover:opacity-90 disabled:opacity-50"
-					>
-						Reset Password
-					</button>
+					<FormSubmitButton disabled={isLoading}>
+						{isLoading ? "Resetting…" : "Reset password"}
+					</FormSubmitButton>
 
-					{error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+					{error && <FormMessage type="error">{error}</FormMessage>}
 				</form>
-			</div>
-		</div>
+
+				<FormFooterLink href="/login">Back to sign in</FormFooterLink>
+			</FormCard>
+		</FormPageShell>
 	);
 }
 
 export default function ResetPasswordPage() {
 	return (
-		<div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center pt-24">
-			<Suspense fallback={<div className="text-center">Loading reset form...</div>}>
-				<ResetPasswordForm />
-			</Suspense>
-		</div>
+		<Suspense
+			fallback={
+				<FormPageShell>
+					<p className="text-sm text-zinc-400">Loading reset form…</p>
+				</FormPageShell>
+			}
+		>
+			<ResetPasswordForm />
+		</Suspense>
 	);
 }

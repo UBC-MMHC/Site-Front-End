@@ -1,14 +1,19 @@
-// TODO: Update this to mimic the new UI Components
 export function EventsSkeleton() {
 	return (
-		<ul className="space-y-4">
+		<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 			{Array.from({ length: 4 }).map((_, i) => (
-				<li key={i} className="rounded-xl border border-gray-200 bg-white p-5 shadow-md">
-					<div className="mb-2 h-5 w-56 animate-pulse rounded bg-gray-200" />
-					<div className="mb-3 h-4 w-40 animate-pulse rounded bg-gray-200" />
-					<div className="h-3 w-3/4 animate-pulse rounded bg-gray-100" />
-				</li>
+				<div
+					key={i}
+					className="overflow-hidden rounded-2xl border border-border bg-surface"
+				>
+					<div className="aspect-[16/9] animate-pulse bg-zinc-200 dark:bg-surface-elevated" />
+					<div className="space-y-3 p-6">
+						<div className="h-5 w-3/4 animate-pulse rounded bg-zinc-200 dark:bg-surface-elevated" />
+						<div className="h-4 w-1/2 animate-pulse rounded bg-zinc-200 dark:bg-surface-elevated" />
+						<div className="h-3 w-full animate-pulse rounded bg-zinc-100 dark:bg-surface-elevated/80" />
+					</div>
+				</div>
 			))}
-		</ul>
+		</div>
 	);
 }

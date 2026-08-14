@@ -1,9 +1,18 @@
 "use client";
-import "../globals.css";
+
 import { useState } from "react";
-import { register } from "@/components/api/auth";
 import { useRouter } from "next/navigation";
+import { register } from "@/components/api/auth";
 import { validatePassword } from "@/utils/validatePassword";
+import {
+	FormCard,
+	FormFooterLink,
+	FormHeader,
+	FormInput,
+	FormMessage,
+	FormPageShell,
+	FormSubmitButton,
+} from "@/components/ui/form";
 
 export default function RegisterPage() {
 	const router = useRouter();
@@ -33,51 +42,44 @@ export default function RegisterPage() {
 			await register(email, password);
 			router.push("/login");
 		} catch (err: unknown) {
-			if (err instanceof Error) {
-				setError(err.message);
-			} else {
-				setError("An unexpected error occurred.");
-			}
+			setError(err instanceof Error ? err.message : "An unexpected error occurred.");
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
 	return (
-		<div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center px-4 pt-24">
-			<div className="bg-card text-card-foreground w-full max-w-md rounded-2xl p-8 text-center shadow-lg">
-				<h1 className="font mb-8 text-center text-3xl">Register</h1>
+		<FormPageShell>
+			<FormCard>
+				<FormHeader title="Create an account" description="Join the UBC MMHC community" />
 
-				{/* Email & Password */}
-				<form onSubmit={handleRegister} className="space-y-4">
-					<input
+				<form data-form-ui onSubmit={handleRegister} className="space-y-4">
+					<FormInput
 						name="email"
 						type="email"
 						placeholder="you@example.com"
+						autoComplete="email"
 						required
 						disabled={isLoading}
-						className="border-input bg-background text-foreground focus:ring-ring w-full rounded-md border px-4 py-3 outline-none focus:ring-2"
 					/>
-					<input
+					<FormInput
 						name="password"
 						type="password"
-						placeholder="********"
+						placeholder="Password"
+						autoComplete="new-password"
 						required
 						disabled={isLoading}
-						className="border-input bg-background text-foreground focus:ring-ring w-full rounded-md border px-4 py-3 outline-none focus:ring-2"
 					/>
 
-					<button
-						type="submit"
-						disabled={isLoading}
-						className="bg-primary text-primary-foreground w-full rounded-md py-3 font-medium transition hover:opacity-90 disabled:opacity-50"
-					>
-						{isLoading ? "Registering User..." : "Register"}
-					</button>
+					<FormSubmitButton disabled={isLoading}>
+						{isLoading ? "Creating account…" : "Create account"}
+					</FormSubmitButton>
 
-					{error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+					{error && <FormMessage type="error">{error}</FormMessage>}
 				</form>
-			</div>
-		</div>
+
+				<FormFooterLink href="/login">Already have an account? Sign in</FormFooterLink>
+			</FormCard>
+		</FormPageShell>
 	);
 }

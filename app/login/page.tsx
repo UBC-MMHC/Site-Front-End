@@ -1,10 +1,21 @@
 "use client";
-import "../globals.css";
+
 import { useState } from "react";
 import Image from "next/image";
-import { login, loginWithGoogle } from "@/components/api/auth";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { login, loginWithGoogle } from "@/components/api/auth";
 import { useAuth } from "@/contexts/AuthContext";
+import GoogleIcon from "@/components/icons/GoogleIcon";
+import {
+	FormCard,
+	FormDivider,
+	FormHeader,
+	FormInput,
+	FormMessage,
+	FormPageShell,
+	FormSubmitButton,
+} from "@/components/ui/form";
 
 export default function LoginPage() {
 	const router = useRouter();
@@ -15,7 +26,6 @@ export default function LoginPage() {
 
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
 		if (isLoading) return;
 
 		setIsLoading(true);
@@ -27,98 +37,83 @@ export default function LoginPage() {
 
 		try {
 			await login(email, password);
-
 			setIsLoggedIn(true);
 			router.push("/dashboard");
 		} catch (err: unknown) {
 			setIsLoading(false);
-
-			if (err instanceof Error) {
-				setError(err.message);
-			} else {
-				setError("An unexpected error occurred.");
-			}
+			setError(err instanceof Error ? err.message : "An unexpected error occurred.");
 		}
 	};
 
 	return (
-		<div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center px-4 pt-24">
-			<div className="bg-card text-card-foreground w-full max-w-md rounded-2xl p-8 text-center shadow-lg">
-				<h1 className="font mb-8 text-center text-3xl">Login</h1>
+		<FormPageShell>
+			<FormCard>
+				<div className="mb-6 flex flex-col items-center gap-3">
+					<Image
+						src="/MMHC_Circle_Logo.jpg"
+						alt="UBC MMHC logo"
+						width={64}
+						height={64}
+						className="rounded-full"
+					/>
+					<FormHeader title="Sign In" description="Welcome back to UBC MMHC" />
+				</div>
 
-				{/* Email & Password */}
-				<form onSubmit={handleLogin} className="space-y-4">
-					<input
+				<form data-form-ui onSubmit={handleLogin} className="space-y-4">
+					<FormInput
 						name="email"
 						type="email"
 						placeholder="you@example.com"
+						autoComplete="email"
 						required
 						disabled={isLoading}
-						className="border-input bg-background text-foreground focus:ring-ring w-full rounded-md border px-4 py-3 outline-none focus:ring-2"
 					/>
-					<input
+					<FormInput
 						name="password"
 						type="password"
-						placeholder="********"
+						placeholder="Password"
+						autoComplete="current-password"
 						required
 						disabled={isLoading}
-						className="border-input bg-background text-foreground focus:ring-ring w-full rounded-md border px-4 py-3 outline-none focus:ring-2"
 					/>
 
-					<div className="mt-1 flex justify-end">
-						<button
-							type="button"
-							onClick={() => router.push("/forgot-password")}
-							className="text-muted-foreground hover:text-primary text-xs transition hover:cursor-pointer"
-							disabled={isLoading}
+					<div className="flex justify-end">
+						<Link
+							href="/forgot-password"
+							className="text-xs text-fg-muted transition-colors hover:text-page-fg"
 						>
 							Forgot password?
-						</button>
+						</Link>
 					</div>
 
-					<button
-						type="submit"
-						disabled={isLoading}
-						className="bg-primary text-primary-foreground w-full rounded-md py-3 font-medium transition hover:opacity-90 disabled:opacity-50"
-					>
-						{isLoading ? "Signing In..." : "Sign In"}
-					</button>
+					<FormSubmitButton disabled={isLoading}>
+						{isLoading ? "Signing in…" : "Sign In"}
+					</FormSubmitButton>
 
-					{error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+					{error && <FormMessage type="error">{error}</FormMessage>}
 
-					<button
-						type="submit"
-						onClick={() => router.push("/register")}
-						disabled={isLoading}
-						className="border-input hover:bg-accent hover:text-accent-foreground text-foreground w-full rounded-md border bg-transparent py-3 font-medium transition disabled:opacity-50"
+					<Link
+						href="/register"
+						className={`flex w-full items-center justify-center rounded-full border border-border bg-surface px-6 py-3 text-sm font-medium text-page-fg transition-all hover:bg-surface-elevated ${isLoading ? "pointer-events-none opacity-50" : ""}`}
 					>
-						{isLoading ? "Redirecting..." : "Sign Up"}
-					</button>
+						Create an account
+					</Link>
 				</form>
 
-				{/* Divider */}
-				<div className="my-8 flex items-center">
-					<div className="bg-border h-px flex-grow" />
-					<span className="text-muted-foreground mx-3 text-sm">or</span>
-					<div className="bg-border h-px flex-grow" />
-				</div>
+				<FormDivider />
 
-				{/* Google */}
 				<button
+					type="button"
 					onClick={() => loginWithGoogle()}
 					disabled={isLoading}
-					className="border-border hover:bg-accent flex w-full items-center justify-center rounded-md border py-3 transition"
+					className="flex w-full items-center justify-center gap-3 rounded-full border border-border bg-surface py-3 text-sm font-medium text-page-fg transition-all hover:bg-surface-elevated disabled:opacity-50"
 				>
-					<Image
-						src="https://developers.google.com/identity/images/g-logo.png"
-						alt="Google logo"
-						width={24}
-						height={24}
-						className="mr-3"
-					/>
-					<span className="text-foreground font-medium">Continue with Google</span>
+					<span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white p-0.5">
+						<GoogleIcon className="h-4 w-4" />
+					</span>
+					Continue with Google
 				</button>
-			</div>
-		</div>
+			</FormCard>
+		</FormPageShell>
 	);
 }

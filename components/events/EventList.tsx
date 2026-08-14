@@ -3,55 +3,41 @@ import type { CalendarEventView } from "@/lib/calendarEventView";
 import { buildCalendarEventViews } from "@/lib/calendarEventView";
 import { CalendarDays } from "lucide-react";
 import { GOOGLE_CALENDAR_URL } from "@/app/constants";
-import Image from "next/image";
-import EventCard from "./EventCard";
+import HomeEventCard from "@/components/home/HomeEventCard";
+import Link from "next/link";
+import { dashedEmpty, pillOutline, textHeading, textMuted, textSubtle } from "@/lib/theme";
 
 export function CalendarSubscribeLink() {
 	return (
-		<div className="mb-8 flex flex-row items-center gap-2 text-center">
-			<a
-				href={GOOGLE_CALENDAR_URL}
-				target="_blank"
-				rel="noopener noreferrer"
-				className="transition-opacity hover:opacity-80"
-			>
-				<Image
-					src="/buttons/MMHC Events Calendar Button.png"
-					alt="MMHC Events Calendar"
-					width={280 * 1.25}
-					height={50 * 1.25}
-					className="h-auto"
-				/>
-			</a>
-		</div>
+		<Link
+			href={GOOGLE_CALENDAR_URL}
+			target="_blank"
+			rel="noopener noreferrer"
+			className={`inline-flex items-center gap-2 ${pillOutline}`}
+		>
+			<CalendarDays className="h-4 w-4" aria-hidden />
+			Add to Google Calendar
+		</Link>
 	);
 }
 
 function getThumbnailForEvent(ev: CalendarEventView): string | undefined {
 	const title = ev.title?.toLowerCase() ?? "";
-	if (title.includes("discussion")) {
-		return "/events/plato_dither.svg";
-	} else if (title.includes("study session")) {
-		return "/events/tree_dither.svg";
-	} else if (title.includes("test")) {
-		return "/events/test_event.jpg";
-	} else if (title.includes("mmhc run")) {
-		return "/events/run_dither.svg";
-	}
+	if (title.includes("discussion")) return "/events/plato_dither.svg";
+	if (title.includes("study session")) return "/events/tree_dither.svg";
+	if (title.includes("test")) return "/events/test_event.jpg";
+	if (title.includes("mmhc run")) return "/events/run_dither.svg";
 	return undefined;
 }
 
 function groupEventsByYear(events: CalendarEventView[]): Record<string, CalendarEventView[]> {
 	const map: Record<string, CalendarEventView[]> = {};
 	for (const ev of events) {
-		// Calculate year from unix timestamp using UTC to ensure consistent grouping
-		// (The actual display will use user's timezone in EventCard)
 		const year = new Date(ev.startUnix).getUTCFullYear();
 		const yearKey = String(year);
 		if (!map[yearKey]) map[yearKey] = [];
 		map[yearKey].push(ev);
 	}
-	// sort within each year by unix ascending
 	for (const y of Object.keys(map)) {
 		map[y].sort((a, b) => a.unix - b.unix);
 	}
@@ -63,61 +49,57 @@ export function EventByYear({ events }: Readonly<{ events: CalendarEventView[] }
 	const years = Object.keys(byYear)
 		.map(Number)
 		.filter((y) => byYear[String(y)]?.length)
-		.sort((a, b) => b - a); // newest year first
+		.sort((a, b) => b - a);
 
 	if (years.length === 0) {
 		return (
-			<div className="text-muted-foreground py-12 text-center">
-				<CalendarDays className="mx-auto mb-2 h-8 w-8" />
-				<p>No events to show yet.</p>
+			<div className={dashedEmpty}>
+				<CalendarDays className="mx-auto mb-3 h-8 w-8 text-theme-accent-muted" />
+				<p className={`font-medium ${textHeading}`}>No events to show yet.</p>
+				<p className={`mt-2 text-sm ${textSubtle}`}>Check back soon for new events.</p>
 			</div>
 		);
 	}
 
 	return (
-		<>
-			<span className="text-muted-foreground ml-auto flex justify-start text-3xl font-light">
+		<div className="space-y-12">
+			<div className="flex justify-start">
 				<CalendarSubscribeLink />
-			</span>
-			<div className="space-y-10">
-				{years.map((year) => (
-					<section key={year} className="space-y-4">
-						<header className="flex items-center gap-3">
-							<h2 className="text-primary-text text-3xl font-light">{year}</h2>
-							<span className="text-muted-foreground text-3xl font-light">
-								({byYear[String(year)].length} event
-								{byYear[String(year)].length === 1 ? "" : "s"})
-							</span>
-						</header>
-						<div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
-							{byYear[String(year)].map((ev) => (
-								<EventCard key={ev.id} ev={ev} thumbnail={getThumbnailForEvent(ev)} />
-							))}
-						</div>
-					</section>
-				))}
 			</div>
-		</>
+
+			{years.map((year) => (
+				<section key={year} className="space-y-6">
+					<header className="flex flex-wrap items-baseline gap-3">
+						<h2 className={`text-2xl font-semibold md:text-3xl ${textHeading}`}>{year}</h2>
+						<span className={`text-sm ${textSubtle}`}>
+							({byYear[String(year)].length} event
+							{byYear[String(year)].length === 1 ? "" : "s"})
+						</span>
+					</header>
+					<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+						{byYear[String(year)].map((ev) => (
+							<HomeEventCard key={ev.id} ev={ev} thumbnail={getThumbnailForEvent(ev)} />
+						))}
+					</div>
+				</section>
+			))}
+		</div>
 	);
 }
 
 export default async function EventList({ limit }: { limit?: number } = {}) {
-	const events = await getFutureCalendarEvents(); // server-side fetch (no client call)
+	const events = await getFutureCalendarEvents();
 	const allViews = buildCalendarEventViews(events);
 	const upcomingEventViews = limit ? allViews.slice(0, limit) : allViews;
 
 	if (!allViews.length) {
 		return (
-			<div className="rounded-xl border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500">
-				<p className="mb-1 font-medium text-gray-700">No upcoming events found.</p>
-				<p className="text-gray-500">Check back soon.</p>
+			<div className={dashedEmpty}>
+				<p className={`mb-1 font-medium ${textHeading}`}>No upcoming events found.</p>
+				<p className={`text-sm ${textSubtle}`}>Check back soon.</p>
 			</div>
 		);
 	}
 
-	return (
-		<div className="mx-auto max-w-4xl">
-			<EventByYear events={upcomingEventViews} />
-		</div>
-	);
+	return <EventByYear events={upcomingEventViews} />;
 }

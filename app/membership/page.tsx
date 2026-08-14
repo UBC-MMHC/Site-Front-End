@@ -1,9 +1,10 @@
 "use client";
-import "../globals.css";
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import type { MembershipRegistrationData, MyMembershipStatus } from "@/components/api/membership";
+import type { ApiError } from "@/components/api/apiErrorHandling";
 import {
 	registerMembership,
 	retryPayment,
@@ -11,6 +12,16 @@ import {
 	MembershipType,
 	PaymentMethod,
 } from "@/components/api/membership";
+import {
+	FormCard,
+	FormCheckbox,
+	FormField,
+	FormHeader,
+	FormInput,
+	FormPageShell,
+	FormSelect,
+	FormSubmitButton,
+} from "@/components/ui/form";
 
 const benefits = [
 	{
@@ -29,26 +40,22 @@ const benefits = [
 		title: "Discounts on Paid Events",
 		description: "Enjoy exclusive member pricing on all events.",
 	},
-];
+] as const;
 
 function MembershipBenefits({ className = "" }: { className?: string }) {
 	return (
 		<div className={className}>
-			<div className="bg-accent-2/20 mb-5 h-px w-8 rounded-full" />
-			<h2 className="text-[15px] font-semibold tracking-wide uppercase">Benefits</h2>
-			<p className="text-grey-text/50 mt-1 mb-5 text-[13px] font-light">
-				Your membership pays for itself.
-			</p>
+			<div className="mb-5 h-px w-8 rounded-full bg-zinc-600" />
+			<h2 className="text-sm font-semibold uppercase tracking-wide text-fg-muted">Benefits</h2>
+			<p className="mt-1 mb-5 text-sm font-light text-fg-muted">Your membership pays for itself.</p>
 			<div className="space-y-4">
 				{benefits.map((benefit) => (
 					<div key={benefit.title}>
 						<div className="flex items-center gap-2">
-							<span className="bg-accent-2/60 inline-block h-1.5 w-1.5 rounded-full" />
-							<h3 className="text-[13px] font-medium">{benefit.title}</h3>
+							<span className="inline-block h-1.5 w-1.5 rounded-full bg-zinc-400" />
+							<h3 className="text-sm font-medium text-page-fg">{benefit.title}</h3>
 						</div>
-						<p className="text-grey-text/50 mt-0.5 pl-[14px] text-[12px] leading-relaxed font-light">
-							{benefit.description}
-						</p>
+						<p className="mt-0.5 pl-3.5 text-xs leading-relaxed text-fg-muted">{benefit.description}</p>
 					</div>
 				))}
 			</div>
@@ -57,28 +64,23 @@ function MembershipBenefits({ className = "" }: { className?: string }) {
 }
 
 function MobileBenefitsDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+	if (!isOpen) return null;
+
 	return (
 		<>
-			{/* Backdrop */}
 			<div
-				className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
-					isOpen ? "opacity-100" : "pointer-events-none opacity-0"
-				}`}
+				className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
 				onClick={onClose}
+				aria-hidden
 			/>
-			{/* Drawer */}
-			<div
-				className={`bg-primary-bg border-grey-text/10 fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-y-auto rounded-t-2xl border-t px-6 pt-4 pb-10 shadow-2xl transition-transform duration-300 ease-out ${
-					isOpen ? "translate-y-0" : "translate-y-full"
-				}`}
-			>
-				{/* Handle bar */}
+			<div className="fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-y-auto rounded-t-2xl border-t border-border bg-page px-6 pt-4 pb-10 shadow-2xl">
 				<div className="mb-4 flex justify-center">
-					<div className="bg-grey-text/30 h-1 w-10 rounded-full" />
+					<div className="h-1 w-10 rounded-full bg-zinc-700" />
 				</div>
 				<button
+					type="button"
 					onClick={onClose}
-					className="bg-grey-text/10 text-grey-text/60 hover:bg-grey-text/20 hover:text-primary-text absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full transition"
+					className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-zinc-200 text-fg-muted transition hover:bg-zinc-300 hover:text-page-fg dark:bg-surface-elevated dark:hover:bg-theme-accent-muted/25"
 					aria-label="Close benefits"
 				>
 					✕
@@ -94,39 +96,49 @@ export default function MembershipPage() {
 	const { isLoggedIn, isLoading: authLoading } = useAuth();
 
 	const [isLoading, setIsLoading] = useState(false);
-	const [isCheckingStatus, setIsCheckingStatus] = useState(true);
+	const [isCheckingStatus, setIsCheckingStatus] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [membershipType, setMembershipType] = useState<MembershipType>(MembershipType.UBC_STUDENT);
 	const [existingMembership, setExistingMembership] = useState<MyMembershipStatus | null>(null);
-	const [userEmail, setUserEmail] = useState<string>("");
+	const [userEmail, setUserEmail] = useState("");
 	const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.STRIPE);
 	const [registrationComplete, setRegistrationComplete] = useState(false);
 	const [showBenefits, setShowBenefits] = useState(false);
 
-	const isStudentType = membershipType === MembershipType.UBC_STUDENT;
+	const isStudentType =
+		membershipType === MembershipType.UBC_STUDENT ||
+		membershipType === MembershipType.NON_UBC_STUDENT;
 
 	useEffect(() => {
+		if (authLoading) return;
+
+		if (!isLoggedIn) {
+			setIsCheckingStatus(false);
+			return;
+		}
+
+		let cancelled = false;
+		setIsCheckingStatus(true);
+
+		const timeout = window.setTimeout(() => {
+			if (!cancelled) setIsCheckingStatus(false);
+		}, 8000);
+
 		const checkExistingMembership = async () => {
-			if (authLoading) return;
-
-			if (!isLoggedIn) {
-				setIsCheckingStatus(false);
-				return;
-			}
-
 			try {
 				const meRes = await fetch("/api/auth/me", { credentials: "include" });
-				if (meRes.ok) {
+				if (!cancelled && meRes.ok) {
 					const userData = await meRes.json();
 					setUserEmail(userData.email || "");
 				}
 			} catch {
-				// Could not fetch user email - ignore
+				// Could not fetch user email
 			}
 
 			try {
 				const status = await getMyMembershipStatus();
-				console.log("Membership status received:", status);
+				if (cancelled) return;
+
 				setExistingMembership(status);
 
 				if (status.isPaid) {
@@ -136,11 +148,17 @@ export default function MembershipPage() {
 			} catch (err) {
 				console.error("Membership check error:", err);
 			} finally {
-				setIsCheckingStatus(false);
+				if (!cancelled) setIsCheckingStatus(false);
+				window.clearTimeout(timeout);
 			}
 		};
 
 		checkExistingMembership();
+
+		return () => {
+			cancelled = true;
+			window.clearTimeout(timeout);
+		};
 	}, [isLoggedIn, authLoading, router]);
 
 	const handleRetryPayment = async () => {
@@ -188,289 +206,234 @@ export default function MembershipPage() {
 			}
 		} catch (err: unknown) {
 			setIsLoading(false);
+
+			const apiErr = err as ApiError;
+			if (apiErr.status === 409 || apiErr.status === 503) {
+				try {
+					const status = await getMyMembershipStatus();
+					if (status.hasMembership && !status.isPaid) {
+						setExistingMembership(status);
+						setError(null);
+						return;
+					}
+				} catch {
+					// Fall through to show API error message
+				}
+			}
+
 			setError(err instanceof Error ? err.message : "An error occurred");
 		}
 	};
 
-	if (isCheckingStatus) {
+	const showAuthLoading = authLoading && isLoggedIn;
+	const showStatusLoading = isLoggedIn && isCheckingStatus;
+
+	if (showAuthLoading || showStatusLoading) {
 		return (
-			<div className="bg-primary-bg flex min-h-screen items-center justify-center">
-				<div className="text-grey-text/60 animate-subtle-pulse">Loading...</div>
+			<div className="flex min-h-screen items-center justify-center bg-page">
+				<p className="animate-subtle-pulse text-fg-muted">Loading…</p>
 			</div>
 		);
 	}
 
 	if (existingMembership?.hasMembership && !existingMembership.isPaid) {
 		return (
-			<div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center px-6 pt-32 pb-12">
-				<div className="animate-slide-up w-full max-w-md text-center">
-					<h1 className="mb-3 text-4xl font-light tracking-tight">Complete your payment</h1>
-					<p className="text-grey-text/70 mb-10 font-light">
+			<FormPageShell>
+				<FormCard className="text-center">
+					<h1 className="mb-3 text-3xl font-semibold tracking-tight text-page-fg">Complete your payment</h1>
+					<p className="mb-10 text-fg-muted">
 						You&apos;re almost there. Finish setting up your{" "}
-						<span className="text-primary-text">
+						<span className="font-medium text-page-fg">
 							{existingMembership.membershipType?.replace(/_/g, " ").toLowerCase()}
 						</span>{" "}
 						membership.
 					</p>
-
 					<button
+						type="button"
 						onClick={handleRetryPayment}
 						disabled={isLoading}
-						className="bg-accent-2 w-full rounded-lg py-3.5 font-medium text-white transition hover:opacity-90 disabled:opacity-50"
+						className="w-full rounded-full bg-pill py-3.5 text-sm font-semibold text-pill-fg transition hover:opacity-90 disabled:opacity-50"
 					>
-						{isLoading ? "Redirecting..." : "Continue to Payment"}
+						{isLoading ? "Redirecting…" : "Continue to Payment"}
 					</button>
-
 					{error && <p className="mt-4 text-sm text-red-400">{error}</p>}
-
-					<p className="text-grey-text/50 mt-8 text-sm">
+					<p className="mt-8 text-sm text-fg-muted">
 						Need help?{" "}
-						<a href="mailto:ubcmmhc@gmail.com" className="text-accent-2 hover:underline">
+						<a href="mailto:ubcmmhc@gmail.com" className="text-fg-muted hover:underline">
 							Contact us
 						</a>
 					</p>
-				</div>
-			</div>
+				</FormCard>
+			</FormPageShell>
 		);
 	}
 
 	if (registrationComplete) {
 		return (
-			<div className="text-primary-text flex min-h-screen flex-col items-center px-6 pt-32 pb-12">
-				<div className="animate-slide-up w-full max-w-md text-center">
+			<FormPageShell>
+				<FormCard className="text-center">
 					<div className="mb-6 flex justify-center">
-						<div className="bg-accent-2/10 text-accent-2 flex h-20 w-20 items-center justify-center rounded-full text-4xl">
+						<div className="flex h-20 w-20 items-center justify-center rounded-full bg-zinc-200 text-4xl text-emerald-600 dark:bg-surface-elevated dark:text-emerald-400">
 							✓
 						</div>
 					</div>
-					<h1 className="mb-3 text-4xl font-light tracking-tight">Registration Received</h1>
-					<p className="text-grey-text/70 mb-4 font-light">
-						Thank you for registering! Since you selected{" "}
-						<span className="text-primary-text font-medium">{paymentMethod}</span>, your membership
-						will be activated once we verify your payment.
+					<h1 className="mb-3 text-3xl font-semibold tracking-tight text-page-fg">Registration received</h1>
+					<p className="mb-6 text-fg-muted">
+						Thank you for registering. Since you selected{" "}
+						<span className="font-medium text-page-fg">{paymentMethod}</span>, your membership will be
+						activated once we verify your payment.
 					</p>
-
-					<div className="mb-8 text-left">
-						<h3 className="mb-2 font-medium">Next Steps:</h3>
-						<ul className="text-grey-text/80 space-y-2 text-sm font-light">
+					<div className="mb-8 rounded-xl border border-border bg-surface p-4 text-left text-sm text-fg-muted">
+						<h3 className="mb-2 font-medium text-page-fg">Next steps</h3>
+						<ul className="space-y-2">
 							{paymentMethod === PaymentMethod.ETRANSFER && (
 								<>
-									<li>
-										• Please send an e-transfer to{" "}
-										<span className="text-primary-text font-medium">narimanimatin5@gmail.com</span>
-									</li>
-									<li>• Please include your full name and student ID in the e-transfer notes.</li>
+									<li>Send an e-transfer to narimanimatin5@gmail.com</li>
+									<li>Include your full name and student ID in the notes.</li>
 								</>
 							)}
 							{paymentMethod === PaymentMethod.CASH && (
-								<li>• Please provide the cash to an executive member at our next event.</li>
+								<li>Provide cash to an executive member at our next event.</li>
 							)}
 							{paymentMethod === PaymentMethod.OTHER && (
-								<li>• An executive member will contact you to arrange payment.</li>
+								<li>An executive member will contact you to arrange payment.</li>
 							)}
 						</ul>
 					</div>
-
 					<button
+						type="button"
 						onClick={() => router.push("/")}
-						className="bg-accent-2 w-full rounded-lg py-3.5 font-medium text-white transition hover:opacity-90"
+						className="w-full rounded-full bg-pill py-3.5 text-sm font-semibold text-pill-fg transition hover:opacity-90"
 					>
 						Return to Home
 					</button>
-
-					<p className="text-grey-text/50 mt-8 text-sm">
-						Questions?{" "}
-						<a href="mailto:ubcmmhc@gmail.com" className="text-accent-2 hover:underline">
-							Contact us
-						</a>
-					</p>
-				</div>
-			</div>
+				</FormCard>
+			</FormPageShell>
 		);
 	}
 
 	return (
-		<div className="bg-primary-bg text-primary-text relative flex min-h-screen flex-col items-center px-6 pt-24 pb-20 lg:pb-12">
-			<div className="animate-slide-up relative w-full max-w-md">
-				{/* Form */}
-				<div>
-					<h1 className="mb-2 text-center text-4xl font-light tracking-tight">Become a Member</h1>
-					<p className="text-grey-text/70 mb-10 text-center font-light">
-						Join UBC Men&apos;s Mental Health Club
-					</p>
-					<form onSubmit={handleSubmit} className="space-y-6">
-						{/* Full Name */}
-						<div>
-							<label htmlFor="fullName" className="text-grey-text/80 mb-2 block text-sm">
-								Full Name
-							</label>
-							<input
-								id="fullName"
-								name="fullName"
-								type="text"
-								required
-								disabled={isLoading}
-								className="border-grey-text/30 text-primary-text placeholder:text-grey-text/40 focus:border-accent-2 w-full border-0 border-b bg-transparent px-0 py-3 focus:outline-none"
-								placeholder="John Doe"
-							/>
-						</div>
+		<div className="min-h-screen w-full bg-page px-4 pt-28 pb-32">
+			<div className="mx-auto w-full max-w-5xl">
+				<div className="xl:grid xl:grid-cols-2 xl:items-start xl:gap-16">
+					<FormCard>
+						<FormHeader
+							title="Become a Member"
+							description="Join UBC Men's Mental Health Club"
+						/>
 
-						{/* Email */}
-						<div>
-							<label htmlFor="email" className="text-grey-text/80 mb-2 block text-sm">
-								Email
-							</label>
-							<input
-								id="email"
-								name="email"
-								type="email"
-								required
-								disabled={isLoading}
-								value={userEmail}
-								onChange={(e) => setUserEmail(e.target.value)}
-								className="border-grey-text/30 text-primary-text placeholder:text-grey-text/40 focus:border-accent-2 w-full border-0 border-b bg-transparent px-0 py-3 focus:outline-none"
-								placeholder="you@example.com"
-							/>
-						</div>
+						<form data-form-ui onSubmit={handleSubmit} className="space-y-5">
+							<FormField label="Full Name" htmlFor="fullName">
+								<FormInput
+									id="fullName"
+									name="fullName"
+									type="text"
+									required
+									disabled={isLoading}
+									placeholder="John Doe"
+								/>
+							</FormField>
 
-						{/* Membership Type */}
-						<div>
-							<label htmlFor="membershipType" className="text-grey-text/80 mb-2 block text-sm">
-								Membership Type
-							</label>
-							<select
-								id="membershipType"
-								name="membershipType"
-								required
-								disabled={isLoading}
-								value={membershipType}
-								onChange={(e) => setMembershipType(e.target.value as MembershipType)}
-								className="border-grey-text/30 text-primary-text focus:border-accent-2 w-full cursor-pointer border-0 border-b bg-transparent px-0 py-3 focus:outline-none"
-							>
-								<option value={MembershipType.UBC_STUDENT} className="bg-primary-bg">
-									UBC Student
-								</option>
-								<option value={MembershipType.NON_STUDENT} className="bg-primary-bg">
-									Non-Student
-								</option>
-							</select>
-						</div>
+							<FormField label="Email" htmlFor="email">
+								<FormInput
+									id="email"
+									name="email"
+									type="email"
+									required
+									disabled={isLoading}
+									value={userEmail}
+									onChange={(e) => setUserEmail(e.target.value)}
+									placeholder="you@example.com"
+								/>
+							</FormField>
 
-						{/* Student ID */}
-						{isStudentType && (
-							<div className="animate-slide-up">
-								<label htmlFor="studentId" className="text-grey-text/80 mb-2 block text-sm">
-									Student ID <span className="text-grey-text/50">(optional)</span>
-								</label>
-								<input
-									id="studentId"
-									name="studentId"
+							<FormField label="Membership Type" htmlFor="membershipType">
+								<FormSelect
+									id="membershipType"
+									name="membershipType"
+									required
+									disabled={isLoading}
+									value={membershipType}
+									onChange={(e) => setMembershipType(e.target.value as MembershipType)}
+								>
+									<option value={MembershipType.UBC_STUDENT}>UBC Student</option>
+									<option value={MembershipType.NON_UBC_STUDENT}>Non-UBC Student</option>
+									<option value={MembershipType.NON_STUDENT}>Non-Student</option>
+								</FormSelect>
+							</FormField>
+
+							{isStudentType && (
+								<FormField label="Student ID" htmlFor="studentId" optional>
+									<FormInput
+										id="studentId"
+										name="studentId"
+										type="text"
+										disabled={isLoading}
+										placeholder="12345678"
+									/>
+								</FormField>
+							)}
+
+							<FormField label="Instagram" htmlFor="instagram" optional>
+								<FormInput
+									id="instagram"
+									name="instagram"
 									type="text"
 									disabled={isLoading}
-									className="border-grey-text/30 text-primary-text placeholder:text-grey-text/40 focus:border-accent-2 w-full border-0 border-b bg-transparent px-0 py-3 focus:outline-none"
-									placeholder="12345678"
+									placeholder="@yourhandle"
 								/>
-							</div>
-						)}
+							</FormField>
 
-						{/* Instagram */}
-						<div>
-							<label htmlFor="instagram" className="text-grey-text/80 mb-2 block text-sm">
-								Instagram <span className="text-grey-text/50">(optional)</span>
-							</label>
-							<input
-								id="instagram"
-								name="instagram"
-								type="text"
-								disabled={isLoading}
-								className="border-grey-text/30 text-primary-text placeholder:text-grey-text/40 focus:border-accent-2 w-full border-0 border-b bg-transparent px-0 py-3 focus:outline-none"
-								placeholder="@yourhandle"
-							/>
-						</div>
-
-						{/* Checkboxes */}
-						<div className="space-y-4 pt-4">
-							<label className="group flex cursor-pointer items-center gap-3">
-								<input
-									type="checkbox"
+							<div className="space-y-3 pt-2">
+								<FormCheckbox
 									name="instagramGroupchat"
 									disabled={isLoading}
-									className="border-grey-text/30 accent-accent-2 h-5 w-5 rounded"
+									label="Add me to the Instagram group chat"
 								/>
-								<span className="text-grey-text/80 group-hover:text-grey-text text-sm transition">
-									Add me to the Instagram group chat
-								</span>
-							</label>
-
-							<label className="group flex cursor-pointer items-center gap-3">
-								<input
-									type="checkbox"
+								<FormCheckbox
 									name="newsletterOptIn"
 									disabled={isLoading}
-									className="border-grey-text/30 accent-accent-2 h-5 w-5 rounded"
+									label="Subscribe to our newsletter"
 								/>
-								<span className="text-grey-text/80 group-hover:text-grey-text text-sm transition">
-									Subscribe to our newsletter
-								</span>
-							</label>
-						</div>
+							</div>
 
-						{/* Payment Method */}
-						<div>
-							<label htmlFor="paymentMethod" className="text-grey-text/80 mb-2 block text-sm">
-								Payment Method
-							</label>
-							<select
-								id="paymentMethod"
-								name="paymentMethod"
-								required
-								disabled={isLoading}
-								value={paymentMethod}
-								onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
-								className="border-grey-text/30 text-primary-text focus:border-accent-2 w-full cursor-pointer border-0 border-b bg-transparent px-0 py-3 focus:outline-none"
-							>
-								<option value={PaymentMethod.STRIPE} className="bg-primary-bg">
-									Credit Card
-								</option>
-								<option value={PaymentMethod.ETRANSFER} className="bg-primary-bg">
-									E-Transfer
-								</option>
-								<option value={PaymentMethod.CASH} className="bg-primary-bg">
-									Cash
-								</option>
-								<option value={PaymentMethod.OTHER} className="bg-primary-bg">
-									Other
-								</option>
-							</select>
-						</div>
+							<FormField label="Payment Method" htmlFor="paymentMethod">
+								<FormSelect
+									id="paymentMethod"
+									name="paymentMethod"
+									required
+									disabled={isLoading}
+									value={paymentMethod}
+									onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
+								>
+									<option value={PaymentMethod.STRIPE}>Credit Card</option>
+									<option value={PaymentMethod.ETRANSFER}>E-Transfer</option>
+									<option value={PaymentMethod.CASH}>Cash</option>
+									<option value={PaymentMethod.OTHER}>Other</option>
+								</FormSelect>
+							</FormField>
 
-						{/* Submit */}
-						<button
-							type="submit"
-							disabled={isLoading}
-							className="bg-accent-2 mt-6 w-full rounded-lg py-3.5 font-medium text-white transition hover:opacity-90 disabled:opacity-50"
-						>
-							{isLoading ? "Processing..." : "Continue to Payment"}
-						</button>
+							<FormSubmitButton disabled={isLoading} className="mt-2">
+								{isLoading ? "Processing…" : "Continue to Payment"}
+							</FormSubmitButton>
 
-						{error && <p className="text-center text-sm text-red-400">{error}</p>}
-					</form>
+							{error && <p className="text-center text-sm text-red-400">{error}</p>}
+						</form>
+					</FormCard>
+
+					<MembershipBenefits className="mt-10 hidden xl:block" />
 				</div>
-
-				{/* Benefits — desktop: absolutely positioned to the right of the centered form */}
-				<MembershipBenefits className="absolute top-0 left-[calc(100%+3rem)] hidden w-72 lg:block" />
 			</div>
 
-			{/* Mobile: sticky benefits button */}
 			<button
+				type="button"
 				onClick={() => setShowBenefits(true)}
-				className="bg-accent-2 shadow-accent-2/25 fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full px-5 py-3 text-sm font-medium text-white shadow-lg transition hover:opacity-90 active:scale-95 lg:hidden"
+				className="fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full bg-pill px-5 py-3 text-sm font-medium text-pill-fg shadow-lg transition hover:opacity-90 active:scale-95 xl:hidden"
 			>
-				<span>✦</span>
+				<span aria-hidden>✦</span>
 				View Benefits
 			</button>
 
-			{/* Mobile benefits drawer */}
 			<MobileBenefitsDrawer isOpen={showBenefits} onClose={() => setShowBenefits(false)} />
 		</div>
 	);

@@ -2,23 +2,25 @@
 
 import React from "react";
 import MembershipGate from "@/components/MembershipGate";
+import DarkPageShell from "@/components/layout/DarkPageShell";
+import { centerPage, contentColumn, copyColumn, textHeading, textMuted } from "@/lib/theme";
 
 export default function ProfilePage(): React.ReactElement {
 	return (
 		<MembershipGate>
-			<div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center justify-center px-6">
-				<div className="w-full max-w-xl text-center">
-					<h1 className="text-primary-text mb-6 text-5xl font-semibold tracking-tight md:text-6xl">
+			<DarkPageShell className={centerPage}>
+				<div className={contentColumn}>
+					<h1 className={`mb-6 text-5xl font-semibold tracking-tight md:text-6xl ${textHeading}`}>
 						Your profile.
 						<br />
 						Updated.
 					</h1>
 
-					<p className="text-grey-text/80 mx-auto max-w-md text-xl leading-relaxed font-light">
+					<p className={`text-xl leading-relaxed font-light ${textMuted} ${copyColumn}`}>
 						An updated experience is on the way.
 					</p>
 				</div>
-			</div>
+			</DarkPageShell>
 		</MembershipGate>
 	);
 }

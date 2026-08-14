@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from "react";
 import { API_ROUTES_URL } from "@/app/constants";
 import MembershipGate from "@/components/MembershipGate";
+import DarkPageShell from "@/components/layout/DarkPageShell";
+import { FormInput, FormMessage, FormSubmitButton } from "@/components/ui/form";
+import { centerPage, contentColumn, copyColumn, formColumn, textHeading, textMuted } from "@/lib/theme";
 
 export default function DashboardPage(): React.ReactElement {
 	const [email, setEmail] = useState("");
@@ -50,64 +53,55 @@ export default function DashboardPage(): React.ReactElement {
 
 	return (
 		<MembershipGate>
-			<div className="bg-primary-bg text-primary-text flex min-h-screen flex-col items-center justify-center px-6">
-				<div className="w-full max-w-xl text-center">
-					<h1 className="text-primary-text mb-6 text-5xl font-semibold tracking-tight md:text-6xl">
+			<DarkPageShell className={centerPage}>
+				<div className={contentColumn}>
+					<h1 className={`mb-6 text-5xl font-semibold tracking-tight md:text-6xl ${textHeading}`}>
 						Something new
 						<br />
 						is coming.
 					</h1>
 
-					<p className="text-grey-text/80 mx-auto max-w-md text-xl leading-relaxed font-light">
+					<p className={`text-xl leading-relaxed font-light ${textMuted} ${copyColumn}`}>
 						We&apos;re crafting an experience worth waiting for.
 					</p>
 
 					<div className="mt-12">
 						{status === "success" || status === "already_subscribed" ? (
-							<p className="text-grey-text font-light">
+							<p className={textMuted}>
 								{status === "already_subscribed"
 									? "You're already subscribed to our newsletter."
 									: "Thank you. We'll be in touch."}
 							</p>
 						) : (
 							<>
-								<p className="text-grey-text/60 mb-4 text-sm">Get notified when we launch.</p>
+								<p className={`mb-4 text-sm ${textMuted}`}>Get notified when we launch.</p>
 								<form
+									data-form-ui
 									onSubmit={handleSubmit}
-									className="mx-auto flex max-w-xs items-center justify-center gap-2"
+									className={`space-y-3 text-left ${formColumn}`}
 								>
-									<input
+									<FormInput
 										type="email"
 										value={email}
 										onChange={(e) => setEmail(e.target.value)}
 										placeholder="Email address"
 										required
 										disabled={isSubscribing}
-										className="border-grey-text/30 text-primary-text placeholder:text-grey-text/40 focus:border-accent-2 flex-1 border-b bg-transparent px-0 py-2 text-center transition-colors focus:outline-none"
 									/>
-									<button
-										type="submit"
-										disabled={isSubscribing || !email}
-										className="text-grey-text hover:text-accent-2 p-2 transition-colors disabled:opacity-30"
-									>
-										<svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth={2}
-												d="M14 5l7 7m0 0l-7 7m7-7H3"
-											/>
-										</svg>
-									</button>
+									<FormSubmitButton disabled={isSubscribing || !email}>
+										{isSubscribing ? "Subscribing…" : "Notify me"}
+									</FormSubmitButton>
 								</form>
 								{status === "error" && (
-									<p className="text-grey-text/60 mt-3 text-xs">Please try again.</p>
+									<div className="mt-3">
+										<FormMessage type="error">Please try again.</FormMessage>
+									</div>
 								)}
 							</>
 						)}
 					</div>
 				</div>
-			</div>
+			</DarkPageShell>
 		</MembershipGate>
 	);
 }
