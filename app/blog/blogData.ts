@@ -39,7 +39,7 @@ When you are consuming, I’d urge you to be cognizant of how it can relate to y
 Another practical tip would be to disable, or avoid the temptation of succumbing to the algorithm. You can do this through disabling short-form content (like Instagram reels), disabling video recommendations (like on YouTube), and purely relying on your own search, as it brings about *thought and intentionality* behind your exploration, similar to how you would’ve thought about which book to look for in a library.`,
 		isFeatured: false,
 		date: new Date("2026-02-26"),
-		image: "/hero/DiscussionTableHero.JPG",
+		image: "/about/DanielWhyWeJournal.jpg",
 		tags: ["Blog", "Creativity"],
 		author: { name: "Daniel Agapov" },
 	},
