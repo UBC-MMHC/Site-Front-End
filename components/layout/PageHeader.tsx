@@ -13,13 +13,19 @@ export default function PageHeader({
 		<header className="mb-12 md:mb-16">
 			{eyebrow && (
 				<div className={`mb-6 ${eyebrowBadge}`}>
-					<div className="h-1.5 w-1.5 rounded-full bg-theme-accent-muted" />
-					<span className={`text-xs font-medium uppercase tracking-wide ${textMuted}`}>{eyebrow}</span>
+					<div className="bg-theme-accent-muted h-1.5 w-1.5 rounded-full" />
+					<span className={`text-xs font-medium tracking-wide uppercase ${textMuted}`}>
+						{eyebrow}
+					</span>
 				</div>
 			)}
-			<h1 className={`text-3xl font-semibold tracking-tight md:text-5xl ${textHeading}`}>{title}</h1>
+			<h1 className={`text-3xl font-semibold tracking-tight md:text-5xl ${textHeading}`}>
+				{title}
+			</h1>
 			{description && (
-				<p className={`mt-4 max-w-copy text-base leading-relaxed md:text-lg ${textMuted}`}>{description}</p>
+				<p className={`max-w-copy mt-4 text-base leading-relaxed md:text-lg ${textMuted}`}>
+					{description}
+				</p>
 			)}
 		</header>
 	);

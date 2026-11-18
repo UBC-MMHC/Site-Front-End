@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export default function EventsPage() {
 	return (
 		<DarkPageShell>
-			<main className="px-6 pb-24 pt-28">
+			<main className="px-6 pt-28 pb-24">
 				<div className="mx-auto max-w-7xl">
 					<PageHeader
 						title="Upcoming Events"

@@ -85,45 +85,45 @@
 	--color-hero-base: var(--theme-hero-base);
 
 	/* ── Brand Colors ────────────────────────────────────────────────── */
-	--color-primary: #2D5A4A;
+	--color-primary: #2d5a4a;
 	--color-primary-hover: #3b745f;
 	--color-primary-active: #1f4236;
-	--color-accent: #16345A;
+	--color-accent: #16345a;
 	--color-accent-hover: #1f4570;
 
 	/* ── Text Colors ─────────────────────────────────────────────────── */
-	--color-ink: #1A1A1A;
-	--color-body: #1A1A1A;
+	--color-ink: #1a1a1a;
+	--color-body: #1a1a1a;
 	--color-body-strong: #000000;
-	--color-body-on-light: #1A1A1A;
-	--color-body-on-dark: #F7F5F2;
-	--color-muted: #6B6B6B;
+	--color-body-on-light: #1a1a1a;
+	--color-body-on-dark: #f7f5f2;
+	--color-muted: #6b6b6b;
 	--color-muted-soft: #8a8a8a;
 	--color-on-primary: #ffffff;
 	--color-on-dark: #ffffff;
-	--color-on-light: #1A1A1A;
+	--color-on-light: #1a1a1a;
 
 	/* ── Surface Colors ──────────────────────────────────────────────── */
-	--color-canvas: #F7F5F2;
+	--color-canvas: #f7f5f2;
 	--color-canvas-elevated: #ffffff;
-	--color-canvas-dark: #16345A;
+	--color-canvas-dark: #16345a;
 	--color-canvas-light: #ffffff;
-	--color-surface-card: #FFFFFF;
-	--color-surface-soft-light: #E8E4DF;
-	--color-surface-strong-light: #D4CFC7;
-	--color-surface-warm: #E8E4DF;
+	--color-surface-card: #ffffff;
+	--color-surface-soft-light: #e8e4df;
+	--color-surface-strong-light: #d4cfc7;
+	--color-surface-warm: #e8e4df;
 
 	/* ── Borders ─────────────────────────────────────────────────────── */
-	--color-hairline: #D4CFC7;
-	--color-hairline-on-light: #D4CFC7;
-	--color-hairline-soft: #E8E4DF;
+	--color-hairline: #d4cfc7;
+	--color-hairline-on-light: #d4cfc7;
+	--color-hairline-soft: #e8e4df;
 	--color-hairline-on-dark: #2a4870;
 
 	/* ── Semantic ────────────────────────────────────────────────────── */
 	--color-semantic-info: #5b8db8;
 	--color-semantic-success: #6b9d7a;
 	--color-semantic-warning: #e8a55c;
-	--color-semantic-urgent: #B85450;
+	--color-semantic-urgent: #b85450;
 
 	/* ── Supporting Accents ──────────────────────────────────────────── */
 	--color-accent-sage: #7ba882;
@@ -200,21 +200,32 @@
 }
 
 @layer base {
-	*, *::before, *::after {
+	*,
+	*::before,
+	*::after {
 		box-sizing: border-box;
 	}
 
 	body {
 		background-color: var(--theme-page);
 		color: var(--theme-page-fg);
-		font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+		font-family:
+			var(--font-inter),
+			system-ui,
+			-apple-system,
+			sans-serif;
 	}
 
 	.dark {
 		color-scheme: dark;
 	}
 
-	h1, h2, h3, h4, h5, h6 {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
 		font-family: var(--font-manrope), var(--font-inter), sans-serif;
 	}
 
@@ -222,7 +233,10 @@
 	/* Inside @layer base so Tailwind utility classes can override them   */
 
 	/* Scoped to legacy forms — use data-form-ui or data-inline on modern forms */
-	form:not([data-inline]):not([data-form-ui]) input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="range"]):not([type="file"]),
+	form:not([data-inline]):not([data-form-ui])
+		input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not(
+			[type="range"]
+		):not([type="file"]),
 	form:not([data-inline]):not([data-form-ui]) select,
 	form:not([data-inline]):not([data-form-ui]) textarea {
 		display: block;
@@ -236,22 +250,27 @@
 		border: 1px solid var(--color-hairline);
 		border-radius: 6px;
 		outline: none;
-		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease;
 	}
 
-	form:not([data-inline]):not([data-form-ui]) input:not([type="checkbox"]):not([type="radio"])::placeholder,
+	form:not([data-inline]):not([data-form-ui])
+		input:not([type="checkbox"]):not([type="radio"])::placeholder,
 	form:not([data-inline]):not([data-form-ui]) textarea::placeholder {
 		color: var(--color-muted);
 	}
 
-	form:not([data-inline]):not([data-form-ui]) input:not([type="checkbox"]):not([type="radio"]):focus,
+	form:not([data-inline]):not([data-form-ui])
+		input:not([type="checkbox"]):not([type="radio"]):focus,
 	form:not([data-inline]):not([data-form-ui]) select:focus,
 	form:not([data-inline]):not([data-form-ui]) textarea:focus {
 		border-color: var(--color-primary);
 		box-shadow: 0 0 0 3px rgba(45, 90, 74, 0.15);
 	}
 
-	form:not([data-inline]):not([data-form-ui]) input:not([type="checkbox"]):not([type="radio"]):disabled,
+	form:not([data-inline]):not([data-form-ui])
+		input:not([type="checkbox"]):not([type="radio"]):disabled,
 	form:not([data-inline]):not([data-form-ui]) select:disabled,
 	form:not([data-inline]):not([data-form-ui]) textarea:disabled {
 		opacity: 0.6;
@@ -395,4 +414,3 @@ form[data-inline].newsletter-pill-form .newsletter-pill-button:hover:not(:disabl
 form[data-inline].newsletter-pill-form .newsletter-pill-button:active:not(:disabled) {
 	transform: none;
 }
-

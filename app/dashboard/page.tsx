@@ -5,7 +5,14 @@ import { API_ROUTES_URL } from "@/app/constants";
 import MembershipGate from "@/components/MembershipGate";
 import DarkPageShell from "@/components/layout/DarkPageShell";
 import { FormInput, FormMessage, FormSubmitButton } from "@/components/ui/form";
-import { centerPage, contentColumn, copyColumn, formColumn, textHeading, textMuted } from "@/lib/theme";
+import {
+	centerPage,
+	contentColumn,
+	copyColumn,
+	formColumn,
+	textHeading,
+	textMuted,
+} from "@/lib/theme";
 
 export default function DashboardPage(): React.ReactElement {
 	const [email, setEmail] = useState("");

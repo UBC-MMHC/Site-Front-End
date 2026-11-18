@@ -127,22 +127,12 @@ export default function Navbar() {
 
 				<div className="hidden items-center md:flex">
 					{NAV_LINKS.map((item) => (
-						<NavItem
-							key={item.href}
-							href={item.href}
-							label={item.label}
-							onHero={isTransparent}
-						/>
+						<NavItem key={item.href} href={item.href} label={item.label} onHero={isTransparent} />
 					))}
 					{!isLoading &&
 						isLoggedIn &&
 						AUTH_LINKS.map((item) => (
-							<NavItem
-								key={item.href}
-								href={item.href}
-								label={item.label}
-								onHero={isTransparent}
-							/>
+							<NavItem key={item.href} href={item.href} label={item.label} onHero={isTransparent} />
 						))}
 				</div>
 
@@ -164,7 +154,7 @@ export default function Navbar() {
 							href="/login"
 							className={
 								isTransparent
-									? "rounded-full bg-zinc-50 px-5 py-2.5 text-xs font-semibold uppercase tracking-wide text-zinc-950 transition-all hover:bg-zinc-200"
+									? "rounded-full bg-zinc-50 px-5 py-2.5 text-xs font-semibold tracking-wide text-zinc-950 uppercase transition-all hover:bg-zinc-200"
 									: pillPrimary
 							}
 						>
@@ -189,18 +179,13 @@ export default function Navbar() {
 
 			<div
 				ref={mobileMenuRef}
-				className={`overflow-hidden border-t border-border bg-page transition-all duration-300 md:hidden ${
+				className={`border-border bg-page overflow-hidden border-t transition-all duration-300 md:hidden ${
 					isOpen ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0"
 				}`}
 			>
-				<div className="flex flex-col px-6 py-4 text-page-fg">
+				<div className="text-page-fg flex flex-col px-6 py-4">
 					{NAV_LINKS.map((item) => (
-						<NavItem
-							key={item.href}
-							href={item.href}
-							label={item.label}
-							onClick={closeMobile}
-						/>
+						<NavItem key={item.href} href={item.href} label={item.label} onClick={closeMobile} />
 					))}
 					{!isLoading && isLoggedIn && (
 						<>
@@ -218,14 +203,14 @@ export default function Navbar() {
 									closeMobile();
 									void handleLogout();
 								}}
-								className="px-3 py-2 text-left text-sm font-medium text-fg-muted hover:text-page-fg"
+								className="text-fg-muted hover:text-page-fg px-3 py-2 text-left text-sm font-medium"
 							>
 								Sign Out
 							</button>
 						</>
 					)}
 					{!isLoading && !isLoggedIn && (
-						<div className="mt-3 border-t border-border pt-4">
+						<div className="border-border mt-3 border-t pt-4">
 							<Link href="/login" className={`${pillPrimary} inline-block`} onClick={closeMobile}>
 								Sign In
 							</Link>

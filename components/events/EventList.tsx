@@ -54,7 +54,7 @@ export function EventByYear({ events }: Readonly<{ events: CalendarEventView[] }
 	if (years.length === 0) {
 		return (
 			<div className={dashedEmpty}>
-				<CalendarDays className="mx-auto mb-3 h-8 w-8 text-theme-accent-muted" />
+				<CalendarDays className="text-theme-accent-muted mx-auto mb-3 h-8 w-8" />
 				<p className={`font-medium ${textHeading}`}>No events to show yet.</p>
 				<p className={`mt-2 text-sm ${textSubtle}`}>Check back soon for new events.</p>
 			</div>

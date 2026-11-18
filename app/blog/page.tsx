@@ -9,7 +9,7 @@ import { BLOG_POSTS } from "./blogData";
 export default function BlogPage() {
 	return (
 		<DarkPageShell>
-			<main className="px-6 pb-24 pt-28">
+			<main className="px-6 pt-28 pb-24">
 				<div className="mx-auto max-w-7xl">
 					<PageHeader
 						title="Blog"
@@ -22,9 +22,9 @@ export default function BlogPage() {
 							getPostHref={(post: BlogPostWithAuthor) => `/blog/${post.slug}`}
 						/>
 					) : (
-						<div className="rounded-2xl border border-dashed border-border px-8 py-16 text-center">
-							<p className="font-medium text-page-fg">No posts yet.</p>
-							<p className="mt-2 text-sm text-fg-muted">Check back soon for new articles.</p>
+						<div className="border-border rounded-2xl border border-dashed px-8 py-16 text-center">
+							<p className="text-page-fg font-medium">No posts yet.</p>
+							<p className="text-fg-muted mt-2 text-sm">Check back soon for new articles.</p>
 						</div>
 					)}
 				</div>

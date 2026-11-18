@@ -55,48 +55,44 @@ export default function HomeEventCard({ ev, thumbnail }: HomeEventCardProps) {
 
 	return (
 		<article className={`overflow-hidden ${surfaceCard} ${surfaceCardHover}`}>
-			<div className="relative aspect-[16/9] w-full overflow-hidden bg-zinc-200 dark:bg-surface-elevated">
-				<Image
-					alt={ev.title}
-					src={mediaUrl}
-					fill
-					className="object-cover"
-					loading="lazy"
-				/>
+			<div className="dark:bg-surface-elevated relative aspect-[16/9] w-full overflow-hidden bg-zinc-200">
+				<Image alt={ev.title} src={mediaUrl} fill className="object-cover" loading="lazy" />
 			</div>
 
 			<div className="p-6">
 				<div className="mb-3 flex flex-wrap gap-2">
 					{ev.featured && (
-						<span className="inline-flex items-center gap-1 rounded-full border border-border bg-surface-elevated px-2.5 py-0.5 text-xs text-page-fg">
+						<span className="border-border bg-surface-elevated text-page-fg inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs">
 							<Star className="h-3 w-3" aria-hidden />
 							Featured
 						</span>
 					)}
 					{ev.isRecurring && ev.recurrenceString && (
-						<span className={`inline-flex items-center gap-1 rounded-full border border-border bg-surface-elevated px-2.5 py-0.5 text-xs ${textMuted}`}>
+						<span
+							className={`border-border bg-surface-elevated inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs ${textMuted}`}
+						>
 							<Repeat className="h-3 w-3" aria-hidden />
 							{ev.recurrenceString}
 						</span>
 					)}
 				</div>
 
-				<h3 className={`text-lg font-semibold leading-tight ${textHeading}`}>{ev.title}</h3>
+				<h3 className={`text-lg leading-tight font-semibold ${textHeading}`}>{ev.title}</h3>
 
 				{mounted && (
 					<p className={`mt-2 text-sm ${textMuted}`}>
 						<span className="text-page-fg">{dateString}</span>
-						<span className="mx-2 text-theme-line">·</span>
+						<span className="text-theme-line mx-2">·</span>
 						{timeString}
 					</p>
 				)}
 
-				{hasLocation && (
-					<p className={`mt-3 text-sm ${textSubtle}`}>{ev.location}</p>
-				)}
+				{hasLocation && <p className={`mt-3 text-sm ${textSubtle}`}>{ev.location}</p>}
 
 				{ev.description && (
-					<p className={`mt-4 line-clamp-3 text-sm leading-relaxed ${textMuted}`}>{ev.description}</p>
+					<p className={`mt-4 line-clamp-3 text-sm leading-relaxed ${textMuted}`}>
+						{ev.description}
+					</p>
 				)}
 			</div>
 		</article>

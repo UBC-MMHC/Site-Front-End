@@ -14,7 +14,7 @@ export default function MembershipCancelPage() {
 	return (
 		<FormPageShell>
 			<FormCard className="animate-slide-up text-center">
-				<div className="mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-full bg-surface-elevated">
+				<div className="bg-surface-elevated mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-full">
 					<svg
 						className={`h-7 w-7 ${textMuted}`}
 						fill="none"

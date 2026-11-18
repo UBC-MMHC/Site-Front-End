@@ -564,32 +564,32 @@ footer:
 ```css
 :root {
 	/* Colors - Primary */
-	--color-primary: #2D5A4A;
+	--color-primary: #2d5a4a;
 	--color-primary-hover: #3b745f;
 	--color-primary-active: #1f4236;
-	--color-accent: #16345A;
+	--color-accent: #16345a;
 	--color-accent-hover: #1f4570;
 
 	/* Colors - Text */
-	--color-ink: #1A1A1A;
-	--color-body: #1A1A1A;
+	--color-ink: #1a1a1a;
+	--color-body: #1a1a1a;
 	--color-body-strong: #000000;
-	--color-muted: #6B6B6B;
+	--color-muted: #6b6b6b;
 	--color-muted-soft: #8a8a8a;
 
 	/* Colors - Surfaces */
-	--color-canvas: #F7F5F2;
+	--color-canvas: #f7f5f2;
 	--color-canvas-elevated: #ffffff;
-	--color-canvas-dark: #16345A;
-	--color-surface-card: #FFFFFF;
-	--color-surface-soft-light: #E8E4DF;
-	--color-surface-warm: #E8E4DF;
+	--color-canvas-dark: #16345a;
+	--color-surface-card: #ffffff;
+	--color-surface-soft-light: #e8e4df;
+	--color-surface-warm: #e8e4df;
 
 	/* Colors - Semantic */
 	--color-success: #6b9d7a;
 	--color-info: #5b8db8;
 	--color-warning: #e8a55c;
-	--color-urgent: #B85450;
+	--color-urgent: #b85450;
 
 	/* Colors - Accents */
 	--color-accent-sage: #7ba882;

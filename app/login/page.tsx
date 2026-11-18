@@ -80,7 +80,7 @@ export default function LoginPage() {
 					<div className="flex justify-end">
 						<Link
 							href="/forgot-password"
-							className="text-xs text-fg-muted transition-colors hover:text-page-fg"
+							className="text-fg-muted hover:text-page-fg text-xs transition-colors"
 						>
 							Forgot password?
 						</Link>
@@ -94,7 +94,7 @@ export default function LoginPage() {
 
 					<Link
 						href="/register"
-						className={`flex w-full items-center justify-center rounded-full border border-border bg-surface px-6 py-3 text-sm font-medium text-page-fg transition-all hover:bg-surface-elevated ${isLoading ? "pointer-events-none opacity-50" : ""}`}
+						className={`border-border bg-surface text-page-fg hover:bg-surface-elevated flex w-full items-center justify-center rounded-full border px-6 py-3 text-sm font-medium transition-all ${isLoading ? "pointer-events-none opacity-50" : ""}`}
 					>
 						Create an account
 					</Link>
@@ -106,7 +106,7 @@ export default function LoginPage() {
 					type="button"
 					onClick={() => loginWithGoogle()}
 					disabled={isLoading}
-					className="flex w-full items-center justify-center gap-3 rounded-full border border-border bg-surface py-3 text-sm font-medium text-page-fg transition-all hover:bg-surface-elevated disabled:opacity-50"
+					className="border-border bg-surface text-page-fg hover:bg-surface-elevated flex w-full items-center justify-center gap-3 rounded-full border py-3 text-sm font-medium transition-all disabled:opacity-50"
 				>
 					<span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white p-0.5">
 						<GoogleIcon className="h-4 w-4" />

@@ -15,7 +15,7 @@ export const formHintClass = "mt-1.5 text-xs text-zinc-500 dark:text-fg-muted";
 export function FormPageShell({ children }: { children: ReactNode }) {
 	return (
 		<div className={`w-full px-4 py-24 pt-28 ${pageShell}`}>
-			<div className="mx-auto w-full min-w-0 max-w-form">{children}</div>
+			<div className="max-w-form mx-auto w-full min-w-0">{children}</div>
 		</div>
 	);
 }
@@ -34,13 +34,7 @@ export function FormCard({
 	);
 }
 
-export function FormHeader({
-	title,
-	description,
-}: {
-	title: string;
-	description?: string;
-}) {
+export function FormHeader({ title, description }: { title: string; description?: string }) {
 	return (
 		<div className="mb-6 text-center">
 			<h1 className={`text-2xl font-semibold tracking-tight ${textHeading}`}>{title}</h1>
@@ -74,10 +68,7 @@ export function FormField({
 	);
 }
 
-export function FormInput({
-	className = "",
-	...props
-}: InputHTMLAttributes<HTMLInputElement>) {
+export function FormInput({ className = "", ...props }: InputHTMLAttributes<HTMLInputElement>) {
 	return <input className={`${formInputClass} ${className}`} {...props} />;
 }
 
@@ -102,7 +93,7 @@ export function FormCheckbox({
 		<label className={`flex cursor-pointer items-start gap-3 ${className}`}>
 			<input
 				type="checkbox"
-				className="mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-400 bg-white accent-zinc-900 dark:border-border dark:bg-surface-elevated dark:accent-page-fg"
+				className="dark:border-border dark:bg-surface-elevated dark:accent-page-fg mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-400 bg-white accent-zinc-900"
 				{...props}
 			/>
 			<span className={`text-sm leading-relaxed ${textMuted}`}>{label}</span>
@@ -117,7 +108,8 @@ const buttonVariants: Record<FormButtonVariant, string> = {
 		"rounded-full bg-zinc-900 text-white hover:bg-zinc-800 disabled:opacity-50 dark:bg-pill dark:text-pill-fg dark:hover:bg-slate-200",
 	secondary:
 		"rounded-full border border-zinc-300 bg-transparent text-zinc-700 hover:border-theme-focus hover:bg-zinc-100 disabled:opacity-50 dark:border-border dark:text-page-fg dark:hover:border-theme-focus dark:hover:bg-surface-elevated",
-	ghost: "rounded-lg text-zinc-600 hover:text-zinc-900 disabled:opacity-50 dark:text-fg-muted dark:hover:text-theme-accent-hover",
+	ghost:
+		"rounded-lg text-zinc-600 hover:text-zinc-900 disabled:opacity-50 dark:text-fg-muted dark:hover:text-theme-accent-hover",
 };
 
 export function FormButton({
@@ -145,7 +137,7 @@ export function FormSubmitButton({
 	return (
 		<button
 			type="submit"
-			className={`w-full rounded-full bg-zinc-900 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-pill dark:text-pill-fg dark:hover:bg-slate-200 ${className}`}
+			className={`dark:bg-pill dark:text-pill-fg w-full rounded-full bg-zinc-900 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-slate-200 ${className}`}
 			{...props}
 		>
 			{children}
@@ -153,7 +145,13 @@ export function FormSubmitButton({
 	);
 }
 
-export function FormMessage({ type, children }: { type: "error" | "success"; children: ReactNode }) {
+export function FormMessage({
+	type,
+	children,
+}: {
+	type: "error" | "success";
+	children: ReactNode;
+}) {
 	const classes =
 		type === "error"
 			? "text-center text-sm text-red-600 dark:text-red-400"
@@ -164,23 +162,20 @@ export function FormMessage({ type, children }: { type: "error" | "success"; chi
 export function FormDivider() {
 	return (
 		<div className="my-6 flex items-center">
-			<div className="h-px flex-grow bg-zinc-200 dark:bg-border" />
+			<div className="dark:bg-border h-px flex-grow bg-zinc-200" />
 			<span className="mx-3 text-sm text-zinc-500">or</span>
-			<div className="h-px flex-grow bg-zinc-200 dark:bg-border" />
+			<div className="dark:bg-border h-px flex-grow bg-zinc-200" />
 		</div>
 	);
 }
 
-export function FormFooterLink({
-	href,
-	children,
-}: {
-	href: string;
-	children: ReactNode;
-}) {
+export function FormFooterLink({ href, children }: { href: string; children: ReactNode }) {
 	return (
 		<p className="mt-6 text-center text-sm text-zinc-500">
-			<Link href={href} className="text-zinc-700 underline-offset-4 hover:text-theme-accent hover:underline dark:text-theme-accent-muted dark:hover:text-theme-accent-hover">
+			<Link
+				href={href}
+				className="hover:text-theme-accent dark:text-theme-accent-muted dark:hover:text-theme-accent-hover text-zinc-700 underline-offset-4 hover:underline"
+			>
 				{children}
 			</Link>
 		</p>

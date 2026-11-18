@@ -4,12 +4,7 @@ import React, { useState, useEffect } from "react";
 import { API_ROUTES_URL } from "@/app/constants";
 import DarkPageShell from "@/components/layout/DarkPageShell";
 import { AuthLoading } from "@/components/layout/AuthLoading";
-import {
-	formInputClass,
-	formLabelClass,
-	FormButton,
-	FormSelect,
-} from "@/components/ui/form";
+import { formInputClass, formLabelClass, FormButton, FormSelect } from "@/components/ui/form";
 import {
 	pageShell,
 	pillOutline,
@@ -172,7 +167,7 @@ export default function AdminPage(): React.ReactElement {
 
 	return (
 		<div className={`${pageShell} px-6 py-12 pt-28`}>
-			<div className="mx-auto w-full max-w-hero">
+			<div className="max-w-hero mx-auto w-full">
 				<h1 className={`mb-8 text-4xl font-semibold ${textHeading}`}>Admin Panel</h1>
 
 				{actionStatus && (
@@ -202,16 +197,12 @@ export default function AdminPage(): React.ReactElement {
 						<div className={`overflow-x-auto ${surfaceCard}`}>
 							<table className="w-full border-collapse">
 								<thead>
-									<tr className="border-b border-border">
-										<th className={`px-4 py-3 text-left text-sm font-medium ${textMuted}`}>
-											Name
-										</th>
+									<tr className="border-border border-b">
+										<th className={`px-4 py-3 text-left text-sm font-medium ${textMuted}`}>Name</th>
 										<th className={`px-4 py-3 text-left text-sm font-medium ${textMuted}`}>
 											Email
 										</th>
-										<th className={`px-4 py-3 text-left text-sm font-medium ${textMuted}`}>
-											Type
-										</th>
+										<th className={`px-4 py-3 text-left text-sm font-medium ${textMuted}`}>Type</th>
 										<th className={`px-4 py-3 text-left text-sm font-medium ${textMuted}`}>
 											Student ID
 										</th>
@@ -224,7 +215,7 @@ export default function AdminPage(): React.ReactElement {
 									{pendingMemberships.map((m) => (
 										<tr
 											key={m.email}
-											className="border-b border-border/50 hover:bg-surface-elevated/50"
+											className="border-border/50 hover:bg-surface-elevated/50 border-b"
 										>
 											<td className="px-4 py-3">{m.fullName}</td>
 											<td className="px-4 py-3 text-sm">{m.email}</td>
@@ -242,7 +233,7 @@ export default function AdminPage(): React.ReactElement {
 													<button
 														type="button"
 														onClick={() => approveMembership(m.email, "ETRANSFER")}
-														className="rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition-colors hover:bg-blue-500"
+														className="rounded-full bg-blue-600 px-4 py-2 text-xs font-semibold tracking-wide text-white uppercase transition-colors hover:bg-blue-500"
 													>
 														E-Transfer
 													</button>
@@ -290,7 +281,7 @@ export default function AdminPage(): React.ReactElement {
 						<div className="flex gap-3">
 							<FormButton
 								variant="primary"
-								className="flex-1 !w-auto"
+								className="!w-auto flex-1"
 								disabled={!roleEmail || roleLoading}
 								onClick={assignRole}
 							>
