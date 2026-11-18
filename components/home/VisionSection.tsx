@@ -8,12 +8,14 @@ export default function VisionSection() {
 				<div className="order-2 lg:order-1">
 					<div className="mb-8 flex items-center gap-3">
 						<div className={`h-px w-8 ${accentLine}`} />
-						<span className={`text-xs font-medium uppercase tracking-widest ${textMuted}`}>
+						<span className={`text-xs font-medium tracking-widest uppercase ${textMuted}`}>
 							Who we are
 						</span>
 					</div>
 
-					<h2 className={`text-3xl font-semibold leading-tight tracking-tight md:text-5xl ${textHeading}`}>
+					<h2
+						className={`text-3xl leading-tight font-semibold tracking-tight md:text-5xl ${textHeading}`}
+					>
 						A community built for <br />
 						men&apos;s mental health.
 					</h2>
@@ -25,15 +27,15 @@ export default function VisionSection() {
 							campus by showing up for students, sharing what we know, and listening.
 						</p>
 						<p>
-							We want members to leave feeling more confident, more self-aware, and in a better place
-							than when they walked in. Our meetings are a regular check-in: a chance to see how
-							you&apos;re doing and stay accountable with the group.
+							We want members to leave feeling more confident, more self-aware, and in a better
+							place than when they walked in. Our meetings are a regular check-in: a chance to see
+							how you&apos;re doing and stay accountable with the group.
 						</p>
 					</div>
 				</div>
 
 				<div className="relative order-1 lg:order-2">
-					<div className="relative aspect-[4/5] min-h-[320px] overflow-hidden rounded-2xl border border-border bg-surface-elevated">
+					<div className="border-border bg-surface-elevated relative aspect-[4/5] min-h-[320px] overflow-hidden rounded-2xl border">
 						<Image
 							src="/about/DanielWhyWeJournal.jpg"
 							alt="UBC MMHC members in discussion"

@@ -2,12 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState, Suspense } from "react";
-import {
-	FormButton,
-	FormCard,
-	FormHeader,
-	FormPageShell,
-} from "@/components/ui/form";
+import { FormButton, FormCard, FormHeader, FormPageShell } from "@/components/ui/form";
 import { loadingPulse } from "@/lib/theme";
 
 function SuccessContent() {
@@ -28,10 +23,8 @@ function SuccessContent() {
 	}
 
 	return (
-		<div
-			className={`transition-opacity duration-500 ${showContent ? "opacity-100" : "opacity-0"}`}
-		>
-			<div className="mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-full bg-theme-accent">
+		<div className={`transition-opacity duration-500 ${showContent ? "opacity-100" : "opacity-0"}`}>
+			<div className="bg-theme-accent mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-full">
 				<svg className="h-7 w-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
 				</svg>

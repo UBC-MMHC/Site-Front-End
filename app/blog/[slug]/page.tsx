@@ -31,7 +31,7 @@ export default function BlogPostPage() {
 
 	return (
 		<DarkPageShell>
-			<main className="px-6 pb-24 pt-28">
+			<main className="px-6 pt-28 pb-24">
 				<div className="mx-auto max-w-3xl">
 					<DarkBlogPost post={post} />
 				</div>

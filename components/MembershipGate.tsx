@@ -63,10 +63,8 @@ export default function MembershipGate({ children }: MembershipGateProps) {
 		<>
 			{!membershipStatus.isPaid && (
 				<div className={`animate-slide-up fixed top-16 right-0 left-0 z-40 ${paymentBanner}`}>
-					<div className="mx-auto flex w-full max-w-blog items-center justify-between gap-4 px-4">
-						<p className={`text-sm ${textMuted}`}>
-							Complete your payment to unlock full access
-						</p>
+					<div className="max-w-blog mx-auto flex w-full items-center justify-between gap-4 px-4">
+						<p className={`text-sm ${textMuted}`}>Complete your payment to unlock full access</p>
 						<Link href="/membership" className={`${pillPrimary} shrink-0 !py-1.5 !text-[0.7rem]`}>
 							Complete
 						</Link>

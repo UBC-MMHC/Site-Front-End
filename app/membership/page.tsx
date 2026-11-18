@@ -46,16 +46,18 @@ function MembershipBenefits({ className = "" }: { className?: string }) {
 	return (
 		<div className={className}>
 			<div className="mb-5 h-px w-8 rounded-full bg-zinc-600" />
-			<h2 className="text-sm font-semibold uppercase tracking-wide text-fg-muted">Benefits</h2>
-			<p className="mt-1 mb-5 text-sm font-light text-fg-muted">Your membership pays for itself.</p>
+			<h2 className="text-fg-muted text-sm font-semibold tracking-wide uppercase">Benefits</h2>
+			<p className="text-fg-muted mt-1 mb-5 text-sm font-light">Your membership pays for itself.</p>
 			<div className="space-y-4">
 				{benefits.map((benefit) => (
 					<div key={benefit.title}>
 						<div className="flex items-center gap-2">
 							<span className="inline-block h-1.5 w-1.5 rounded-full bg-zinc-400" />
-							<h3 className="text-sm font-medium text-page-fg">{benefit.title}</h3>
+							<h3 className="text-page-fg text-sm font-medium">{benefit.title}</h3>
 						</div>
-						<p className="mt-0.5 pl-3.5 text-xs leading-relaxed text-fg-muted">{benefit.description}</p>
+						<p className="text-fg-muted mt-0.5 pl-3.5 text-xs leading-relaxed">
+							{benefit.description}
+						</p>
 					</div>
 				))}
 			</div>
@@ -73,14 +75,14 @@ function MobileBenefitsDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
 				onClick={onClose}
 				aria-hidden
 			/>
-			<div className="fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-y-auto rounded-t-2xl border-t border-border bg-page px-6 pt-4 pb-10 shadow-2xl">
+			<div className="border-border bg-page fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-y-auto rounded-t-2xl border-t px-6 pt-4 pb-10 shadow-2xl">
 				<div className="mb-4 flex justify-center">
 					<div className="h-1 w-10 rounded-full bg-zinc-700" />
 				</div>
 				<button
 					type="button"
 					onClick={onClose}
-					className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-zinc-200 text-fg-muted transition hover:bg-zinc-300 hover:text-page-fg dark:bg-surface-elevated dark:hover:bg-theme-accent-muted/25"
+					className="text-fg-muted hover:text-page-fg dark:bg-surface-elevated dark:hover:bg-theme-accent-muted/25 absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-zinc-200 transition hover:bg-zinc-300"
 					aria-label="Close benefits"
 				>
 					✕
@@ -230,7 +232,7 @@ export default function MembershipPage() {
 
 	if (showAuthLoading || showStatusLoading) {
 		return (
-			<div className="flex min-h-screen items-center justify-center bg-page">
+			<div className="bg-page flex min-h-screen items-center justify-center">
 				<p className="animate-subtle-pulse text-fg-muted">Loading…</p>
 			</div>
 		);
@@ -240,10 +242,12 @@ export default function MembershipPage() {
 		return (
 			<FormPageShell>
 				<FormCard className="text-center">
-					<h1 className="mb-3 text-3xl font-semibold tracking-tight text-page-fg">Complete your payment</h1>
-					<p className="mb-10 text-fg-muted">
+					<h1 className="text-page-fg mb-3 text-3xl font-semibold tracking-tight">
+						Complete your payment
+					</h1>
+					<p className="text-fg-muted mb-10">
 						You&apos;re almost there. Finish setting up your{" "}
-						<span className="font-medium text-page-fg">
+						<span className="text-page-fg font-medium">
 							{existingMembership.membershipType?.replace(/_/g, " ").toLowerCase()}
 						</span>{" "}
 						membership.
@@ -252,12 +256,12 @@ export default function MembershipPage() {
 						type="button"
 						onClick={handleRetryPayment}
 						disabled={isLoading}
-						className="w-full rounded-full bg-pill py-3.5 text-sm font-semibold text-pill-fg transition hover:opacity-90 disabled:opacity-50"
+						className="bg-pill text-pill-fg w-full rounded-full py-3.5 text-sm font-semibold transition hover:opacity-90 disabled:opacity-50"
 					>
 						{isLoading ? "Redirecting…" : "Continue to Payment"}
 					</button>
 					{error && <p className="mt-4 text-sm text-red-400">{error}</p>}
-					<p className="mt-8 text-sm text-fg-muted">
+					<p className="text-fg-muted mt-8 text-sm">
 						Need help?{" "}
 						<a href="mailto:ubcmmhc@gmail.com" className="text-fg-muted hover:underline">
 							Contact us
@@ -273,18 +277,20 @@ export default function MembershipPage() {
 			<FormPageShell>
 				<FormCard className="text-center">
 					<div className="mb-6 flex justify-center">
-						<div className="flex h-20 w-20 items-center justify-center rounded-full bg-zinc-200 text-4xl text-emerald-600 dark:bg-surface-elevated dark:text-emerald-400">
+						<div className="dark:bg-surface-elevated flex h-20 w-20 items-center justify-center rounded-full bg-zinc-200 text-4xl text-emerald-600 dark:text-emerald-400">
 							✓
 						</div>
 					</div>
-					<h1 className="mb-3 text-3xl font-semibold tracking-tight text-page-fg">Registration received</h1>
-					<p className="mb-6 text-fg-muted">
+					<h1 className="text-page-fg mb-3 text-3xl font-semibold tracking-tight">
+						Registration received
+					</h1>
+					<p className="text-fg-muted mb-6">
 						Thank you for registering. Since you selected{" "}
-						<span className="font-medium text-page-fg">{paymentMethod}</span>, your membership will be
-						activated once we verify your payment.
+						<span className="text-page-fg font-medium">{paymentMethod}</span>, your membership will
+						be activated once we verify your payment.
 					</p>
-					<div className="mb-8 rounded-xl border border-border bg-surface p-4 text-left text-sm text-fg-muted">
-						<h3 className="mb-2 font-medium text-page-fg">Next steps</h3>
+					<div className="border-border bg-surface text-fg-muted mb-8 rounded-xl border p-4 text-left text-sm">
+						<h3 className="text-page-fg mb-2 font-medium">Next steps</h3>
 						<ul className="space-y-2">
 							{paymentMethod === PaymentMethod.ETRANSFER && (
 								<>
@@ -303,7 +309,7 @@ export default function MembershipPage() {
 					<button
 						type="button"
 						onClick={() => router.push("/")}
-						className="w-full rounded-full bg-pill py-3.5 text-sm font-semibold text-pill-fg transition hover:opacity-90"
+						className="bg-pill text-pill-fg w-full rounded-full py-3.5 text-sm font-semibold transition hover:opacity-90"
 					>
 						Return to Home
 					</button>
@@ -313,14 +319,11 @@ export default function MembershipPage() {
 	}
 
 	return (
-		<div className="min-h-screen w-full bg-page px-4 pt-28 pb-32">
+		<div className="bg-page min-h-screen w-full px-4 pt-28 pb-32">
 			<div className="mx-auto w-full max-w-5xl">
 				<div className="xl:grid xl:grid-cols-2 xl:items-start xl:gap-16">
 					<FormCard>
-						<FormHeader
-							title="Become a Member"
-							description="Join UBC Men's Mental Health Club"
-						/>
+						<FormHeader title="Become a Member" description="Join UBC Men's Mental Health Club" />
 
 						<form data-form-ui onSubmit={handleSubmit} className="space-y-5">
 							<FormField label="Full Name" htmlFor="fullName">
@@ -428,7 +431,7 @@ export default function MembershipPage() {
 			<button
 				type="button"
 				onClick={() => setShowBenefits(true)}
-				className="fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full bg-pill px-5 py-3 text-sm font-medium text-pill-fg shadow-lg transition hover:opacity-90 active:scale-95 xl:hidden"
+				className="bg-pill text-pill-fg fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full px-5 py-3 text-sm font-medium shadow-lg transition hover:opacity-90 active:scale-95 xl:hidden"
 			>
 				<span aria-hidden>✦</span>
 				View Benefits

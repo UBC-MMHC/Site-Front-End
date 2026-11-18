@@ -38,11 +38,7 @@ export default async function HomeEventsSection({ limit = 4 }: { limit?: number 
 				) : (
 					<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 						{views.map((ev) => (
-							<HomeEventCard
-								key={ev.id}
-								ev={ev}
-								thumbnail={getThumbnailForEvent(ev.title ?? "")}
-							/>
+							<HomeEventCard key={ev.id} ev={ev} thumbnail={getThumbnailForEvent(ev.title ?? "")} />
 						))}
 					</div>
 				)}

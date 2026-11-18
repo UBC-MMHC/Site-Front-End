@@ -26,7 +26,7 @@ export default function PillarsSection() {
 	return (
 		<section id="pillars" className="bg-page py-32">
 			<div className="mx-auto max-w-7xl px-6">
-				<div className="mx-auto mb-20 max-w-copy text-center">
+				<div className="max-w-copy mx-auto mb-20 text-center">
 					<h2 className={`text-3xl font-semibold tracking-tight md:text-4xl ${textHeading}`}>
 						Our Three Pillars
 					</h2>
@@ -40,12 +40,11 @@ export default function PillarsSection() {
 					{PILLARS.map((pillar) => {
 						const Icon = pillar.icon;
 						return (
-							<article
-								key={pillar.title}
-								className={`p-8 ${surfaceCard}`}
-							>
+							<article key={pillar.title} className={`p-8 ${surfaceCard}`}>
 								<Icon className={`mb-5 h-8 w-8 ${accentIcon}`} />
-								<h3 className={`mb-3 text-xl font-semibold tracking-tight ${textHeading}`}>{pillar.title}</h3>
+								<h3 className={`mb-3 text-xl font-semibold tracking-tight ${textHeading}`}>
+									{pillar.title}
+								</h3>
 								<p className={`text-sm leading-relaxed ${textMuted}`}>{pillar.description}</p>
 							</article>
 						);

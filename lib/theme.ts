@@ -3,8 +3,7 @@
 export const pageShell =
 	"min-h-screen bg-page font-sans text-page-fg antialiased selection:bg-[var(--theme-selection)] selection:text-page-fg dark:selection:text-white";
 
-export const surfaceCard =
-	"rounded-2xl border border-border bg-surface shadow-sm dark:shadow-none";
+export const surfaceCard = "rounded-2xl border border-border bg-surface shadow-sm dark:shadow-none";
 
 export const surfaceCardHover =
 	"transition-all hover:border-theme-accent-muted/40 hover:bg-surface-elevated dark:hover:border-theme-accent-muted/50 dark:hover:bg-surface-elevated";
@@ -33,12 +32,10 @@ export const navSolid = "bg-nav/95 backdrop-blur-sm";
 export const eyebrowBadge =
 	"inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1";
 
-export const dashedEmpty =
-	"rounded-2xl border border-dashed border-border px-8 py-16 text-center";
+export const dashedEmpty = "rounded-2xl border border-dashed border-border px-8 py-16 text-center";
 
 /** Centered full-viewport content (dashboard, profile, loading states). */
-export const centerPage =
-	"flex min-h-screen w-full flex-col items-center justify-center px-6";
+export const centerPage = "flex min-h-screen w-full flex-col items-center justify-center px-6";
 
 /** Readable text column — uses --max-width-content, not max-w-xl (48px spacing token). */
 export const contentColumn = "mx-auto w-full min-w-0 max-w-content text-center";
