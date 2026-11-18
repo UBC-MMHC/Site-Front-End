@@ -38,9 +38,9 @@ const PILLARS: readonly Pillar[] = [
 		title: "Growth",
 		description:
 			"Encouraging self-development through action-based discussions, accountability systems, and grit challenges.",
-		image: "/about/DanielWhyWeJournal.jpg",
-		imageAlt: "A club member leading a session on why we journal",
-		imagePosition: "object-left",
+		image: "/blogs/JournalingSession.jpg",
+		imageAlt: "Club members writing in their journals during a journaling session",
+		imagePosition: "object-[62%_50%]",
 	},
 ];
 
