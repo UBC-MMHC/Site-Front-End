@@ -29,9 +29,9 @@ const PILLARS: readonly Pillar[] = [
 		title: "Grit",
 		description:
 			"Developing perseverance through regular physical challenges and workouts such as runs and cold plunges.",
-		image: "/hero/Beachheader.jpg",
-		imageAlt: "Club members gathered on the sand at the beach",
-		imagePosition: "object-center",
+		image: "/hero/CabinLakeHike.jpg",
+		imageAlt: "Club members climbing a rocky trail on the Cabin Lake hike",
+		imagePosition: "object-[50%_60%]",
 	},
 	{
 		icon: GrowthIcon,
