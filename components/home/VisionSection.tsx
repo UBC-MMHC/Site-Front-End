@@ -37,10 +37,10 @@ export default function VisionSection() {
 				<div className="relative order-1 lg:order-2">
 					<div className="border-border bg-surface-elevated relative aspect-[4/5] min-h-[320px] overflow-hidden rounded-2xl border">
 						<Image
-							src="/about/DanielWhyWeJournal.jpg"
+							src="/hero/DiscussionTableHero.JPG"
 							alt="UBC MMHC members in discussion"
 							fill
-							className="object-cover object-left"
+							className="object-cover"
 							sizes="(max-width: 1024px) 100vw, 50vw"
 						/>
 					</div>
