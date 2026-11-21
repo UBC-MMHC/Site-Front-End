@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import EventList from "@/components/events/EventList";
+import EventTabs from "@/components/events/EventTabs";
 import { EventsSkeleton } from "@/components/events/skeletons";
 import DarkPageShell from "@/components/layout/DarkPageShell";
 import PageHeader from "@/components/layout/PageHeader";
@@ -15,6 +16,8 @@ export default function EventsPage() {
 						title="Upcoming Events"
 						description="Join discussions, runs, study sessions, and more with the UBC MMHC community."
 					/>
+
+					<EventTabs />
 
 					<Suspense fallback={<EventsSkeleton />}>
 						<EventList />
